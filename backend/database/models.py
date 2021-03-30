@@ -3,7 +3,7 @@ from flask_bcrypt import generate_password_hash, check_password_hash
 
 
 class Snippet(db.Document):
-    meta = {'collection': 'gist'}
+    meta = {'collection': 'snippet'}
     title = db.StringField(required=True, unique=True)
 
     filename = db.StringField()
@@ -11,14 +11,15 @@ class Snippet(db.Document):
     tags = db.ListField(db.StringField())
     description = db.StringField()
     language = db.StringField(default='javascript')
-    value = db.StringField()
-    file = db.FileField()
+    value = db.StringField(required=True)
 
-    added_by = db.ReferenceField('User')
+    added_by = db.ReferenceField('User', required=True)
     liked_by = db.ListField(db.ReferenceField('User'))
-    added_on = db.DateTimeField()
+    added_on = db.DateTimeField(required=True)
     updated_on = db.DateTimeField()
     private = db.BooleanField(default=False)
+
+    collection = db.ListField(db.ReferenceField('Collection'))
 
     def __repr__(self):
         return self.title
@@ -29,8 +30,9 @@ class User(db.Document):
     email = db.EmailField(required=True, unique=True)
     password = db.StringField(required=True, min_length=6)
     online = db.BooleanField(default=True)
-    gists_created = db.ListField(db.ReferenceField('Gist', reverse_delete_rule=db.PULL))
-    gists_liked = db.ListField(db.ReferenceField('Gist'))
+
+    snippets_created = db.ListField(db.ReferenceField('Snippet', reverse_delete_rule=db.PULL))
+    snippets_liked = db.ListField(db.ReferenceField('Snippet', reverse_delete_rule=db.PULL))
 
     def hash_password(self):
         self.password = generate_password_hash(self.password).decode('utf8')
@@ -42,7 +44,17 @@ class User(db.Document):
         return self.username
 
 
+class Collection(db.Document):
+    name = db.StringField(required=True, unique=True)
+    owner = db.ReferenceField('User', required=True)
+    snippets = db.ListField(db.ReferenceField('Snippet'))
+    private = db.BooleanField(default=False)
+
+
 User.register_delete_rule(Snippet, 'added_by', db.CASCADE)
+User.register_delete_rule(Snippet, 'liked_by', db.CASCADE)
+User.register_delete_rule(Collection, 'owner', db.CASCADE)
+
 
 
 class TokenBlocklist(db.Document):
@@ -52,4 +64,3 @@ class TokenBlocklist(db.Document):
     expires_on = db.DateTimeField(null=False)
     revoked_on = db.DateTimeField(null=False)
     revoked_by = db.ReferenceField('User')
-
