@@ -4,3 +4,4 @@
 env.py
 venv
 __pycache__
+.vscode
