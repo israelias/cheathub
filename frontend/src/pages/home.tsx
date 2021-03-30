@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Link, RouteComponentProps } from "react-router-dom";
-import { SpecialButton } from "../components/special-button";
+import FormElement from "../components/form";
+import { SpecialButton } from "../components/shared/special-button";
 
 interface Props extends RouteComponentProps {}
 
@@ -20,6 +21,7 @@ export const Home: React.FC<Props> = ({ history, location, match }) => {
         click me to go to about
       </button>
       <SpecialButton />
+      <FormElement />
     </div>
   );
 };
