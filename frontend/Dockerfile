@@ -22,3 +22,6 @@ ADD . /app
 
 # Start the React app
 CMD ["yarn", "start"]
+
+# docker build . -t israelias/ch-frontend
+# docker push israelias/ch-frontend:latest
