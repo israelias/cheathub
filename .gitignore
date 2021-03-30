@@ -1,2 +1,5 @@
 *.un~
 .idea
+.env
+env.py
+venv
