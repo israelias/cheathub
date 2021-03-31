@@ -1,38 +1,43 @@
 import React, { ReactInstance } from 'react'
+import { Tags } from '../shared/tags'
 
-interface ProfileOwnSnippets {
-  snippets: [{}];
+export interface SnippetState {
+  snippet: Snippet[],
 }
 
-export const ProfileOwnSnippets: React.FC<ProfileOwnSnippets> = ({ snippets }) => {
+export interface SnippetProps {
+  snippets: Snippet[];
+}
+
+export const ProfileOwnSnippets: React.FC<SnippetProps> = ({
+  snippets
+}) => {
     return (
       <div>
         <h1 id="clear">Your Gists</h1>
-        {snippets.map(( snippet: Array ) => (
+        {snippets.map(( snippet ) => (
           <div>
-          <h2>{snippet.title} -
-            <a href="/edit/<%= snippet._id %>">EDIT</a>
+          <h2>{ snippet.title } -
+            <a href={`/edit/${snippet.id}`}>EDIT</a>
           </h2>
-          <h3>snippet.language</h3>
-          <h4>snippet.createdOn</h4>
+          <h3>{ snippet.language }</h3>
+          <h4>{ snippet.addedOn }</h4>
           <section id="code">
-            <pre>snippet.value</pre>
+            <pre>{ snippet.value }</pre>
           </section>
           <section id="description">
-            <p>snippet.description</p>
+            <p>{ snippet.description }</p>
           </section>
-          {snippet.tags.length > 0 && snippet.tags[0] !== "" &&
-            <section id="snippet-tags">
-            <p>
-              { snippet.tags.map(( tag: string ) => (
-                <button onClick={() => window.location.href='/tags/{tag}'} id="tag">{tag}</button>
-              ))}
-              </p>
-            </section>
+          {snippet.tags.length > 0
+            && snippet.tags[0] !== ""
+            && (
+              <Tags
+                tags={snippet.tags}
+              />
+            )
           }
         </div>
         ))}
-
       </div>
     );
 }

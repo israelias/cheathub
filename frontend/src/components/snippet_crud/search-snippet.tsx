@@ -1,59 +1,46 @@
 import { Divider } from '@chakra-ui/layout';
 import React from 'react'
+import { Search } from '../snippet_crud/search-form'
+import { Snippet } from '../profile_crud/profile-own-snippet';
+import { SnippetFeed } from '../snippet-feed'
+import { searchBy, searchTerm} from '../snippet_crud/search-form'
 
 interface searchSnippetProps {
-
+  username: String;
+  snippets: [Snippet];
 }
 
-export const SearchSnippet: React.FC<searchSnippetProps> = ({}) => {
+// type selectOptions = "title" | "language" | "tag"
+// type searchText = string
+
+// interface selectOptions {
+//   string: "title" | "language" | "tag"
+// }
+
+export const SearchSnippet: React.FC<searchSnippetProps> = ({
+  username,
+  snippets,
+}) => {
+  const [searchTerm, setSearchTerm] = React.useState<searchTerm>();
+  const [searchBy, setSearchBy] = React.useState<searchBy>();
     return (
       <div>
-        <form action="/search_snippets/<%= username %>" method="POST">
-          <div>
-
-            <input type="text" name="search" placeholder="Search snippets" />
-            <select name="search_type">
-              <option value="title">Title</option>
-              <option value="language">Language</option>
-              <option value="tag">Tags</option>
-            </select>
-
-          </div>
-          <button type="submit">Search</button>
-        </form>
+        <Search
+          query={username}
+          searchBy={searchBy}
+          onSearchByChange={() => setSearchBy(searchBy)}
+          searchTerm={searchTerm}
+          onSearchTermChange={() => setSearchTerm(searchTerm)}
+        />
         <button onClick={() => window.location.href='/snippets/all'}>All</button>
-        <h1>Searching for {searchterm} by {searchby}</h1>
+        <h1>Searching for {searchTerm} by {searchBy}</h1>
 
-        {snippets.map((snippet) => (
-          snippet.tag = snippet.tags.join('') &&
-          snippet[searchBy].toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1 &&
-          (
-            <div>
-              <h2>snippet.title</h2>
-              { user === snippet.creater && <a href="/edit/snippet.id">EDIT</a>}
-              <h3>snippet.language</h3>
-              <h4><a href="/snippets/user/snippet.creator %>">{snippet.creator}</a> - {snippet.createdOn}</h4>
-          <section id="snippet-code">
-            <pre>{snippet.valie}</pre>
-          </section>
-          <section id="snippet-notes">
-            <p>{snippet.description}</p>
-          </section>
-          {
-            snippet.tags.length > 0 && snippet.tags[0] !== '' &&
-            <section id="snippet-tags">
-              <p>
-                {
-                  snippet.tags.map((tag) => (
-                    <button onClick={() => window.location.href='/tags/{tag}'} id="single-tag">{tag}</button>
-                  ))
-                }
-              </p>
-            </section>
-          }
-            </div>
-          )
-        ))}
+        <SnippetFeed
+          searchBy={searchBy}
+          searchTerm={searchTerm}
+          snippets={snippets}
+          username={username}
+        />
       </div>
     );
 }

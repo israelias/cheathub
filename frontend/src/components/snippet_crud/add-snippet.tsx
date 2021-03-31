@@ -3,58 +3,45 @@ import {
   FormControl,
   FormLabel,
   Textarea,
-  Input,
-  Select,
   Button,
   Container,
-  FormErrorMessage,
-  FormHelperText,
-} from "@chakra-ui/react"
+} from "@chakra-ui/react";
+import { SelectInput } from './select-input';
+import { TextInput } from './text-search-input';
+import { LANGUAGES } from '../../constants/languages.constants'
 
 export const AddSnippet = withRouter(({ history }) => {
+  const languages = [{ value: '', label: 'All'}, ...LANGUAGES];
   return (
     <Container>
+      <h1>Create Snippet</h1>
       <form
-      action="/snippet/add"
-      method="POST"
+        action="/snippet/add"
+        method="POST"
       >
-        <FormControl id="title">
-          <FormLabel>Title:</FormLabel>
-          <Input type="text" />
-        </FormControl>
+        <TextInput
+          name="title"
+          label="Title:"
+        />
+
         <FormControl id="body">
           <FormLabel>Code Snippet:</FormLabel>
           <Textarea></Textarea>
         </FormControl>
-        <FormControl id="notes">
-          <FormLabel>Notes:</FormLabel>
-          <Input type="text" />
-        </FormControl>
-        <FormControl id="language">
-          <FormLabel>Language:</FormLabel>
-          <Select placeholder="Select Language">
-            <option value="C">C</option>
-            <option value="C#">C#</option>
-            <option value="C++">C++</option>
-            <option value="CSS">CSS</option>
-            <option value="HTML">HTML</option>
-            <option value="Java">Java</option>
-            <option value="Javascript">Javascript</option>
-            <option value="Less">Less</option>
-            <option value="Objective-C">Objective-C</option>
-            <option value="Objective-C++">Objective-C++</option>
-            <option value="Perl">Perl</option>
-            <option value="PHP">PHP</option>
-            <option value="Python">Python</option>
-            <option value="Ruby">Ruby</option>
-            <option value="Sass">Sass</option>
-            <option value="SCSS">SCSS</option>
-          </Select>
-        </FormControl>
-        <FormControl id="tags">
-          <FormLabel for="tags">Tags: (separate by semicolon)</FormLabel>
-          <Input type="text" />
-        </FormControl>
+
+        <TextInput
+          name="description"
+          label="Description:"
+        />
+        <SelectInput
+          label="Language:"
+          value="Select Language"
+          options={languages}
+        />
+        <TextInput
+          name="tags"
+          label="Tags: (separate by semicolon)"
+        />
         <Button type="submit">Add Snippet</Button>
       </form>
     </Container>

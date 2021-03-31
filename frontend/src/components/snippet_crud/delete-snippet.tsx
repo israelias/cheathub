@@ -1,34 +1,33 @@
-import React from 'react'
+import React from 'react';
+import { useHistory } from 'react-router-dom'
 import {
-  FormControl,
-  FormLabel,
-  Textarea,
-  Input,
-  Select,
   Button,
   Container,
-  FormErrorMessage,
-  FormHelperText,
 } from "@chakra-ui/react"
 
-interface deleteSnippetProps {
-
+interface Props {
+  snippet: Snippet;
 }
 
-export const DeleteSnippet: React.FC<deleteSnippetProps> = ({}) => {
-    return (
+export const DeleteSnippet: React.FC<Props> = ({
+  snippet
+}) => {
+  const history = useHistory();
+  return (
       <div>
         <Container>
-
           <div>
-            <h1>Are you sure you want to delete your code snippet ___"?</h1>
-            <form action="/delete/<%= snippet._id %>" method="POST">
+            <h1>Are you sure you want to delete your code snippet {snippet.title}?</h1>
+            <form action={`/delete/${snippet.id}`} method="POST">
               <Button type="submit">YES, DELETE</Button>
             </form>
-            <Button onclick="window.location.href='/snippets/all'">NEVERMIND</Button>
+            <Button onClick={() => {
+              history.push("/snippets/all")
+            }}>
+              NEVERMIND
+            </Button>
           </div>
-
-          </Container>
-      </div>
-    );
+        </Container>
+    </div>
+  );
 }

@@ -1,4 +1,7 @@
-import React from 'react'
+import React from 'react';
+import {
+  useHistory
+} from 'react-router-dom';
 import {
   FormControl,
   FormLabel,
@@ -9,63 +12,66 @@ import {
   Container,
   FormErrorMessage,
   FormHelperText,
-} from "@chakra-ui/react"
+} from "@chakra-ui/react";
+import { SelectInput } from './select-input';
+import { TextInput } from './text-search-input';
+import { LANGUAGES } from '../../constants/languages.constants'
 
-interface editSnippetProps {
-
+interface Props {
+  snippet: Snippet;
 }
 
-export const EditSnippet: React.FC<editSnippetProps> = ({}) => {
+export const EditSnippet: React.FC<Props> = ({
+  snippet
+}) => {
+  const history = useHistory();
+  const languages = [{ value: '', label: 'All' }, ...LANGUAGES]
     return (
       <Container>
-        <h1>Edit ___ Snippet.title</h1>
+        <h1>Editing {snippet.title}</h1>
       <form
-        action="/edit/snippet.id"
+        action={`/edit/${snippet.id}`}
         method="POST"
       >
-        <FormControl id="title">
-          <FormLabel>Title:</FormLabel>
-          <Input type="text" />
-        </FormControl>
+
+        <TextInput
+          name="title"
+          label="Title:"
+        />
+
         <FormControl id="body">
           <FormLabel>Code Snippet:</FormLabel>
           <Textarea></Textarea>
         </FormControl>
-        <FormControl id="notes">
-          <FormLabel>Notes:</FormLabel>
-          <Input type="text" />
-        </FormControl>
-        <FormControl id="language">
-          <FormLabel>Language:</FormLabel>
-          <Select placeholder="Select Language">
-            <option value="C">C</option>
-            <option value="C#">C#</option>
-            <option value="C++">C++</option>
-            <option value="CSS">CSS</option>
-            <option value="HTML">HTML</option>
-            <option value="Java">Java</option>
-            <option value="Javascript">Javascript</option>
-            <option value="Less">Less</option>
-            <option value="Objective-C">Objective-C</option>
-            <option value="Objective-C++">Objective-C++</option>
-            <option value="Perl">Perl</option>
-            <option value="PHP">PHP</option>
-            <option value="Python">Python</option>
-            <option value="Ruby">Ruby</option>
-            <option value="Sass">Sass</option>
-            <option value="SCSS">SCSS</option>
-          </Select>
-        </FormControl>
-        <FormControl id="tags">
-          {/* snippet.tags.join(';') */}
-          <FormLabel for="tags">Tags: (separate by semicolon)</FormLabel>
-          <Input type="text" value="snippet.tags"/>
-        </FormControl>
-        <Button type="submit">Update Snippet</Button>
+
+        <TextInput
+          name="description"
+          label="Description:"
+        />
+        <SelectInput
+          label="Language:"
+          value="Select Language"
+          options={languages}
+        />
+        <TextInput
+          name="tags"
+          value={snippet.tags.join(';')}
+          label="Tags: (separate by semicolon)"
+        />
+        <Button
+          type="submit">
+            Update Snippet
+        </Button>
       </form>
-      <form action="/delete/snippet.id" method="POST">
-          <Button type="submit">Delete Snippet</Button>
-        </form>
+      <form
+        action={`/delete/${snippet.id}`}
+        method="POST"
+      >
+        <Button
+          type="submit">
+            Delete Snippet
+        </Button>
+      </form>
     </Container>
-    );
+  );
 }
