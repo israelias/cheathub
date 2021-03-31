@@ -1,9 +1,7 @@
 import { Divider } from '@chakra-ui/layout';
 import React from 'react'
 import { Search } from '../snippet_crud/search-form'
-import { Snippet } from '../profile_crud/profile-own-snippet';
 import { SnippetFeed } from '../snippet-feed'
-import { searchBy, searchTerm} from '../snippet_crud/search-form'
 
 interface searchSnippetProps {
   username: String;

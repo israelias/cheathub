@@ -3,6 +3,10 @@ import { SelectInput } from './select-input'
 import { TextInput } from './text-search-input'
 import { SEARCHFILTERS } from '../../constants/languages.constants'
 
+// const App: React.FunctionComponent<{ message: string }> = ({ message }) => (
+//   <div>{message}</div>
+// );
+
 // For <input type="text"> the event type is React.ChangeEvent<HTMLInputElement>
 // const Input = (): JSX.Element => {
 //   const [inputValue, setInputValue] = useState<string>("");
@@ -99,8 +103,6 @@ import { SEARCHFILTERS } from '../../constants/languages.constants'
 //     niceProp: string;
 // }
 
-export type searchBy = "title" | "language" | "tags" ;
-export type searchTerm = string;
 
 export interface SearchProps {
   query: string;
