@@ -7,7 +7,7 @@ interface snippetFeedProps {
   snippets: Snippet[],
   searchBy: searchBy,
   searchTerm: searchTerm,
-  username: String,
+  username: string,
 }
 
 export const SnippetFeed: React.FC<snippetFeedProps> = ({

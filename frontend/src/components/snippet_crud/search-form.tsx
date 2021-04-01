@@ -105,7 +105,7 @@ import { SEARCHFILTERS } from '../../constants/languages.constants'
 
 
 export interface SearchProps {
-  query: string;
+  query?: string | null;
   searchTerm: searchTerm;
   searchBy: searchBy;
   onSearchTermChange: (event: React.ChangeEvent<HTMLInputElement>) => void;

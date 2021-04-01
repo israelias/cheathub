@@ -1,4 +1,5 @@
 import React from 'react'
+import { useHistory } from 'react-router-dom';
 
 type Tag = string
 
@@ -9,20 +10,21 @@ interface Props {
 export const Tags: React.FC<Props> = ({
   tags
 }) => {
-    return (
-      <section id="snippet-tags">
-        <p>
-          { tags.map(( tag ) => (
-            <button
-              id="tag"
-              onClick={
-                () => {`/tags/${tag}`}
-              }
-            >
-              {tag}
-            </button>
-          ))}
-        </p>
-      </section>
-    );
+  const history = useHistory();
+  return (
+    <section id="snippet-tags">
+      <p>
+        { tags.map(( tag ) => (
+          <button
+            id="tag"
+            onClick={
+              () => history.push(`/tags/${tag}`)
+            }
+          >
+            {tag}
+          </button>
+        ))}
+      </p>
+    </section>
+  );
 }

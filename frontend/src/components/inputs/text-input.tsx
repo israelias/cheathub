@@ -1,6 +1,6 @@
 import { FieldProps, getIn } from "formik";
 import React from "react";
-import { Input } from '@chakra-ui/react'
+import { Input as InputRev } from '@chakra-ui/react'
 
 export const TextFormField: React.FC<FieldProps> = ({
   field,
@@ -11,7 +11,7 @@ export const TextFormField: React.FC<FieldProps> = ({
     getIn(form.touched, field.name) && getIn(form.errors, field.name);
 
   return (
-    <Input
+    <InputRev
       isFullWidth
       margin="normal"
       placeholder={errorText}

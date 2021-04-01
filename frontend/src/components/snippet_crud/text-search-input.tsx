@@ -33,15 +33,15 @@ export const TextInput: React.FC<Props> = ({
   );
 }
 
-const Input = ({ props }): JSX.Element => {
-  const [inputValue, setInputValue] = React.useState<string>("");
-  return (
-      <input
-          type="text"
-          value={inputValue}
-          onChange={(
-              ev: React.ChangeEvent<HTMLInputElement>,
-          ): void => setInputValue(ev.target.value)}
-      />
-  );
-};
+// const Input = ({ props }): JSX.Element => {
+//   const [inputValue, setInputValue] = React.useState<string>("");
+//   return (
+//       <input
+//           type="text"
+//           value={inputValue}
+//           onChange={(
+//               ev: React.ChangeEvent<HTMLInputElement>,
+//           ): void => setInputValue(ev.target.value)}
+//       />
+//   );
+// };

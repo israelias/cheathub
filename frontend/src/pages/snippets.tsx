@@ -1,7 +1,7 @@
 import * as React from "react";
 import { RouteComponentProps } from "react-router";
-import { AddSnippet } from '../components/actions/add-snippet'
-import { DeleteSnippet } from '../components/actions/delete-snippet'
+import { AddSnippet } from '../components/snippet_crud/add-snippet'
+import { DeleteSnippet } from '../components/snippet_crud/delete-snippet'
 
 interface Props extends RouteComponentProps<{ id: string }> {}
 
@@ -14,7 +14,7 @@ export const Snippet: React.FC<Props> = ({ match }) => {
     <div>
       <div>rendering post {match.params.id}</div>
       <AddSnippet />
-      <DeleteSnippet />
+      {/* <DeleteSnippet snippet={snippet} /> */}
     </div>
   );
 };

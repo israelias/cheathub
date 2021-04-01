@@ -4,27 +4,23 @@ import { Search } from '../snippet_crud/search-form'
 import { SnippetFeed } from '../snippet-feed'
 
 interface searchSnippetProps {
-  username: String;
-  snippets: [Snippet];
+  username: string;
+  snippets: Snippet[];
 }
-
-// type selectOptions = "title" | "language" | "tag"
-// type searchText = string
-
-// interface selectOptions {
-//   string: "title" | "language" | "tag"
-// }
 
 export const SearchSnippet: React.FC<searchSnippetProps> = ({
   username,
   snippets,
 }) => {
-  const [searchTerm, setSearchTerm] = React.useState<searchTerm>();
-  const [searchBy, setSearchBy] = React.useState<searchBy>();
+  // const [searchTerm, setSearchTerm] = React.useState<searchTerm>();
+  // const [searchBy, setSearchBy] = React.useState<searchBy>();
+  const [searchTerm, setSearchTerm] = React.useState("");
+  const [searchBy, setSearchBy] = React.useState<searchBy>("title");
+  const [query, setQuery] = React.useState("home")
     return (
       <div>
         <Search
-          query={username}
+          query={"query"}
           searchBy={searchBy}
           onSearchByChange={() => setSearchBy(searchBy)}
           searchTerm={searchTerm}
