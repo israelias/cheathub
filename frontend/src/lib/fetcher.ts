@@ -1,8 +1,12 @@
-import { RouterProps, RouteProps, RouteComponentProps, RouteChildrenProps } from "react-router-dom";
+import { RouterProps, RouteProps, RouteComponentProps, RouteChildrenProps } from "react-router";
 import fetch from "isomorphic-unfetch";
 import { RequestTicket } from "./requests"
 
-interface ISignUpRequest extends UserContext, RouterProps {
+interface ISignUpRequest extends RouterProps {
+  setUsername: React.Dispatch<React.SetStateAction<string>>;
+  setAccessToken: React.Dispatch<React.SetStateAction<string>>;
+  setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   redirectTo: string;
   body: {
     username: string;
@@ -34,7 +38,10 @@ export function signUpRequest({ setAccessToken, setUsername, setLoggedIn, setLoa
     })
 }
 
-interface ILoginRequest extends UserContext, RouteComponentProps {
+interface ILoginRequest extends RouterProps {
+  setUsername: React.Dispatch<React.SetStateAction<string>>;
+  setAccessToken: React.Dispatch<React.SetStateAction<string>>;
+  setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
   redirectTo: string;
   body: {
     email: string;
@@ -63,7 +70,11 @@ export function loginRequest({ body, setAccessToken, setUsername, setLoggedIn, h
     })
 }
 
-interface ILogoutRequest extends UserContext, RouteProps, RouterProps {
+interface ILogoutRequest extends RouteProps, RouterProps {
+  setUsername: React.Dispatch<React.SetStateAction<string>>;
+  setAccessToken: React.Dispatch<React.SetStateAction<string>>;
+  setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+  accessToken: string;
   redirectTo: string;
   body: {
     email: string;
@@ -95,7 +106,8 @@ export function logoutRequest({ setUsername, setLoggedIn, setAccessToken, access
     .catch(error => console.error(error));
 }
 
-interface IPutRequest extends UserContext {
+interface IPutRequest {
+  accessToken: string;
   url: string;
   body: object;
 }
@@ -114,8 +126,9 @@ export function putRequest({ url, accessToken, body }: IPutRequest) {
     .catch(error => console.error(error));
 }
 
-interface IGetRequest extends UserContext {
+interface IGetRequest {
   url: string;
+  accessToken: string;
 }
 
 export function getRequest({ url, accessToken }: IGetRequest) {

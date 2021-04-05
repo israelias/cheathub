@@ -1,5 +1,3 @@
-import fetch from "isomorphic-unfetch";
-
 const API = 'http://localhost:5000'
 
 interface IRequestTicket {
