@@ -3,12 +3,15 @@ import { render } from "react-dom"
 import App from "./App"
 import * as serviceWorker from "./serviceWorker"
 import { ChakraProvider } from "@chakra-ui/react"
+import { UserProvider } from './context/user.context'
 
 render(
   <StrictMode>
-    <ChakraProvider>
-      <App />
-    </ChakraProvider>
+    <UserProvider>
+      <ChakraProvider>
+        <App />
+      </ChakraProvider>
+    </UserProvider>
   </StrictMode>,
   document.getElementById("root"),
 )
