@@ -6,9 +6,9 @@ import { DeleteSnippet } from '../components/snippet_crud/delete-snippet'
 interface Props extends RouteComponentProps<{ id: string }> {}
 
 export const Snippet: React.FC<Props> = ({ match }) => {
-  // React.useEffect(() => {
-  //   fetch(`api.example.com/posts/${match.params.id}`)
-  // }, [match.params.id])
+  React.useEffect(() => {
+    fetch(`api.example.com/posts/${match.params.id}`)
+  }, [match.params.id])
 
   return (
     <div>
