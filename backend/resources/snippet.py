@@ -1,8 +1,11 @@
 from flask import Response, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from database.models import Snippet, User, Collection
-from flask_restful import Resource
+from flask_restful import Resource, fields, marshal_with
+from bson import ObjectId
 import datetime
+from flask_mongoengine.wtf import model_form
+
 
 from mongoengine.errors import (
     FieldDoesNotExist,
@@ -21,8 +24,29 @@ from resources.errors import (
 )
 
 
+
 class SnippetsApi(Resource):
     def get(self):
+        snippets = []
+        for doc in Snippet.objects():
+            snippets.append(
+                {
+                    "_id": str(ObjectId(doc["id"])),
+                    "title": doc["title"],
+                    "filename": doc["filename"],
+                    "description": doc["description"],
+                    "language": doc["language"],
+                    "value": doc["value"],
+                    "addedBy": doc["addedBy"]["username"],
+                    "likedBy": [elem["username"] for elem in doc["likedBy"]],
+                    "addedOn": doc["addedOn"],
+                    "updatedOn": doc["updatedOn"],
+                    "private": doc["private"],
+                    "source": doc["source"],
+                }
+            )
+
+        # return jsonify(snippets)
         gists = Snippet.objects(private=False).to_json()
         return Response(gists, mimetype="application/json", status=200)
 
@@ -54,10 +78,10 @@ class SnippetApi(Resource):
     def put(self, id):
         try:
             user_id = get_jwt_identity()
-            snippet = Snippet.objects.get(id=id, added_by=user_id)
+            snippet = Snippet.objects.get(id=id, addedBy=user_id)
             body = request.get_json()
             now = datetime.datetime.now(datetime.timezone.utc)
-            snippet.update(**body, updated_on=now)
+            snippet.update(**body, updatedOn=now)
             return {"message": "Snippet updated"}, 200
 
         except InvalidQueryError:
@@ -71,7 +95,7 @@ class SnippetApi(Resource):
     def delete(self, id):
         try:
             user_id = get_jwt_identity()
-            snippet = Snippet.objects.get(id=id, added_by=user_id)
+            snippet = Snippet.objects.get(id=id, addedBy=user_id)
             snippet.delete()
             return {"message": "Snippet deleted"}, 200
         except DoesNotExist:

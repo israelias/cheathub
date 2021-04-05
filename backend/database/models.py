@@ -1,13 +1,9 @@
 from .db import db
 from flask_bcrypt import generate_password_hash, check_password_hash
 
-from mongoengine import queryset_manager, queryset
-
-from views.snippet import SnippetQuery
-
 
 class Snippet(db.Document):
-    meta = {"collection": "snippet", "queryset_class": SnippetQuery}
+    meta = {"collection": "snippet"}
     title = db.StringField(required=True)
 
     def __str__(self):
@@ -19,22 +15,13 @@ class Snippet(db.Document):
     language = db.StringField(default="javascript")
     value = db.StringField(required=True)
 
-    addedBy = db.ReferenceField("User", required=True)  # dbref=True?
-    likedBy = db.ListField(db.ReferenceField("User"))  # dref=True?
+    addedBy = db.ReferenceField("User", required=True)
+    likedBy = db.ListField(db.ReferenceField("User"))
     addedOn = db.DateTimeField(required=True)
     updatedOn = db.DateTimeField()
     private = db.BooleanField(default=False)
     active: db.BooleanField(default=True)
     source = db.URLField(unique=False)
-
-    @queryset_manager
-    def objects(self, queryset):
-        # This may actually also be done by defining a default ordering for
-        # the document, but this illustrates the use of manager methods
-        return queryset.order_by("title")
-
-    def to_json(self):
-        return {"title": self.title, "description": self.description}
 
     def __repr__(self):
         return self.title
@@ -44,13 +31,14 @@ class Collection(db.Document):
     meta = {"collection": "collection", "cascade": True}
 
     name = db.StringField(required=True, unique=True)
-    owner = db.ReferenceField("User", required=True)  # dbref
-    snippets = db.ListField(
-        db.ReferenceField("Snippet", everse_delete_rule=db.PULL)
-    )  # dbRef
+    owner = db.ReferenceField("User", required=True)
+    snippets = db.ListField(db.ReferenceField("Snippet", reverse_delete_rule=db.PULL))
     private = db.BooleanField(default=False)
 
     def __repr__(self):
+        return self.name
+
+    def __str__(self):
         return self.name
 
 
@@ -64,32 +52,12 @@ class User(db.Document):
 
     snippets_created = db.ListField(
         db.ReferenceField("Snippet", reverse_delete_rule=db.PULL)
-    )  # dbref=True
+    )
     snippets_liked = db.ListField(
         db.ReferenceField("Snippet", reverse_delete_rule=db.PULL)
     )
 
     collections = db.ListField(db.ReferenceField("Collection"))
-    # collections = db.ListField(
-    #     db.ReferenceField(
-    #         'Collection',
-    #         reverse_delete_rule=db.PULL,
-    #         dbref=True,
-    #         default=list(
-    #             Collection(
-    #             name='My Collection',
-    #             owner='self',
-    #             snippets=list(
-    #                 Snippet(
-    #                     title="Hello World",
-    #                     value="cosole.log('Hello, World!')",
-    #                     addedBy='self'
-    #                     )
-    #                 )
-    #             )
-    #         )
-    #     )
-    # )
 
     def hash_password(self):
         self.password = generate_password_hash(self.password).decode("utf8")
@@ -98,6 +66,9 @@ class User(db.Document):
         return check_password_hash(self.password, password)
 
     def __repr__(self):
+        return 'User(email="{}", username="{}")'.format(self.username, self.password)
+
+    def __str__(self):
         return self.username
 
 
