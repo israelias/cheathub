@@ -15,11 +15,23 @@ interface ISignUpRequest extends RouterProps {
   }
 }
 
-export function signUpRequest({ setAccessToken, setUsername, setLoggedIn, setLoading, history: router, redirectTo, body }: ISignUpRequest) {
+export function signUpRequest({
+  setAccessToken,
+  setUsername,
+  setLoggedIn,
+  setLoading,
+  history: router,
+  redirectTo,
+  body
+}: ISignUpRequest) {
   const request = RequestTicket({
     method: 'post',
     url: 'api/auth/signup',
-    body: {username: body.username, email: body.email, password: body.password}
+    body: {
+      username: body.username,
+      email: body.email,
+      password: body.password
+    }
   })
   setLoading(true)
   return fetch(request)
@@ -49,26 +61,68 @@ interface ILoginRequest extends RouterProps {
   }
 }
 
-export function loginRequest({ body, setAccessToken, setUsername, setLoggedIn, history, redirectTo }: ILoginRequest
+export async function loginRequest({
+  body,
+  setAccessToken,
+  setUsername,
+  setLoggedIn,
+  history,
+  redirectTo
+}: ILoginRequest
   ) {
   const request = RequestTicket({
     method: 'post',
     url: 'api/auth/login',
-    body: {email: body.email, password: body.password}
+    body: {
+      email: body.email,
+      password: body.password
+    }
   })
-  return fetch(request).then(r => r.json())
-    .then(token => {
-      if (token.access_token) {
-        setAccessToken(token.access_token)
-        setUsername(token.username)
-        setLoggedIn(true)
-        localStorage.setItem('username', token.username)
-        history.push({
-          pathname: redirectTo + token.username,
-        })
-      }
-    })
+  const response = await fetch(request);
+  const token = await response.json();
+  if (token.access_token) {
+    setAccessToken(token.access_token);
+    setUsername(token.username);
+    setLoggedIn(true);
+    localStorage.setItem('username', token.username);
+    console.log(`User ${token.username} has logged in.`, `Access: ${token.access_token}`);
+    history.push({
+      pathname: redirectTo + '/' + token.username,
+    });
+  }
 }
+
+// export function loginRequest({
+//   body,
+//   setAccessToken,
+//   setUsername,
+//   setLoggedIn,
+//   history,
+//   redirectTo
+// }: ILoginRequest
+//   ) {
+//   const request = RequestTicket({
+//     method: 'post',
+//     url: 'api/auth/login',
+//     body: {
+//       email: body.email,
+//       password: body.password
+//     }
+//   })
+//   return fetch(request).then(r => r.json())
+//     .then(token => {
+//       if (token.access_token) {
+//         setAccessToken(token.access_token)
+//         setUsername(token.username)
+//         setLoggedIn(true)
+//         localStorage.setItem('username', token.username)
+//         console.log(`User ${token.username} has logged in.`, `Access: ${token.access_token}`)
+//         history.push({
+//           pathname: redirectTo + '/' + token.username,
+//         })
+//       }
+//     })
+// }
 
 interface ILogoutRequest extends RouteProps, RouterProps {
   setUsername: React.Dispatch<React.SetStateAction<string>>;
@@ -82,29 +136,83 @@ interface ILogoutRequest extends RouteProps, RouterProps {
   }
 }
 
-export function logoutRequest({ setUsername, setLoggedIn, setAccessToken, accessToken, history: router, redirectTo }: ILogoutRequest) {
+export async function LogoutRequest({
+  setUsername,
+  setLoggedIn,
+  setAccessToken,
+  accessToken,
+  history: router,
+  redirectTo
+}: ILogoutRequest) {
   const request = RequestTicket({
     method: 'post',
     url: 'api/auth/logout',
     token: accessToken
   })
-  return fetch(request).then(res => {
+  try {
+    const res = await fetch(request);
     if (res.ok) {
-      const now = Date.now()
-      setAccessToken('')
-      setUsername('')
-      setLoggedIn(false)
-      const outgoing = window.localStorage.getItem('username')
-      window.localStorage.removeItem('username')
-      window.localStorage.setItem('app_logout', now.toString())
+      const now = Date.now();
+      setAccessToken('');
+      setUsername('');
+      setLoggedIn(false);
+      const outgoing = window.localStorage.getItem('username');
+      window.localStorage.removeItem('username');
+      window.localStorage.setItem('app_logout', now.toString());
       router.push({
         pathname: redirectTo,
         // query: {name: outgoing}
       });
     }
-  })
-    .catch(error => console.error(error));
+  } catch (error) {
+    return console.error(error);
+  }
 }
+
+// export async function LogoutRequest({
+//   setUsername,
+//   setLoggedIn,
+//   setAccessToken,
+//   accessToken,
+//   history: router,
+//   redirectTo
+// }: ILogoutRequest) {
+//   const request = RequestTicket({
+//     method: 'post',
+//     url: 'api/auth/logout',
+//     token: accessToken
+//   })
+//   return await fetch(request)
+//   .then(response => handleLogoutResponse(response));
+// }
+
+// export async function handleLogoutResponse(response: any){
+//   const data = await response.json();
+
+//   if (response.ok) {
+//     const now = Date.now();
+//     setAccessToken('');
+//     setUsername('');
+//     setLoggedIn(false);
+//     const outgoing = window.localStorage.getItem('username');
+//     window.localStorage.removeItem('username');
+//     window.localStorage.setItem('app_logout', now.toString());
+//     router.push({
+//       pathname: redirectTo,
+//       // query: {name: outgoing}
+//     });
+//   } else {
+//     return Promise.reject(data);
+//   }
+// }
+
+// export async function getUserProfile() {
+//   return await fetch(`${API_URL}/auth/me`, {
+//     headers: {
+//       Authorization: storage.getToken()
+//     }
+//   }).then(handleApiResponse);
+// }
 
 interface IPutRequest {
   accessToken: string;
@@ -131,7 +239,10 @@ interface IGetRequest {
   accessToken: string;
 }
 
-export function getRequest({ url, accessToken }: IGetRequest) {
+export function getRequest({
+  url,
+  accessToken
+}: IGetRequest) {
   const request = RequestTicket({
     method: 'get',
     url: url,
