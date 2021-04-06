@@ -53,7 +53,8 @@ interface UserContext {
   accessToken: string;
   setAccessToken: React.Dispatch<React.SetStateAction<string>>;
   loggedIn: boolean;
-  setLoggedIn: (loggedIn: boolean) => void;
+  setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+  // setLoggedIn: (loggedIn: boolean) => void;
   loading: boolean;
   setLoading?: React.Dispatch<React.SetStateAction<boolean>>;
 }

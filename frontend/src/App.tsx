@@ -1,6 +1,4 @@
 import * as React from 'react';
-// import TextField from './components/shared/textfield'
-// import {Counter} from './components/shared/counter'
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 import {Home} from './pages/home'
@@ -10,16 +8,18 @@ import {Snippet} from './pages/snippets'
 import {Registration} from './pages/registration'
 import {Login} from './pages/login'
 import Test from './pages/test';
+import {Explore} from './pages/explore'
 
 const App: React.FC = () => {
   return (
     <BrowserRouter>
       <Switch>
-        <Route path="/" exact component={Home} />
+        <Route path="/" exact component={Login} />
         {/* <Route path="/about" exact component={About} /> */}
-        {/* <Route path="/profile/:id" exact component={Profile} /> */}
+        <Route path="/profile/:id" exact component={Profile} />
         <Route path="/posts/:id" exact component={Snippet} />
-        {/* <Route path="/" exact component={Test} /> */}
+        <Route path="/test" exact component={Test} />
+        <Route path="/explore" exact component={Explore} />
         <Route path="/registration/:id" exact component={Registration} />
         <Route path="/" render={() => <div>404</div>} />
       </Switch>
