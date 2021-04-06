@@ -9,6 +9,7 @@ interface Props extends RouteComponentProps<{ id: string }> {
 
 export const Login: React.FC<Props> = ({ history, match }) => {
   const user = useUserContext()
+  // const { setLoggedIn, setUsername, setAccessToken } = useUserContext();
   const [error, setError] = React.useState(null);
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
@@ -22,7 +23,7 @@ export const Login: React.FC<Props> = ({ history, match }) => {
           try {
             await loginRequest({
               body: {email: email, password: password},
-              setLoggedIn: user.setLoggedIn,
+              setLoggedIn: user!.setLoggedIn,
               setUsername: user!.setUsername,
               setAccessToken: user!.setAccessToken,
               history: history,
