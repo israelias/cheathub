@@ -1,4 +1,6 @@
 import React from 'react'
+import { ToUserButton} from '../shared/special-button'
+
 
 type Username = string
 
@@ -13,14 +15,15 @@ export const Likes: React.FC<Props> = ({
     <section id="liked-by">
       <p>
         { usernames.map(( username ) => (
-          <button
-            id="avatar"
-            onClick={
-              () => {`/users/${username}`}
-            }
-          >
-            {username}
-          </button>
+          <ToUserButton user={username} label={username} />
+          // <button
+          //   id="avatar"
+          //   onClick={
+          //     () => {`/users/${username}`}
+          //   }
+          // >
+          //   {username}
+          // </button>
         ))}
       </p>
     </section>

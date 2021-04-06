@@ -1,7 +1,7 @@
 import React from 'react'
 import { Tags } from './shared/tags';
 import { Likes } from './shared/liked-by'
-import { string } from 'yup/lib/locale'
+import { string } from 'yup/lib/locale';
 
 interface snippetFeedProps {
   snippets: Snippet[],

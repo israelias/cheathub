@@ -1,5 +1,5 @@
 import * as React from "react";
-import { withRouter } from "react-router-dom";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 
 export const SpecialButton = withRouter(({ history }) => {
   return (
@@ -12,3 +12,21 @@ export const SpecialButton = withRouter(({ history }) => {
     </button>
   );
 });
+
+interface Props extends RouteComponentProps {
+  user: string;
+  label: string;
+}
+
+export const ToUserButton = withRouter(({ history, user, label }:Props) => {
+  return (
+    <button
+      onClick={() => {
+        history.push(`/profiles/${user}`);
+      }}
+    >
+      {label}
+    </button>
+  );
+});
+

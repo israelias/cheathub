@@ -1,7 +1,9 @@
 import React from 'react'
 import {
   Container,
+  Flex,
 } from "@chakra-ui/react";
+import { NavLink } from '../shared/link'
 
 interface Props {
   loggedIn: Boolean;
@@ -13,21 +15,51 @@ export const LoggedinHeader: React.FC<Props> = ({
   username
 }) => {
     return (
-      <nav data-user-id="<%= userid %>">
-      <Container>
+      <Flex
+        flexDirection="row"
+        justifyContent="space-between"
+        alignItems="center"
+        width="100%"
+        as="nav"
+        p={4}
+        mx="auto"
+        maxWidth="1150px"
+        marginBottom="40px"
+      >
+      <>
         {
           loggedIn
           ? (
           <>
             <h1><a href="/snippet s/all">Feed</a></h1>
             {username && <p>{ username }</p>}
-            <ul>
-              <li><a href="/snippets/favs">Favs</a></li>
-              <li><a href="/snippets/all">Explore</a></li>
-              <li><a href="/snippet/add">Add</a></li>
-              <li><a href="/profile">Profile</a></li>
-              <li><a href="/logout">Logout</a></li>
-            </ul>
+            <Flex
+
+              flexDirection="row"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <NavLink
+                label="Favs"
+                path="/snippets/favs"
+               />
+               <NavLink
+                label="Explore"
+                path="/snippets/all"
+               />
+               <NavLink
+                label="Add"
+                path="/snippets/add"
+               />
+               <NavLink
+                label="Profile"
+                path="/profile"
+               />
+               <NavLink
+                label="Logout"
+                path="/logout"
+               />
+            </Flex>
           </>
         ):(
           <>
@@ -38,7 +70,8 @@ export const LoggedinHeader: React.FC<Props> = ({
           </>
           )
         }
-      </Container>
-    </nav>
+      </>
+
+    </Flex>
     );
 }
