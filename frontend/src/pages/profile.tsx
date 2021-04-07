@@ -5,6 +5,12 @@ import { SearchUser } from '../components/profile_crud/profile-search-snippet'
 import { ProfileOwnSnippets } from '../components/profile_crud/profile-own-snippet'
 import { getRequest, signUpRequest } from "../lib/fetcher";
 import { useUserContext } from '../context/user.context';
+import {CollectionList} from '../components/layout/accordion'
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+} from 'react-query';
 
 interface profileProps extends RouteComponentProps<{id: string}> {
   snippets: Snippet[];
@@ -16,26 +22,24 @@ export const Profile: React.FC<profileProps> = ({
   match
 }) => {
   const user = useUserContext();
-  // const response = getRequest({
-  //   url: `api/snippets`,
-  //   accessToken: user!.accessToken,
-  // }).then(data => setData(data))
-  const [data, setData] = React.useState([])
-  React.useEffect(() => {
-    getRequest({
-      url: `api/snippets`,
+  const { isLoading, error, data } = useQuery(
+    'myCollections', () =>
+      getRequest({
+      url: `api/users/noah/collections`,
       accessToken: user!.accessToken,
-    }).then(data => setData(data))
-    // fetch(`api.example.com/posts/${match.params.id}`)
-  }, [])
+    })
+   )
+   if (isLoading) return <p>Loading...</p>
+
     return (
       <div>
         <LoggedinHeader
           loggedIn={true}
           username={match.params.id}
           />
+        <CollectionList data={data}/>
         <SearchUser />
-        <ProfileOwnSnippets snippets={data} />
+        {/* <ProfileOwnSnippets snippets={data} /> */}
 
       </div>
     );

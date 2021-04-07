@@ -25,7 +25,8 @@ export const Explore: React.FC<exploreProps> = ({
   const [searchBy, setSearchBy] = React.useState<searchBy>("title");
   const user = useUserContext();
   const username = user!.username ? user!.username : "joem";
-  const { isLoading, error, data } = useQuery('allSnippets', () =>
+  const { isLoading, error, data } = useQuery(
+    'allSnippets', () =>
     getRequest({
       url: `api/snippets`,
       accessToken: user!.accessToken,
