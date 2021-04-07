@@ -1,5 +1,6 @@
 from .db import db
 from flask_bcrypt import generate_password_hash, check_password_hash
+import datetime
 
 
 class Snippet(db.Document):
@@ -17,7 +18,7 @@ class Snippet(db.Document):
 
     addedBy = db.ReferenceField("User", required=True)
     likedBy = db.ListField(db.ReferenceField("User"))
-    addedOn = db.DateTimeField(required=True)
+    addedOn = db.DateTimeField(required=True, default=datetime.datetime.utcnow)
     updatedOn = db.DateTimeField()
     private = db.BooleanField(default=False)
     active: db.BooleanField(default=True)
@@ -43,7 +44,17 @@ class Collection(db.Document):
 
 
 class User(db.Document):
-    meta = {"collection": "user", "cascade": True}
+    meta = {
+        "collection": "user",
+        "cascade": True,
+        "indexes": [
+            {
+                "fields": ["$username", "$email"],
+                # "default_language": "english",
+                "weights": {"username": 10, "email": 2},
+            }
+        ],
+    }
 
     username = db.StringField(required=True, unique=True)
     email = db.EmailField(required=True, unique=True)
