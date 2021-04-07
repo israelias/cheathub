@@ -30,9 +30,6 @@ class UsersApi(Resource):
                     "_id": str(doc["id"]),
                     "username": doc["username"],
                     "online": doc["online"],
-                    # Alternatively...
-                    # "snippets_created": doc["snippets_created"],
-                    # "snippets_liked": doc["snippets_liked"],
                     "snippets_created": [
                         {
                             "snippet_title": k["title"],
@@ -40,7 +37,6 @@ class UsersApi(Resource):
                         }
                         for k in doc["snippets_created"]
                     ],
-                    # "snippets_created": [k["title"] for k in doc["snippets_created"]],
                     "snippets_liked": [
                         {
                             "snippet_title": k["title"],
@@ -48,8 +44,13 @@ class UsersApi(Resource):
                         }
                         for k in doc["snippets_liked"]
                     ],
-                    # "snippets_liked": list(doc["snippets_liked"]),
-                    "collections": list(doc["collections"]),
+                    "collections": [
+                        {
+                            "collection_name": k["name"],
+                            "collection_id": str(ObjectId(k["id"])),
+                        }
+                        for k in doc["collections"]
+                    ],
                 }
             )
 
@@ -57,6 +58,46 @@ class UsersApi(Resource):
 
 
 class UserApi(Resource):
+    def get(self, id):
+        try:
+            # user_id = get_jwt_identity()
+            user = []
+            for doc in User.objects(username=id):
+                user.append(
+                    {
+                        "_id": str(ObjectId(doc["id"])),
+                        "username": doc["username"],
+                        "online": doc["online"],
+                        "snippets_created": [
+                            {
+                                "snippet_title": k["title"],
+                                "snippet_id": str(ObjectId(k["id"])),
+                            }
+                            for k in doc["snippets_created"]
+                        ],
+                        "snippets_liked": [
+                            {
+                                "snippet_title": k["title"],
+                                "snippet_id": str(ObjectId(k["id"])),
+                            }
+                            for k in doc["snippets_liked"]
+                        ],
+                        "collections": [
+                            {
+                                "collection_name": k["name"],
+                                "collection_id": str(ObjectId(k["id"])),
+                            }
+                            for k in doc["collections"]
+                        ],
+                    }
+                )
+            return jsonify(user)
+
+        except DoesNotExist:
+            raise UserNotExistsError
+        except Exception:
+            raise InternalServerError
+
     @jwt_required()
     def put(self):
         try:
@@ -76,15 +117,5 @@ class UserApi(Resource):
             user = User.objects.get(username=user_id)
             user.delete()
             return {"message": "User deleted"}, 200
-        except Exception:
-            raise InternalServerError
-
-    def get(self, id):
-        try:
-            # user_id = get_jwt_identity()
-            user = User.objects.get(id=id).to_json()
-            return Response(user, mimetype="application/json", status=200)
-        # except DoesNotExist:
-        #     raise UserNotExistsError
         except Exception:
             raise InternalServerError

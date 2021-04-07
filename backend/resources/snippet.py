@@ -24,7 +24,6 @@ from resources.errors import (
 )
 
 
-
 class SnippetsApi(Resource):
     def get(self):
         snippets = []
@@ -39,6 +38,7 @@ class SnippetsApi(Resource):
                     "value": doc["value"],
                     "addedBy": doc["addedBy"]["username"],
                     "likedBy": [elem["username"] for elem in doc["likedBy"]],
+                    "tags": doc["tags"],
                     "addedOn": doc["addedOn"],
                     "updatedOn": doc["updatedOn"],
                     "private": doc["private"],
@@ -46,9 +46,7 @@ class SnippetsApi(Resource):
                 }
             )
 
-        # return jsonify(snippets)
-        gists = Snippet.objects(private=False).to_json()
-        return Response(gists, mimetype="application/json", status=200)
+        return jsonify(snippets)
 
     @jwt_required()
     def post(self):
@@ -58,7 +56,7 @@ class SnippetsApi(Resource):
             user = User.objects.get(username=user_id)
             now = datetime.datetime.now(datetime.timezone.utc)
 
-            snippet = Snippet(**body, added_by=user, added_on=now)
+            snippet = Snippet(**body, addedBy=user, addedOn=now)
             snippet.save()
             user.update(push__snippets_created=snippet)
             user.save()
@@ -74,6 +72,34 @@ class SnippetsApi(Resource):
 
 
 class SnippetApi(Resource):
+    def get(self, id):
+        try:
+            snippet = []
+            for doc in Snippet.objects(id=id):
+                snippet.append(
+                    {
+                        "_id": str(ObjectId(doc["id"])),
+                        "title": doc["title"],
+                        "filename": doc["filename"],
+                        "description": doc["description"],
+                        "language": doc["language"],
+                        "value": doc["value"],
+                        "addedBy": doc["addedBy"]["username"],
+                        "likedBy": [elem["username"] for elem in doc["likedBy"]],
+                        "tags": doc["tags"],
+                        "addedOn": doc["addedOn"],
+                        "updatedOn": doc["updatedOn"],
+                        "private": doc["private"],
+                        "source": doc["source"],
+                    }
+                )
+
+            return jsonify(snippet)
+        except DoesNotExist:
+            raise SnippetNotExistsError
+        except Exception:
+            raise InternalServerError
+
     @jwt_required()
     def put(self, id):
         try:
@@ -103,22 +129,14 @@ class SnippetApi(Resource):
         except Exception:
             raise InternalServerError
 
-    def get(self, id):
-        try:
-            snippet = Snippet.objects.get(id=id).to_json()
-            return Response(snippet, mimetype="application/json", status=200)
-        except DoesNotExist:
-            raise SnippetNotExistsError
-        except Exception:
-            raise InternalServerError
-
 
 class LikeSnippetApi(Resource):
     @jwt_required()
     def post(self, id):
         user_id = get_jwt_identity()
         snippet = Snippet.objects.get(id=id)
-        snippet.update(push__liked_by=user_id)
+        snippet.update(push__likedBy=user_id)
         snippet.save()
         user_id.update(push__snippets_liked=snippet)
         user_id.save()
+        return {"message": "Snippet liked"}, 200
