@@ -1,0 +1,17 @@
+{
+  "rules": {
+    "no-duplicate-imports": "error",
+    "no-whitespace-before-property": "error",
+    "newline-per-chained-call": ["error", { "ignoreChainWithDepth": 2 }],
+    "ignoreChainWithDepth": 2,
+    "object-curly-newline": [
+      "error",
+      {
+        "ObjectExpression": "always",
+        "ObjectPattern": { "multiline": true },
+        "ImportDeclaration": "never",
+        "ExportDeclaration": { "multiline": true, "minProperties": 3 }
+      }
+    ]
+  }
+}
