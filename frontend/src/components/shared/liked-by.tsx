@@ -16,14 +16,6 @@ export const Likes: React.FC<Props> = ({
       <p>
         { usernames.map(( username ) => (
           <ToUserButton user={username} label={username} />
-          // <button
-          //   id="avatar"
-          //   onClick={
-          //     () => {`/users/${username}`}
-          //   }
-          // >
-          //   {username}
-          // </button>
         ))}
       </p>
     </section>
