@@ -7,7 +7,7 @@ interface Snippet {
   language: string;
   description: string;
   value: string;
-  tags: string[];
+  tags: Array<string>;
   likedBy: Array<User['username']>;
   addedOn: string;
   updatedOn: string;
@@ -35,14 +35,6 @@ interface User {
   collections: Array<Collection>;
 }
 
-interface Collection {
-  [id: string]: any,
-  name: string;
-  owner: User['username'];
-  private: boolean;
-  snippets: Array<Snippet['title']>;
-}
-
 interface AppProps {
   children: React.ReactNode;
 }
@@ -57,4 +49,12 @@ interface UserContext {
   // setLoggedIn: (loggedIn: boolean) => void;
   loading: boolean;
   setLoading?: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+interface Collection {
+  [id: string]: any,
+  name: string;
+  private: boolean;
+  owner: User['username'];
+  snippets: Array<Snippet>;
 }
