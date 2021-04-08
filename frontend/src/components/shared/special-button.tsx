@@ -1,11 +1,11 @@
-import * as React from "react";
-import { RouteComponentProps, withRouter } from "react-router-dom";
+import * as React from 'react';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 export const SpecialButton = withRouter(({ history }) => {
   return (
     <button
       onClick={() => {
-        history.push("/posts/special");
+        history.push('/posts/special');
       }}
     >
       special button
@@ -18,7 +18,7 @@ interface Props extends RouteComponentProps {
   label: string;
 }
 
-export const ToUserButton = withRouter(({ history, user, label }:Props) => {
+export const ToUserButton = withRouter(({ history, user, label }: Props) => {
   return (
     <button
       onClick={() => {
@@ -29,4 +29,3 @@ export const ToUserButton = withRouter(({ history, user, label }:Props) => {
     </button>
   );
 });
-

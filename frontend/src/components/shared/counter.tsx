@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
 interface Props {
   children: (data: {
@@ -13,10 +13,9 @@ export const Counter: React.FC<Props> = ({ children }) => {
   return <div>{children({ count, setCount })}</div>;
 };
 
-
 export const counter: React.FC = () => {
-    return (
-      <Counter>
+  return (
+    <Counter>
       {({ count, setCount }) => (
         <div>
           {count}
@@ -24,5 +23,5 @@ export const counter: React.FC = () => {
         </div>
       )}
     </Counter>
-    );
-}
+  );
+};

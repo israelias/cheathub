@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
-import {Home} from './pages/home'
-import {About} from './pages/about'
-import {Profile} from './pages/profile'
-import {Snippet} from './pages/snippets'
-import {Registration} from './pages/registration'
-import {Login} from './pages/login'
+import { Home } from './pages/home';
+import { About } from './pages/about';
+import { Profile } from './pages/profile';
+import { Snippet } from './pages/snippets';
+import { Registration } from './pages/registration';
+import { Login } from './pages/login';
 import Test from './pages/test';
-import {Explore} from './pages/explore'
+import { Explore } from './pages/explore';
 
 const App: React.FC = () => {
   return (
@@ -26,6 +26,5 @@ const App: React.FC = () => {
     </BrowserRouter>
   );
 };
-
 
 export default App;

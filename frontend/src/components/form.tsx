@@ -1,24 +1,21 @@
-import React from "react";
-import * as yup from "yup";
-import { Formik, Form, Field } from "formik";
-import { TextFormField } from "../components/inputs/text-input";
-import { SelectFormField } from "../components/inputs/select-input";
+import React from 'react';
+import * as yup from 'yup';
+import { Formik, Form, Field } from 'formik';
+import { TextFormField } from '../components/inputs/text-input';
+import { SelectFormField } from '../components/inputs/select-input';
 
 const schema = yup.object({
-  username: yup
-    .string()
-    .required()
-    .min(3),
-  email: yup.string().email()
+  username: yup.string().required().min(3),
+  email: yup.string().email(),
 });
 
 const FormElement: React.FC = () => {
   return (
-    <div style={{ textAlign: "center" }}>
-      <div style={{ width: 200, margin: "auto" }}>
+    <div style={{ textAlign: 'center' }}>
+      <div style={{ width: 200, margin: 'auto' }}>
         <Formik
           validationSchema={schema}
-          initialValues={{ username: "", email: "" }}
+          initialValues={{ username: '', email: '' }}
           onSubmit={() => {}}
         >
           {() => (
@@ -39,8 +36,8 @@ const FormElement: React.FC = () => {
               <div>
                 <Field
                   options={[
-                    { label: "Dog", value: "dog" },
-                    { label: "Cat", value: "cat" }
+                    { label: 'Dog', value: 'dog' },
+                    { label: 'Cat', value: 'cat' },
                   ]}
                   label="Pet"
                   name="pet"

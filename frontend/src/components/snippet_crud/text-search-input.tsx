@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  Input,
-  FormLabel,
-  FormControl
-} from '@chakra-ui/react'
+import { Input, FormLabel, FormControl } from '@chakra-ui/react';
 
 interface Props {
   name?: string;
@@ -31,4 +27,4 @@ export const TextInput: React.FC<Props> = ({
       />
     </FormControl>
   );
-}
+};

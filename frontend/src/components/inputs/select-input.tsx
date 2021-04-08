@@ -1,12 +1,12 @@
-import { FieldProps, getIn } from "formik";
-import React from "react";
+import { FieldProps, getIn } from 'formik';
+import React from 'react';
 import {
   FormControl,
   FormLabel,
   Select,
   MenuItem,
-  FormHelperText
-} from "@chakra-ui/react";
+  FormHelperText,
+} from '@chakra-ui/react';
 
 export const SelectFormField: React.FC<
   FieldProps & {
@@ -20,7 +20,7 @@ export const SelectFormField: React.FC<
     <FormControl isFullWidth isInvalid={!!errorText}>
       {label && <FormLabel>{label}</FormLabel>}
       <Select isFullWidth {...field} {...props}>
-        {options.map(op => (
+        {options.map((op) => (
           <option key={op.value} value={op.value}>
             {op.label}
           </option>

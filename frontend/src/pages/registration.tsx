@@ -1,12 +1,12 @@
-import * as React from 'react'
-import { RouteComponentProps } from "react-router";
-import { loginRequest, signUpRequest } from "../lib/fetcher";
-import { useUserContext } from "../context/user.context";
+import * as React from 'react';
+import { RouteComponentProps } from 'react-router';
+import { loginRequest, signUpRequest } from '../lib/fetcher';
+import { useUserContext } from '../context/user.context';
 
 interface Props extends RouteComponentProps<{ id: string }> {}
 
 export const Registration: React.FC<Props> = ({ match }) => {
-  const user = useUserContext()
+  const user = useUserContext();
   // const router = useHistory()
   const [error, setError] = React.useState(null);
   const [email, setEmail] = React.useState('');
@@ -22,12 +22,10 @@ export const Registration: React.FC<Props> = ({ match }) => {
   //   fetch(`api.example.com/posts/${match.params.id}`)
   // }, [match.params.id])
 
-    return (
-      <div>
-        {match.params.id === 'signin' && "Sign In"}
-        {match.params.id === 'login' && "Login In"}
-
-      </div>
-
-    );
-}
+  return (
+    <div>
+      {match.params.id === 'signin' && 'Sign In'}
+      {match.params.id === 'login' && 'Login In'}
+    </div>
+  );
+};

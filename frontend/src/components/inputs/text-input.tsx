@@ -1,6 +1,6 @@
-import { FieldProps, getIn } from "formik";
-import React from "react";
-import { Input as InputRev } from '@chakra-ui/react'
+import { FieldProps, getIn } from 'formik';
+import React from 'react';
+import { Input as InputRev } from '@chakra-ui/react';
 
 export const TextFormField: React.FC<FieldProps> = ({
   field,

@@ -1,7 +1,7 @@
 /// <reference types="react-scripts" />
 
 interface Snippet {
-  [id: string]: any,
+  [id: string]: any;
   title: string;
   addedBy: User['username'];
   language: string;
@@ -15,7 +15,7 @@ interface Snippet {
   private: boolean;
 }
 
-type searchBy = "title" | "language" | "tags" ;
+type searchBy = 'title' | 'language' | 'tags';
 type searchTerm = string;
 
 type test = keyof typeof Snippet;
@@ -27,7 +27,7 @@ interface Options {
 }
 
 interface User {
-  [id: string]: any,
+  [id: string]: any;
   username: string;
   online: boolean;
   snippetsCreated: Array<Snippet>;
@@ -52,7 +52,7 @@ interface UserContext {
 }
 
 interface Collection {
-  [id: string]: any,
+  [id: string]: any;
   name: string;
   private: boolean;
   owner: User['username'];

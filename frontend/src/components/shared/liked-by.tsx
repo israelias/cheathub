@@ -1,23 +1,20 @@
-import React from 'react'
-import { ToUserButton} from '../shared/special-button'
+import React from 'react';
+import { ToUserButton } from '../shared/special-button';
 
-
-type Username = string
+type Username = string;
 
 interface Props {
-  usernames: Username[]
+  usernames: Username[];
 }
 
-export const Likes: React.FC<Props> = ({
-  usernames
-}) => {
+export const Likes: React.FC<Props> = ({ usernames }) => {
   return (
     <section id="liked-by">
       <p>
-        { usernames.map(( username ) => (
+        {usernames.map((username) => (
           <ToUserButton user={username} label={username} />
         ))}
       </p>
     </section>
   );
-}
+};

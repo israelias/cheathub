@@ -1,7 +1,7 @@
-import * as React from "react";
-import { Link, RouteComponentProps } from "react-router-dom";
-import FormElement from "../components/form";
-import { SpecialButton } from "../components/shared/special-button";
+import * as React from 'react';
+import { Link, RouteComponentProps } from 'react-router-dom';
+import FormElement from '../components/form';
+import { SpecialButton } from '../components/shared/special-button';
 
 interface Props extends RouteComponentProps {}
 
@@ -15,7 +15,7 @@ export const Home: React.FC<Props> = ({ history, location, match }) => {
         onClick={() => {
           // api call
           // change to the about page
-          history.push("/about");
+          history.push('/about');
         }}
       >
         click me to go to about

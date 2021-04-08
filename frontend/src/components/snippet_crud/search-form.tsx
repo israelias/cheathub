@@ -1,7 +1,7 @@
-import React from 'react'
-import { SelectInput } from './select-input'
-import { TextInput } from './text-search-input'
-import { SEARCHFILTERS } from '../../constants/languages.constants'
+import React from 'react';
+import { SelectInput } from './select-input';
+import { TextInput } from './text-search-input';
+import { SEARCHFILTERS } from '../../constants/languages.constants';
 
 // const App: React.FunctionComponent<{ message: string }> = ({ message }) => (
 //   <div>{message}</div>
@@ -76,7 +76,6 @@ import { SEARCHFILTERS } from '../../constants/languages.constants'
 //   );
 // };
 
-
 // functions that doesnt take args anddoesn't return value
 // interface MyClassProps {
 //   someProp: string;
@@ -103,7 +102,6 @@ import { SEARCHFILTERS } from '../../constants/languages.constants'
 //     niceProp: string;
 // }
 
-
 export interface SearchProps {
   query?: string | null;
   searchTerm: searchTerm;
@@ -117,18 +115,18 @@ export const Search: React.FC<SearchProps> = ({
   searchTerm,
   searchBy,
   onSearchByChange,
-  onSearchTermChange
+  onSearchTermChange,
 }) => {
-  const options = [{ value: '', label: 'All'}, ...SEARCHFILTERS];
+  const options = [{ value: '', label: 'All' }, ...SEARCHFILTERS];
   return (
-    <form action={`/search_snippets/${ query}`} method="POST">
+    <form action={`/search_snippets/${query}`} method="POST">
       <div>
         <TextInput
           name="search"
           placeHolder="Search Snippets"
           value={searchTerm}
           onChange={(value) => onSearchTermChange(value)}
-          />
+        />
         <SelectInput
           name="filter"
           label="Filter by:"
@@ -140,4 +138,4 @@ export const Search: React.FC<SearchProps> = ({
       <button type="submit">Search</button>
     </form>
   );
-}
+};

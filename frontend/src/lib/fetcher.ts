@@ -1,6 +1,11 @@
-import { RouterProps, RouteProps, RouteComponentProps, RouteChildrenProps } from "react-router";
-import fetch from "isomorphic-unfetch";
-import { RequestTicket } from "./requests"
+import {
+  RouterProps,
+  RouteProps,
+  RouteComponentProps,
+  RouteChildrenProps,
+} from 'react-router';
+import fetch from 'isomorphic-unfetch';
+import { RequestTicket } from './requests';
 
 interface ISignUpRequest extends RouterProps {
   setUsername: React.Dispatch<React.SetStateAction<string>>;
@@ -12,7 +17,7 @@ interface ISignUpRequest extends RouterProps {
     username: string;
     email: string;
     password: string;
-  }
+  };
 }
 
 export function signUpRequest({
@@ -22,7 +27,7 @@ export function signUpRequest({
   setLoading,
   history: router,
   redirectTo,
-  body
+  body,
 }: ISignUpRequest) {
   const request = RequestTicket({
     method: 'post',
@@ -30,24 +35,24 @@ export function signUpRequest({
     body: {
       username: body.username,
       email: body.email,
-      password: body.password
-    }
-  })
-  setLoading(true)
+      password: body.password,
+    },
+  });
+  setLoading(true);
   return fetch(request)
-    .then(res => res.json())
-    .then(data => {
+    .then((res) => res.json())
+    .then((data) => {
       if (data.access_token) {
-        setAccessToken(data.access_token)
-        setUsername(data.username)
-        setLoggedIn(true)
-        localStorage.setItem('username', data.username)
-        setLoading(false)
+        setAccessToken(data.access_token);
+        setUsername(data.username);
+        setLoggedIn(true);
+        localStorage.setItem('username', data.username);
+        setLoading(false);
         router.push({
           pathname: redirectTo + data.username,
-        })
+        });
       }
-    })
+    });
 }
 
 interface ILoginRequest extends RouterProps {
@@ -58,7 +63,7 @@ interface ILoginRequest extends RouterProps {
   body: {
     email: string;
     password: string;
-  }
+  };
 }
 
 export async function loginRequest({
@@ -67,17 +72,16 @@ export async function loginRequest({
   setUsername,
   setLoggedIn,
   history,
-  redirectTo
-}: ILoginRequest
-  ) {
+  redirectTo,
+}: ILoginRequest) {
   const request = RequestTicket({
     method: 'post',
     url: 'api/auth/login',
     body: {
       email: body.email,
-      password: body.password
-    }
-  })
+      password: body.password,
+    },
+  });
   const response = await fetch(request);
   const token = await response.json();
   if (token.access_token) {
@@ -85,7 +89,10 @@ export async function loginRequest({
     setUsername(token.username);
     setLoggedIn(true);
     localStorage.setItem('username', token.username);
-    console.log(`User ${token.username} has logged in.`, `Access: ${token.access_token}`);
+    console.log(
+      `User ${token.username} has logged in.`,
+      `Access: ${token.access_token}`
+    );
     history.push({
       pathname: redirectTo + '/' + token.username,
     });
@@ -133,7 +140,7 @@ interface ILogoutRequest extends RouteProps, RouterProps {
   body: {
     email: string;
     password: string;
-  }
+  };
 }
 
 export async function LogoutRequest({
@@ -142,13 +149,13 @@ export async function LogoutRequest({
   setAccessToken,
   accessToken,
   history: router,
-  redirectTo
+  redirectTo,
 }: ILogoutRequest) {
   const request = RequestTicket({
     method: 'post',
     url: 'api/auth/logout',
-    token: accessToken
-  })
+    token: accessToken,
+  });
   try {
     const res = await fetch(request);
     if (res.ok) {
@@ -225,13 +232,11 @@ export function putRequest({ url, accessToken, body }: IPutRequest) {
     method: 'put',
     url: url,
     token: accessToken,
-    body: body
-  })
+    body: body,
+  });
   return fetch(request)
-    .then(res => res.ok
-    ? res.json()
-    : console.log(res))
-    .catch(error => console.error(error));
+    .then((res) => (res.ok ? res.json() : console.log(res)))
+    .catch((error) => console.error(error));
 }
 
 interface IGetRequest {
@@ -239,18 +244,13 @@ interface IGetRequest {
   accessToken: string;
 }
 
-export function getRequest({
-  url,
-  accessToken
-}: IGetRequest) {
+export function getRequest({ url, accessToken }: IGetRequest) {
   const request = RequestTicket({
     method: 'get',
     url: url,
     token: accessToken ? accessToken : '',
-  })
+  });
   return fetch(request)
-    .then(res => res.ok
-      ? res.json()
-      : console.log(res))
-    .catch(error => console.error(error));
+    .then((res) => (res.ok ? res.json() : console.log(res)))
+    .catch((error) => console.error(error));
 }

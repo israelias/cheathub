@@ -1,13 +1,7 @@
-import React from 'react'
+import React from 'react';
 
-interface LogoutProps {
-
-}
+interface LogoutProps {}
 
 export const LogOut: React.FC<LogoutProps> = ({}) => {
-    return (
-      <div>
-        Logout
-      </div>
-    );
-}
+  return <div>Logout</div>;
+};

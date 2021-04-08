@@ -1,5 +1,5 @@
-import { Button, Flex, Box, Text } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Button, Flex, Box, Text } from '@chakra-ui/react';
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   return (
@@ -17,15 +17,15 @@ const Navbar = () => {
       <Box>
         <Link to="/">
           <Button
-            fontWeight={["medium", "medium", "medium"]}
-            fontSize={["xs", "sm", "lg", "xl"]}
+            fontWeight={['medium', 'medium', 'medium']}
+            fontSize={['xs', 'sm', 'lg', 'xl']}
             variant="ghost"
-            _hover={{ bg: "rgba(0,0,0,.2)" }}
+            _hover={{ bg: 'rgba(0,0,0,.2)' }}
             padding="1"
             color="white"
             letterSpacing="0.65px"
           >
-            <Text fontSize={["xl", "2xl", "2xl", "2xl"]} mr={2}>
+            <Text fontSize={['xl', '2xl', '2xl', '2xl']} mr={2}>
               🦉
             </Text>
             Library App
@@ -36,10 +36,10 @@ const Navbar = () => {
       <Box>
         <Link to="/">
           <Button
-            fontWeight={["medium", "medium", "medium"]}
-            fontSize={["xs", "sm", "lg", "xl"]}
+            fontWeight={['medium', 'medium', 'medium']}
+            fontSize={['xs', 'sm', 'lg', 'xl']}
             variant="ghost"
-            _hover={{ bg: "rgba(0,0,0,.2)" }}
+            _hover={{ bg: 'rgba(0,0,0,.2)' }}
             p={[1, 4]}
             color="white"
           >
@@ -48,10 +48,10 @@ const Navbar = () => {
         </Link>
         <Link to="/add-new-book">
           <Button
-            fontWeight={["medium", "medium", "medium"]}
-            fontSize={["xs", "sm", "lg", "xl"]}
+            fontWeight={['medium', 'medium', 'medium']}
+            fontSize={['xs', 'sm', 'lg', 'xl']}
             variant="ghost"
-            _hover={{ bg: "rgba(0,0,0,.2)" }}
+            _hover={{ bg: 'rgba(0,0,0,.2)' }}
             p={[1, 4]}
             color="white"
           >
