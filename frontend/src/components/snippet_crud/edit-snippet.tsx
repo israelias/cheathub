@@ -1,15 +1,11 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+// import { useHistory } from 'react-router-dom';
 import {
   FormControl,
   FormLabel,
   Textarea,
-  Input,
-  Select,
   Button,
   Container,
-  FormErrorMessage,
-  FormHelperText,
 } from '@chakra-ui/react';
 import { SelectInput } from './select-input';
 import { TextInput } from './text-search-input';
@@ -19,9 +15,14 @@ interface Props {
   snippet: Snippet;
 }
 
-export const EditSnippet: React.FC<Props> = ({ snippet }) => {
-  const history = useHistory();
-  const languages = [{ value: '', label: 'All' }, ...LANGUAGES];
+export const EditSnippet: React.FC<Props> = ({
+  snippet,
+}) => {
+  // const history = useHistory();
+  const languages = [
+    { value: '', label: 'All' },
+    ...LANGUAGES,
+  ];
   return (
     <Container>
       <h1>Editing {snippet.title}</h1>
@@ -30,10 +31,13 @@ export const EditSnippet: React.FC<Props> = ({ snippet }) => {
 
         <FormControl id="body">
           <FormLabel>Code Snippet:</FormLabel>
-          <Textarea></Textarea>
+          <Textarea />
         </FormControl>
 
-        <TextInput name="description" label="Description:" />
+        <TextInput
+          name="description"
+          label="Description:"
+        />
         <SelectInput
           label="Language:"
           value="Select Language"

@@ -1,12 +1,18 @@
 import React from 'react';
-import { FormControl, FormLabel, Select } from '@chakra-ui/react';
+import {
+  FormControl,
+  FormLabel,
+  Select,
+} from '@chakra-ui/react';
 
 interface Props {
   name?: string;
   label?: string;
   value?: string;
   options: Options[];
-  onChange?: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+  onChange?: (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => void;
 }
 
 export const SelectInput: React.FC<Props> = ({
@@ -15,8 +21,7 @@ export const SelectInput: React.FC<Props> = ({
   value,
   options,
   onChange,
-}) => {
-  return (
+}) => (
     <FormControl id={name}>
       {label && <FormLabel>{label}</FormLabel>}
       <Select value={value} onChange={onChange}>
@@ -28,4 +33,3 @@ export const SelectInput: React.FC<Props> = ({
       </Select>
     </FormControl>
   );
-};

@@ -13,15 +13,18 @@ export const Counter: React.FC<Props> = ({ children }) => {
   return <div>{children({ count, setCount })}</div>;
 };
 
-export const counter: React.FC = () => {
-  return (
-    <Counter>
-      {({ count, setCount }) => (
-        <div>
-          {count}
-          <button onClick={() => setCount(count + 1)}>+</button>
-        </div>
-      )}
-    </Counter>
-  );
-};
+export const counter: React.FC = () => (
+  <Counter>
+    {({ count, setCount }) => (
+      <div>
+        {count}
+        <button
+          type="button"
+          onClick={() => setCount(count + 1)}
+        >
+          +
+        </button>
+      </div>
+    )}
+  </Counter>
+);

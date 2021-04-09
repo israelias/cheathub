@@ -1,34 +1,41 @@
-import React from 'react';
-import { RouteComponentProps } from 'react-router';
-import { loginRequest, signUpRequest } from '../lib/fetcher';
-import { useUserContext } from '../context/user.context';
+import React from 'react'
+import { RouteComponentProps } from 'react-router'
+import {
+  loginRequest,
+  // signUpRequest,
+} from '../lib/fetcher'
+import { useUserContext } from '../context/user.context'
 
-interface Props extends RouteComponentProps<{ id: string }> {}
+interface Props
+  extends RouteComponentProps<{ id: string }> {}
 
-export const Login: React.FC<Props> = ({ history, match }) => {
-  const user = useUserContext();
+export const Login: React.FC<Props> = ({
+  history,
+  match,
+}) => {
+  const user = useUserContext()
   // const { setLoggedIn, setUsername, setAccessToken } = useUserContext();
-  const [error, setError] = React.useState(null);
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  const [error, setError] = React.useState(null)
+  const [email, setEmail] = React.useState('')
+  const [password, setPassword] = React.useState('')
 
   return (
     <div>
       Login
       <form
         onSubmit={async (e) => {
-          e.preventDefault();
+          e.preventDefault()
           try {
             await loginRequest({
-              body: { email: email, password: password },
+              body: { email, password },
               setLoggedIn: user!.setLoggedIn,
               setUsername: user!.setUsername,
               setAccessToken: user!.setAccessToken,
-              history: history,
+              history,
               redirectTo: '/profile',
-            });
+            })
           } catch (err) {
-            setError(err);
+            setError(err)
           }
         }}
       >
@@ -49,8 +56,10 @@ export const Login: React.FC<Props> = ({ history, match }) => {
         <button type="submit">Submit</button>
       </form>
       {error && (
-        <div style={{ color: 'tomato' }}>{JSON.stringify(error, null, 2)}</div>
+        <div style={{ color: 'tomato' }}>
+          {JSON.stringify(error, null, 2)}
+        </div>
       )}
     </div>
-  );
-};
+  )
+}

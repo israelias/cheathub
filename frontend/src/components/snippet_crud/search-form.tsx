@@ -104,10 +104,14 @@ import { SEARCHFILTERS } from '../../constants/languages.constants';
 
 export interface SearchProps {
   query?: string | null;
-  searchTerm: searchTerm;
-  searchBy: searchBy;
-  onSearchTermChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  onSearchByChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+  searchTerm: SearchTerm;
+  searchBy: SearchBy;
+  onSearchTermChange: (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => void;
+  onSearchByChange: (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => void;
 }
 
 export const Search: React.FC<SearchProps> = ({
@@ -117,9 +121,15 @@ export const Search: React.FC<SearchProps> = ({
   onSearchByChange,
   onSearchTermChange,
 }) => {
-  const options = [{ value: '', label: 'All' }, ...SEARCHFILTERS];
+  const options = [
+    { value: '', label: 'All' },
+    ...SEARCHFILTERS,
+  ];
   return (
-    <form action={`/search_snippets/${query}`} method="POST">
+    <form
+      action={`/search_snippets/${query}`}
+      method="POST"
+    >
       <div>
         <TextInput
           name="search"

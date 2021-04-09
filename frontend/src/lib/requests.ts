@@ -7,7 +7,12 @@ interface IRequestTicket {
   body?: object;
 }
 
-export const RequestTicket = ({ method, token, url, body }: IRequestTicket) => {
+export const RequestTicket = ({
+  method,
+  token,
+  url,
+  body,
+}: IRequestTicket) => {
   if (method === 'post') {
     if (token) {
       return new Request(`${API}/${url}`, {
@@ -19,14 +24,14 @@ export const RequestTicket = ({ method, token, url, body }: IRequestTicket) => {
         credentials: 'include',
         body: body ? JSON.stringify(body) : null,
       });
-    } else {
+    } 
       return new Request(`${API}/${url}`, {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
       });
-    }
+    
   }
 
   if (method === 'put') {
@@ -39,7 +44,7 @@ export const RequestTicket = ({ method, token, url, body }: IRequestTicket) => {
       },
       body: JSON.stringify(body),
     });
-  } else {
+  } 
     return new Request(`${API}/${url}`, {
       method: 'GET',
       credentials: 'include',
@@ -48,5 +53,5 @@ export const RequestTicket = ({ method, token, url, body }: IRequestTicket) => {
         Authorization: token ? `Bearer ${token}` : '',
       },
     });
-  }
+  
 };

@@ -1,5 +1,12 @@
 import React from 'react';
-import { Box, Text, Link, VStack, Code, Grid } from '@chakra-ui/react';
+import {
+  Box,
+  Text,
+  Link,
+  VStack,
+  Code,
+  Grid,
+} from '@chakra-ui/react';
 import { ColorModeSwitcher } from '../components/actions/ColorModeSwitcher';
 import { Logo } from '../components/actions/Logo';
 import { LoggedinHeader } from '../components/shared/header';
@@ -15,7 +22,8 @@ function Test() {
         <VStack spacing={8}>
           <Logo h="40vmin" pointerEvents="none" />
           <Text>
-            Edit <Code fontSize="xl">src/App.js</Code> and save to reload.
+            Edit <Code fontSize="xl">src/App.js</Code> and
+            save to reload.
           </Text>
 
           <Link

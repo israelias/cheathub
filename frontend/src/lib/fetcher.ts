@@ -1,16 +1,21 @@
+/* eslint-disable no-console */
 import {
   RouterProps,
   RouteProps,
-  RouteComponentProps,
-  RouteChildrenProps,
+  // RouteComponentProps,
+  // RouteChildrenProps,
 } from 'react-router';
 import fetch from 'isomorphic-unfetch';
 import { RequestTicket } from './requests';
 
 interface ISignUpRequest extends RouterProps {
   setUsername: React.Dispatch<React.SetStateAction<string>>;
-  setAccessToken: React.Dispatch<React.SetStateAction<string>>;
-  setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+  setAccessToken: React.Dispatch<
+    React.SetStateAction<string>
+  >;
+  setLoggedIn: React.Dispatch<
+    React.SetStateAction<boolean>
+  >;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   redirectTo: string;
   body: {
@@ -57,8 +62,12 @@ export function signUpRequest({
 
 interface ILoginRequest extends RouterProps {
   setUsername: React.Dispatch<React.SetStateAction<string>>;
-  setAccessToken: React.Dispatch<React.SetStateAction<string>>;
-  setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+  setAccessToken: React.Dispatch<
+    React.SetStateAction<string>
+  >;
+  setLoggedIn: React.Dispatch<
+    React.SetStateAction<boolean>
+  >;
   redirectTo: string;
   body: {
     email: string;
@@ -94,7 +103,7 @@ export async function loginRequest({
       `Access: ${token.access_token}`
     );
     history.push({
-      pathname: redirectTo + '/' + token.username,
+      pathname: `${redirectTo}/${token.username}`,
     });
   }
 }
@@ -133,8 +142,12 @@ export async function loginRequest({
 
 interface ILogoutRequest extends RouteProps, RouterProps {
   setUsername: React.Dispatch<React.SetStateAction<string>>;
-  setAccessToken: React.Dispatch<React.SetStateAction<string>>;
-  setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+  setAccessToken: React.Dispatch<
+    React.SetStateAction<string>
+  >;
+  setLoggedIn: React.Dispatch<
+    React.SetStateAction<boolean>
+  >;
   accessToken: string;
   redirectTo: string;
   body: {
@@ -163,9 +176,14 @@ export async function LogoutRequest({
       setAccessToken('');
       setUsername('');
       setLoggedIn(false);
-      const outgoing = window.localStorage.getItem('username');
+      const outgoing = window.localStorage.getItem(
+        'username'
+      );
       window.localStorage.removeItem('username');
-      window.localStorage.setItem('app_logout', now.toString());
+      window.localStorage.setItem(
+        'app_logout',
+        now.toString()
+      );
       router.push({
         pathname: redirectTo,
         // query: {name: outgoing}
@@ -227,12 +245,16 @@ interface IPutRequest {
   body: object;
 }
 
-export function putRequest({ url, accessToken, body }: IPutRequest) {
+export function putRequest({
+  url,
+  accessToken,
+  body,
+}: IPutRequest) {
   const request = RequestTicket({
     method: 'put',
-    url: url,
+    url,
     token: accessToken,
-    body: body,
+    body,
   });
   return fetch(request)
     .then((res) => (res.ok ? res.json() : console.log(res)))
@@ -244,11 +266,14 @@ interface IGetRequest {
   accessToken: string;
 }
 
-export function getRequest({ url, accessToken }: IGetRequest) {
+export function getRequest({
+  url,
+  accessToken,
+}: IGetRequest) {
   const request = RequestTicket({
     method: 'get',
-    url: url,
-    token: accessToken ? accessToken : '',
+    url,
+    token: accessToken || '',
   });
   return fetch(request)
     .then((res) => (res.ok ? res.json() : console.log(res)))

@@ -1,32 +1,45 @@
-import { Divider } from '@chakra-ui/layout';
 import React from 'react';
-import { Search } from '../snippet_crud/search-form';
+import { useHistory } from 'react-router-dom';
+import { Search } from './search-form';
 import { SnippetFeed } from '../snippet-feed';
 
-interface searchSnippetProps {
+interface SearchSnippetProps {
   username: string;
   snippets: Snippet[];
+  setTagId: () => void;
+  setUsernameId: () => void;
 }
 
-export const SearchSnippet: React.FC<searchSnippetProps> = ({
+export const SearchSnippet: React.FC<SearchSnippetProps> = ({
   username,
   snippets,
+  setTagId,
+  setUsernameId,
 }) => {
   // const [searchTerm, setSearchTerm] = React.useState<searchTerm>();
   // const [searchBy, setSearchBy] = React.useState<searchBy>();
   const [searchTerm, setSearchTerm] = React.useState('');
-  const [searchBy, setSearchBy] = React.useState<searchBy>('title');
+  const [searchBy, setSearchBy] = React.useState<SearchBy>(
+    'title'
+  );
   const [query, setQuery] = React.useState('home');
+  const history = useHistory();
   return (
     <div>
       <Search
-        query={'query'}
+        query={query}
         searchBy={searchBy}
         onSearchByChange={() => setSearchBy(searchBy)}
         searchTerm={searchTerm}
         onSearchTermChange={() => setSearchTerm(searchTerm)}
       />
-      <button onClick={() => (window.location.href = '/snippets/all')}>
+      <button
+        type="button"
+        onClick={() => {
+          history.push('/snippets/all');
+          setQuery(username);
+        }}
+      >
         All
       </button>
       <h1>
@@ -34,6 +47,8 @@ export const SearchSnippet: React.FC<searchSnippetProps> = ({
       </h1>
 
       <SnippetFeed
+        setTagId={setTagId}
+        setUsernameId={setUsernameId}
         searchBy={searchBy}
         searchTerm={searchTerm}
         snippets={snippets}

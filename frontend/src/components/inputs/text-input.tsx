@@ -8,7 +8,8 @@ export const TextFormField: React.FC<FieldProps> = ({
   ...props
 }) => {
   const errorText =
-    getIn(form.touched, field.name) && getIn(form.errors, field.name);
+    getIn(form.touched, field.name) &&
+    getIn(form.errors, field.name);
 
   return (
     <InputRev

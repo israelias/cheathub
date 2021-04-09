@@ -1,8 +1,8 @@
 import React, { StrictMode } from 'react';
 import { render } from 'react-dom';
+import { ChakraProvider } from '@chakra-ui/react';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import { ChakraProvider } from '@chakra-ui/react';
 import { UserProvider } from './context/user.context';
 import { ReactQueryProvider } from './context/query.context';
 

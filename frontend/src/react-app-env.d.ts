@@ -1,7 +1,7 @@
 /// <reference types="react-scripts" />
 
 interface Snippet {
-  [id: string]: any;
+  [id: string]: string;
   title: string;
   addedBy: User['username'];
   language: string;
@@ -15,11 +15,11 @@ interface Snippet {
   private: boolean;
 }
 
-type searchBy = 'title' | 'language' | 'tags';
-type searchTerm = string;
+type SearchBy = 'title' | 'language' | 'tags';
+type SearchTerm = string;
 
-type test = keyof typeof Snippet;
-type test2 = typeof Snippet[test];
+type Test1 = keyof typeof Snippet;
+type Test2 = typeof Snippet[Test1];
 
 interface Options {
   value: string;
@@ -27,7 +27,7 @@ interface Options {
 }
 
 interface User {
-  [id: string]: any;
+  [id: string]: string;
   username: string;
   online: boolean;
   snippetsCreated: Array<Snippet>;
@@ -43,16 +43,22 @@ interface UserContext {
   username: string;
   setUsername: React.Dispatch<React.SetStateAction<string>>;
   accessToken: string;
-  setAccessToken: React.Dispatch<React.SetStateAction<string>>;
+  setAccessToken: React.Dispatch<
+    React.SetStateAction<string>
+  >;
   loggedIn: boolean;
-  setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+  setLoggedIn: React.Dispatch<
+    React.SetStateAction<boolean>
+  >;
   // setLoggedIn: (loggedIn: boolean) => void;
   loading: boolean;
-  setLoading?: React.Dispatch<React.SetStateAction<boolean>>;
+  setLoading?: React.Dispatch<
+    React.SetStateAction<boolean>
+  >;
 }
 
 interface Collection {
-  [id: string]: any;
+  [id: string]: string;
   name: string;
   private: boolean;
   owner: User['username'];

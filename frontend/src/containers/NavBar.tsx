@@ -1,8 +1,7 @@
 import { Button, Flex, Box, Text } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 
-const Navbar = () => {
-  return (
+const Navbar = () => (
     <Flex
       flexDirection="row"
       justifyContent="space-between"
@@ -25,7 +24,10 @@ const Navbar = () => {
             color="white"
             letterSpacing="0.65px"
           >
-            <Text fontSize={['xl', '2xl', '2xl', '2xl']} mr={2}>
+            <Text
+              fontSize={['xl', '2xl', '2xl', '2xl']}
+              mr={2}
+            >
               🦉
             </Text>
             Library App
@@ -61,6 +63,5 @@ const Navbar = () => {
       </Box>
     </Flex>
   );
-};
 
 export default Navbar;

@@ -7,14 +7,16 @@ interface Props {
   label: string;
 }
 
-export const NavLink: React.FC<Props> = ({ path, label }) => {
-  return (
+export const NavLink: React.FC<Props> = ({
+  path,
+  label,
+}) => (
     <>
       <Link
         as={RouterLink}
         p={2}
         to={path ?? '#'}
-        fontSize={'sm'}
+        fontSize="sm"
         fontWeight={500}
         color={useColorModeValue('gray.600', 'gray.200')}
         _hover={{
@@ -26,4 +28,3 @@ export const NavLink: React.FC<Props> = ({ path, label }) => {
       </Link>
     </>
   );
-};

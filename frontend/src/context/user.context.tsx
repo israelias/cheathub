@@ -1,6 +1,10 @@
+/* eslint-disable no-alert */
+/* eslint-disable no-console */
 import * as React from 'react';
 
-const UserContext = React.createContext<UserContext | null>({} as UserContext);
+const UserContext = React.createContext<UserContext | null>(
+  {} as UserContext
+);
 
 type Props = {
   children: React.ReactNode;
@@ -23,10 +27,14 @@ export const UserProvider = ({ children }: Props) => {
       }
     }
 
-    window.addEventListener('storage', (e) => checkUserData(e));
+    window.addEventListener('storage', (e) =>
+      checkUserData(e)
+    );
 
     return () => {
-      window.removeEventListener('storage', (e) => checkUserData(e));
+      window.removeEventListener('storage', (e) =>
+        checkUserData(e)
+      );
     };
   }, []);
 
@@ -48,4 +56,5 @@ export const UserProvider = ({ children }: Props) => {
   );
 };
 
-export const useUserContext = () => React.useContext(UserContext);
+export const useUserContext = () =>
+  React.useContext(UserContext);

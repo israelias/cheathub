@@ -4,7 +4,7 @@ import {
   FormControl,
   FormLabel,
   Select,
-  MenuItem,
+  // MenuItem,
   FormHelperText,
 } from '@chakra-ui/react';
 
@@ -15,7 +15,8 @@ export const SelectFormField: React.FC<
   }
 > = ({ field, form, label, options, ...props }) => {
   const errorText =
-    getIn(form.touched, field.name) && getIn(form.errors, field.name);
+    getIn(form.touched, field.name) &&
+    getIn(form.errors, field.name);
   return (
     <FormControl isFullWidth isInvalid={!!errorText}>
       {label && <FormLabel>{label}</FormLabel>}

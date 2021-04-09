@@ -17,7 +17,10 @@ type State = Todo[];
 const TodoReducer = (state: State, action: Actions) => {
   switch (action.type) {
     case 'add':
-      return [...state, { text: action.text, complete: false }];
+      return [
+        ...state,
+        { text: action.text, complete: false },
+      ];
     case 'remove':
       return state.filter((_, i) => action.idx !== i);
     default:
@@ -32,6 +35,7 @@ export const ReducerExample: React.FC = () => {
     <div>
       {JSON.stringify(todos)}
       <button
+        type="button"
         onClick={() => {
           dispatch({ type: 'add', text: '...' });
         }}

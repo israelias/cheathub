@@ -1,20 +1,27 @@
 import React from 'react';
-import { ToUserButton } from '../shared/special-button';
+import { ToUserButton } from './special-button';
 
 type Username = string;
 
 interface Props {
   usernames: Username[];
+  setUsernameId: () => void;
 }
 
-export const Likes: React.FC<Props> = ({ usernames }) => {
-  return (
-    <section id="liked-by">
-      <p>
-        {usernames.map((username) => (
-          <ToUserButton user={username} label={username} />
-        ))}
-      </p>
-    </section>
-  );
-};
+export const Likes: React.FC<Props> = ({
+  usernames,
+  setUsernameId,
+}) => (
+  <section id="liked-by">
+    <p>
+      {usernames.map((username) => (
+        <ToUserButton
+          setUsernameId={setUsernameId}
+          key={username}
+          user={username}
+          label={username}
+        />
+      ))}
+    </p>
+  </section>
+);

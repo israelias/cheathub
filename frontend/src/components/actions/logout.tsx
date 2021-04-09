@@ -2,6 +2,7 @@ import React from 'react';
 
 interface LogoutProps {}
 
-export const LogOut: React.FC<LogoutProps> = ({}) => {
-  return <div>Logout</div>;
-};
+// eslint-disable-next-line no-empty-pattern
+export const LogOut: React.FC<LogoutProps> = ({}) => (
+  <div>Logout</div>
+);

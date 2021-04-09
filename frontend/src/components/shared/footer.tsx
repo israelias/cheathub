@@ -1,9 +1,9 @@
 import React from 'react';
 import { Container } from '@chakra-ui/react';
+
 interface FooterProps {}
 
-export const Footer: React.FC<FooterProps> = ({}) => {
-  return (
+export const Footer: React.FC<FooterProps> = ({}) => (
     <footer>
       <Container>
         <p>
@@ -16,4 +16,3 @@ export const Footer: React.FC<FooterProps> = ({}) => {
       </Container>
     </footer>
   );
-};
