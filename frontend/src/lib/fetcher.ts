@@ -176,9 +176,9 @@ export async function LogoutRequest({
       setAccessToken('');
       setUsername('');
       setLoggedIn(false);
-      const outgoing = window.localStorage.getItem(
-        'username'
-      );
+      // const outgoing = window.localStorage.getItem(
+      //   'username'
+      // );
       window.localStorage.removeItem('username');
       window.localStorage.setItem(
         'app_logout',
