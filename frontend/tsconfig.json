@@ -15,25 +15,7 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "noFallthroughCasesInSwitch": true
-
-    // switch
-    // "experimentalDecorators": true,
-    // "baseUrl": ".",
-    // "outDir": "build/dist",
-    // "lib": ["es6", "dom", "dom.iterable", "esnext", "esnext.asynciterable"],
-    // "sourceMap": true,
-    // "rootDir": "src",
-    // "noImplicitReturns": true,
-    // "noImplicitThis": true,
-    // "noImplicitAny": true,
-    // "strictNullChecks": true,
-    // "suppressImplicitAnyIndexErrors": true
-    // "noUnusedLocals": true
   },
   "include": ["src"],
-  "exclude": [
-    "**/templates/*",
-    "**/node_modules/*",
-    "src/components/layout/panel.tsx"
-  ]
+  "exclude": ["**/templates/*", "**/node_modules/*"]
 }

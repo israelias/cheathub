@@ -19,22 +19,24 @@ interface Props extends RouteComponentProps {
   user: string;
   label: string;
   setUsernameId: (
-    event: React.MouseEventHandler<HTMLButtonElement>
+    event: React.ChangeEvent<HTMLInputElement>
   ) => void;
+  // setUsernameId: React.ChangeEventHandler<HTMLInputElement>;
 }
 
 export const ToUserButton = withRouter(
   ({ history, user, label, setUsernameId }: Props) => (
-    <button
-      type="button"
-      value={user}
-      onClick={(e) => {
-        history.push(`/profiles/${user}`);
-        // eslint-disable-next-line no-underscore-dangle
-        setUsernameId(e.target.value);
-      }}
-    >
-      {label}
-    </button>
+    <>
+      <button
+        type="button"
+        value={user}
+        onClick={(e) => {
+          history.push(`/profiles/${user}`);
+        }}
+      >
+        {label}
+      </button>
+      <input onChange={setUsernameId} />
+    </>
   )
 );
