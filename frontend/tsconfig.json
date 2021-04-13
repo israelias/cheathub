@@ -16,6 +16,6 @@
     "jsx": "react-jsx",
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"],
-  "exclude": ["**/templates/*", "**/node_modules/*"]
+  "include": ["src"]
+  // "exclude": ["**/templates/*", "**/node_modules/*"]
 }

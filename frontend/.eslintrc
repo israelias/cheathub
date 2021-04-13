@@ -1,20 +1,25 @@
 {
-  "plugins": ["prettier", "@typescript-eslint"],
+  "root": true,
+  "plugins": ["prettier", "@typescript-eslint", "react"],
   "extends": [
     "airbnb-typescript",
     "react-app",
     "prettier"
-    // "eslint:recommended"
+    // "eslint:recommended",
     // "plugin:react/recommended",
-    // "plugin:@typescript-eslint/recommended",
+    // "plugin:@typescript-eslint/recommended"
     // "plugin:prettier/recommended"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "project": "./tsconfig.json"
-    // "ecmaFeatures": {
-    //   "jsx": true
-    // }
+    "project": "./tsconfig.json",
+    "sourceType": "module",
+    // "tsconfigRootDir": "./",
+
+    "ecmaFeatures": {
+      "jsx": true,
+      "modules": true
+    }
   },
   "settings": {
     "import/resolver": {
@@ -31,6 +36,11 @@
     "object-curly-spacing": ["warn", "always"],
     "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": "off",
+    "no-shadow": "off",
+    "@typescript-eslint/no-shadow": "error",
+    "strict": [2, "never"],
+    "react/jsx-uses-react": 2,
+    "react/jsx-uses-vars": 2,
 
     // "object-property-newline": ["warn", { "allowMultiplePropertiesPerLine": 1 }],
     // "object-curly-spacing": "off",
@@ -82,6 +92,10 @@
           "src/tests/**/*"
         ]
       }
+    ],
+    "no-object-literal-type-assertion": [
+      0,
+      { "allow-arguments": 0 }
     ],
 
     // React
