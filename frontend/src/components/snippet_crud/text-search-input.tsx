@@ -22,13 +22,13 @@ export const TextInput: React.FC<Props> = ({
   value,
   onChange,
 }) => (
-    <FormControl id={name}>
-      {label && <FormLabel>{label}</FormLabel>}
-      <Input
-        type="text"
-        placeholder={placeHolder}
-        value={value}
-        onChange={onChange}
-      />
-    </FormControl>
-  );
+  <FormControl id={name}>
+    {label && <FormLabel>{label}</FormLabel>}
+    <Input
+      type="text"
+      placeholder={placeHolder}
+      value={value}
+      onChange={onChange}
+    />
+  </FormControl>
+);

@@ -22,14 +22,14 @@ export const SelectInput: React.FC<Props> = ({
   options,
   onChange,
 }) => (
-    <FormControl id={name}>
-      {label && <FormLabel>{label}</FormLabel>}
-      <Select value={value} onChange={onChange}>
-        {options.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </Select>
-    </FormControl>
-  );
+  <FormControl id={name}>
+    {label && <FormLabel>{label}</FormLabel>}
+    <Select value={value} onChange={onChange}>
+      {options.map((option) => (
+        <option key={option.value} value={option.value}>
+          {option.label}
+        </option>
+      ))}
+    </Select>
+  </FormControl>
+);
