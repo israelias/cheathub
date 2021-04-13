@@ -1,10 +1,10 @@
-import React from 'react'
-import { RouteComponentProps } from 'react-router'
+import React from 'react';
+import { RouteComponentProps } from 'react-router';
 import {
   loginRequest,
   // signUpRequest,
-} from '../lib/fetcher'
-import { useUserContext } from '../context/user.context'
+} from '../lib/fetcher';
+import { useUserContext } from '../context/user.context';
 
 interface Props
   extends RouteComponentProps<{ id: string }> {}
@@ -13,18 +13,18 @@ export const Login: React.FC<Props> = ({
   history,
   match,
 }) => {
-  const user = useUserContext()
+  const user = useUserContext();
   // const { setLoggedIn, setUsername, setAccessToken } = useUserContext();
-  const [error, setError] = React.useState(null)
-  const [email, setEmail] = React.useState('')
-  const [password, setPassword] = React.useState('')
+  const [error, setError] = React.useState(null);
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
 
   return (
     <div>
       Login
       <form
         onSubmit={async (e) => {
-          e.preventDefault()
+          e.preventDefault();
           try {
             await loginRequest({
               body: { email, password },
@@ -33,9 +33,9 @@ export const Login: React.FC<Props> = ({
               setAccessToken: user!.setAccessToken,
               history,
               redirectTo: '/profile',
-            })
+            });
           } catch (err) {
-            setError(err)
+            setError(err);
           }
         }}
       >
@@ -61,5 +61,5 @@ export const Login: React.FC<Props> = ({
         </div>
       )}
     </div>
-  )
-}
+  );
+};

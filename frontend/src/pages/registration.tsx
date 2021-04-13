@@ -1,5 +1,5 @@
-import * as React from 'react'
-import { RouteComponentProps } from 'react-router'
+import * as React from 'react';
+import { RouteComponentProps } from 'react-router';
 // import {
 //   loginRequest,
 //   signUpRequest,
@@ -17,8 +17,8 @@ export const Registration: React.FC<Props> = ({
   // const [error, setError] = React.useState(null);
   // const [email, setEmail] = React.useState('');
   // const [password, setPassword] = React.useState('');
-  const signin = match.params.id === 'signin'
-  const signup = match.params.id === 'signup'
+  const signin = match.params.id === 'signin';
+  const signup = match.params.id === 'signup';
   // const [signin, setSignin] = React.useState(false)
   // React.useEffect(() => {
   //   match.params.id === 'signin' ? setSignin(true) : setSignin(!signin)
@@ -33,5 +33,5 @@ export const Registration: React.FC<Props> = ({
       {signin && 'Sign In'}
       {signup && 'Login In'}
     </div>
-  )
-}
+  );
+};
