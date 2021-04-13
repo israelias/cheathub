@@ -239,16 +239,19 @@ export async function LogoutRequest({
 //   }).then(handleApiResponse);
 // }
 
-interface IPutRequest {
+interface IPutRequest extends RouterProps {
   accessToken: string;
   url: string;
   body: object;
+  redirectTo: string;
 }
 
 export function putRequest({
   url,
   accessToken,
   body,
+  redirectTo,
+  history,
 }: IPutRequest) {
   const request = RequestTicket({
     method: 'put',
@@ -257,7 +260,16 @@ export function putRequest({
     body,
   });
   return fetch(request)
-    .then((res) => (res.ok ? res.json() : console.log(res)))
+    .then((res) => {
+      if (res.ok) {
+        res.json();
+        history.push({
+          pathname: redirectTo,
+        });
+      } else {
+        console.log(res);
+      }
+    })
     .catch((error) => console.error(error));
 }
 
@@ -278,4 +290,35 @@ export function getRequest({
   return fetch(request)
     .then((res) => (res.ok ? res.json() : console.log(res)))
     .catch((error) => console.error(error));
+}
+
+interface IPostRequest extends RouterProps {
+  accessToken: string;
+  url: string;
+  body: object;
+  redirectTo: string;
+}
+
+export async function postRequest({
+  url,
+  accessToken,
+  body,
+  history,
+  redirectTo,
+}: IPostRequest) {
+  const request = RequestTicket({
+    method: 'post',
+    url,
+    token: accessToken,
+    body,
+  });
+  const res = await fetch(request);
+  if (res.ok) {
+    res.json();
+    history.push({
+      pathname: redirectTo,
+    });
+  } else {
+    console.log(res);
+  }
 }
