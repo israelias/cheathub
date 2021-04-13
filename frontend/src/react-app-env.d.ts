@@ -64,3 +64,28 @@ interface Collection {
   owner: User['username'];
   snippets: Array<Snippet>;
 }
+
+interface SnippetProps {
+  snippets: Array<Snippet>;
+  onTagClick?: React.Dispatch<React.SetStateAction<string>>;
+  setCurrentTag?: React.Dispatch<
+    React.SetStateAction<string>
+  >;
+  setTagId?: React.Dispatch<React.SetStateAction<string>>;
+  tags?: Array<string>;
+  // onTagClick?(
+  //   event: React.MouseEvent<HTMLButtonElement>
+  // ): void;
+
+  // onTagClick?: (
+  //   event: React.MouseEvent<HTMLButtonElement>
+  // ) => void;
+}
+
+interface TagProps {
+  tags: Array<string>;
+  setCurrentTag: React.Dispatch<
+    React.SetStateAction<string>
+  >;
+  setTagId: React.Dispatch<React.SetStateAction<string>>;
+}
