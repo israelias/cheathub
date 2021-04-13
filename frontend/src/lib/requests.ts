@@ -24,14 +24,13 @@ export const RequestTicket = ({
         credentials: 'include',
         body: body ? JSON.stringify(body) : null,
       });
-    } 
-      return new Request(`${API}/${url}`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      });
-    
+    }
+    return new Request(`${API}/${url}`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
   }
 
   if (method === 'put') {
@@ -44,14 +43,13 @@ export const RequestTicket = ({
       },
       body: JSON.stringify(body),
     });
-  } 
-    return new Request(`${API}/${url}`, {
-      method: 'GET',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: token ? `Bearer ${token}` : '',
-      },
-    });
-  
+  }
+  return new Request(`${API}/${url}`, {
+    method: 'GET',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: token ? `Bearer ${token}` : '',
+    },
+  });
 };
