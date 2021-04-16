@@ -100,3 +100,11 @@ db.users.find().pretty()
 ### Adding New Documents
 
 You can add documents via Postman or Mongo Compass.
+
+## Module Documentation
+- [Flask Mongo Engine](http://docs.mongoengine.org/projects/flask-mongoengine/en/latest/)
+- [Flask CORS](https://flask-cors.readthedocs.io/en/latest/)
+- [Flask JWT Extended](https://flask-jwt-extended.readthedocs.io/en/latest/)
+- [Flask Admin](https://flask-admin.readthedocs.io/en/latest/)
+- [Flask Session](https://flask-session.readthedocs.io/en/latest/)
+- [Flask Restful](https://flask-restful.readthedocs.io/en/latest/)
