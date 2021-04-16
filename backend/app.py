@@ -64,3 +64,7 @@ initialize_debugtoolbar(app)
 
 
 # app.add_url_rule('/graphql', view_func=GraphQLView.as_view('graphql', schema=schema, graphiql=True))
+# For Heroku 
+
+if __name__ == '__main__':
+    app.run()

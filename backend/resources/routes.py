@@ -9,9 +9,12 @@ from .profile import (
     MyCollectionApi,
 )
 from .reset_password import ForgotPassword, ResetPassword
-
+from .status import Status
 
 def initialize_routes(api):
+    
+    # Root
+    api.add_resource(Status, '/')
     # Sign Up
     # Post, username, email and password (Token returned)
     api.add_resource(SignupApi, "/api/auth/signup")
