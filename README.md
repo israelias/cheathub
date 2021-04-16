@@ -1,18 +1,30 @@
 # MS3 Cheathub
+A cheatsheet hub.
+
+An app that organizes your code snippets into collections of cheat sheets and allows you to view, like and save others'.
+
+The project is developed as part of MS3 Data Centric module at Code Institute. It is written with a Flask/Python restful backend API, and a React/Typescript CRA frontend. 
+
+Please visit the project at ...
+
+## Contents
+- TOC
 ## UX
 ### User Stories
 #### New Visitor Goals
-- As a new vistor, w
--
--
+- As a new vistor, I want to have a good understanding of what the website does within a few seconds.
+- As a new visitor, I want to be able to register for an account.
+- As a new visitor, I want to...
 #### Returning Visitor Goals
-- 
--
-- 
+- As a Returning Visitor, I want to be able to log in securely.
+- As a Returning Visitor, I want to be able to create and save a code snippet.
+- As a Returning Visitor, I want to be able to create collections of code snippets I have created.
+- As a Returning Vistior, I want to be able to view and like code snippets created by others.
+- As a Returning Visitor,
 #### Frequent Visitor Goals
-- 
-- 
-- 
+- As a Frequent Visitor, I want to be able to
+- As a Frequent Visitor, I want to
+- As a Frequent Visitor, I want to
 
 ## Features
 ### Existing Features
