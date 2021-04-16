@@ -1,5 +1,34 @@
 # MS3 Cheat-Hub Backend
 
+The restful API is deployed at [cheathub-backend.herokuapp.com/](https://cheathub-backend.herokuapp.com/)
+
+## Heroku Deployment
+```bash
+#create new git repository and add everything
+git init
+git add .
+git commit -m "Initialize for Heroku deployment"
+# heroku git:remote -a cheathub-backend    
+git remote add heroku git@heroku.com:cheathub-backend.git
+
+#pull heroku but then checkback out our current local master and mark everything as merged
+git pull heroku master
+git checkout --ours .
+git add -u
+git commit -m "merged"
+
+#push back to heroku, open web browser, and remove git repository
+git push heroku master
+heroku open
+rm -fr .git
+
+#go back to wherever we started.
+cd -
+```
+
+heroku git:remote -a cheathub-backend    
+git push heroku master
+
 ## Development Server Configuration
 - Clone this repository.
 - Install/run a virtual environment: `pip install virtualenv`
@@ -108,3 +137,7 @@ You can add documents via Postman or Mongo Compass.
 - [Flask Admin](https://flask-admin.readthedocs.io/en/latest/)
 - [Flask Session](https://flask-session.readthedocs.io/en/latest/)
 - [Flask Restful](https://flask-restful.readthedocs.io/en/latest/)
+
+## Resources
+- [Heroku Deployment](https://stackoverflow.com/questions/7539382/how-can-i-deploy-push-only-a-subdirectory-of-my-git-repo-to-heroku)
+- [Deploying Flask Restful Backend](https://medium.com/analytics-vidhya/flask-restful-api-with-heroku-da1ecf3e04b)
