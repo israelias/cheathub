@@ -15,6 +15,7 @@ export const LoggedinHeader: React.FC<Props> = ({
     flexDirection="row"
     justifyContent="space-between"
     alignItems="center"
+    position="fixed"
     width="100%"
     as="nav"
     p={4}
@@ -34,9 +35,9 @@ export const LoggedinHeader: React.FC<Props> = ({
             justifyContent="space-between"
             alignItems="center"
           >
-            <NavLink label="Favs" path="/snippets/favs" />
-            <NavLink label="Explore" path="/snippets/all" />
-            <NavLink label="Add" path="/snippets/add" />
+            <NavLink label="Faves" path="/faves" />
+            <NavLink label="Explore" path="/explore" />
+            <NavLink label="Add" path="/add" />
             <NavLink label="Profile" path="/profile" />
             <NavLink label="Logout" path="/logout" />
           </Flex>

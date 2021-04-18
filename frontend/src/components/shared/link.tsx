@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useColorModeValue } from '@chakra-ui/react';
+import { Link, useColorModeValue as mode } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 
 interface Props {
@@ -7,10 +7,7 @@ interface Props {
   label: string;
 }
 
-export const NavLink: React.FC<Props> = ({
-  path,
-  label,
-}) => (
+export const NavLink: React.FC<Props> = ({ path, label }) => (
   <>
     <Link
       as={RouterLink}
@@ -18,10 +15,11 @@ export const NavLink: React.FC<Props> = ({
       to={path ?? '#'}
       fontSize="sm"
       fontWeight={500}
-      color={useColorModeValue('gray.600', 'gray.200')}
+      color={mode('gray.600', 'gray.200')}
+      rounded="md"
       _hover={{
         textDecoration: 'none',
-        color: useColorModeValue('gray.800', 'white'),
+        color: mode('gray.800', 'white'),
       }}
     >
       {label}
