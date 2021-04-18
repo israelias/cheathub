@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import { RouteComponentProps } from 'react-router';
 import {
@@ -6,15 +7,23 @@ import {
 } from '../lib/fetcher';
 import { useUserContext } from '../context/user.context';
 
-interface Props
-  extends RouteComponentProps<{ id: string }> {}
+interface Props extends RouteComponentProps<{ id: string }> {}
 
 export const Login: React.FC<Props> = ({
   history,
   match,
+  location,
 }) => {
-  const user = useUserContext();
-  // const { setLoggedIn, setUsername, setAccessToken } = useUserContext();
+  const { from } = location.state
+    ? (location.state as any)
+    : { from: { pathname: '/' } };
+
+  const {
+    setLoggedIn,
+    setUsername,
+    setAccessToken,
+  } = useUserContext();
+
   const [error, setError] = React.useState(null);
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
@@ -28,15 +37,17 @@ export const Login: React.FC<Props> = ({
           try {
             await loginRequest({
               body: { email, password },
-              setLoggedIn: user!.setLoggedIn,
-              setUsername: user!.setUsername,
-              setAccessToken: user!.setAccessToken,
+              setLoggedIn,
+              setUsername,
+              setAccessToken,
               history,
-              redirectTo: '/profile',
+              // from,
+              redirectTo: '/posts',
             });
           } catch (err) {
             setError(err);
           }
+          history.replace(from);
         }}
       >
         <input

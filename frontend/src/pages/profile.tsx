@@ -21,8 +21,7 @@ import {
   Container as MainContainer,
 } from '../components/layout/commonCard';
 
-interface ProfileProps
-  extends RouteComponentProps<{ id: string }> {
+interface ProfileProps extends RouteComponentProps<{ id: string }> {
   snippets: Snippet[];
 }
 
@@ -56,17 +55,13 @@ export const Profile: React.FC<ProfileProps> = ({
 
   if (status === 'error') {
     if (isError(error)) {
-      return (
-        <p>{`An error has occurred: ${error.message}`}</p>
-      );
+      return <p>{`An error has occurred: ${error.message}`}</p>;
     }
   }
   if (isLoadingS) return <p>Loading...</p>;
   if (statusS === 'error') {
     if (isError(errorS)) {
-      return (
-        <p>{`An error has occurred: ${errorS.message}`}</p>
-      );
+      return <p>{`An error has occurred: ${errorS.message}`}</p>;
     }
   }
 
@@ -78,9 +73,9 @@ export const Profile: React.FC<ProfileProps> = ({
       /> */}
       <MainHeader />
       <View>
-        <SideBar>
+        <SideNav>
           <CollectionList data={data} />
-        </SideBar>
+        </SideNav>
         <MainContainer>
           <MainFeed snippets={dataS} />
         </MainContainer>

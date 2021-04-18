@@ -7,34 +7,55 @@ import {
   Code,
   Grid,
 } from '@chakra-ui/react';
+import { Link as RouterLink } from 'react-router-dom';
 import { ColorModeSwitcher } from '../components/actions/ColorModeSwitcher';
 import { Logo } from '../components/actions/Logo';
-import { LoggedinHeader } from '../components/shared/header';
-import NavBar from '../containers/NavBar';
+import NavBar from '../components/navbar';
+import { checkAuth } from '../lib/checkAuth';
+import { useUserContext } from '../context/user.context';
 
 function Test() {
+  const { username } = useUserContext();
+  const loggedIn = checkAuth({ username });
+
   return (
     <Box textAlign="center" fontSize="xl">
       <NavBar />
-      <LoggedinHeader loggedIn={true} username="joem" />
       <Grid minH="100vh" p={3}>
         <ColorModeSwitcher justifySelf="flex-end" />
         <VStack spacing={8}>
           <Logo h="40vmin" pointerEvents="none" />
-          <Text>
-            Edit <Code fontSize="xl">src/App.js</Code> and
-            save to reload.
-          </Text>
-
-          <Link
-            color="teal.500"
-            href="https://chakra-ui.com"
-            fontSize="2xl"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn Chakra
-          </Link>
+          {loggedIn ? (
+            <>
+              {' '}
+              <Text>You are Logged In.</Text>
+              <Link
+                as={RouterLink}
+                color="teal.500"
+                to="/registration/trial"
+                fontSize="2xl"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                See your Feed.
+              </Link>
+            </>
+          ) : (
+            <>
+              {' '}
+              <Text>Welcome to Cheat Hub.</Text>
+              <Link
+                as={RouterLink}
+                color="teal.500"
+                to="/registration/trial"
+                fontSize="2xl"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Start the tour.
+              </Link>
+            </>
+          )}
         </VStack>
       </Grid>
     </Box>

@@ -31,18 +31,14 @@ interface FetchProps {
   page: number;
   tag: string;
 }
-const fetchSnippets = async ({
-  page = 1,
-  tag = '',
-}: FetchProps) => {
+const fetchSnippets = async ({ page = 1, tag = '' }: FetchProps) => {
   const { data } = await axios.get(
     `http://localhost:5000/api/snippets?page=${page}&tags=${tag}`
   );
   return data;
 };
 
-interface ExploreProps
-  extends RouteComponentProps<{ id: string }> {
+interface ExploreProps extends RouteComponentProps<{ id: string }> {
   snippets: Snippet[];
 }
 
@@ -76,32 +72,26 @@ export const Explore: React.FC<ExploreProps> = ({
 
   React.useEffect(() => {
     if (data?.meta.has_next) {
-      queryClient.prefetchQuery(
-        ['snippets', pageParam + 1],
-        () =>
-          fetchSnippets({
-            page: pageParam + 1,
-            tag: tagParam,
-          })
+      queryClient.prefetchQuery(['snippets', pageParam + 1], () =>
+        fetchSnippets({
+          page: pageParam + 1,
+          tag: tagParam,
+        })
       );
     }
   }, [data, pageParam, tagParam, queryClient]);
 
-  const loadMoreButtonRef = React.useRef<HTMLButtonElement>(
-    null
-  );
+  const loadMoreButtonRef = React.useRef<HTMLButtonElement>(null);
   useIntersectionObserver(loadMoreButtonRef, {
     enabled: data?.meta.has_next,
     // onIntersect: fetchNextPage,
     onIntersect: () => {
       setPageParam((p) => p + 1);
-      queryClient.prefetchQuery(
-        ['snippets', pageParam + 1],
-        () =>
-          fetchSnippets({
-            page: pageParam + 1,
-            tag: tagParam,
-          })
+      queryClient.prefetchQuery(['snippets', pageParam + 1], () =>
+        fetchSnippets({
+          page: pageParam + 1,
+          tag: tagParam,
+        })
       );
     },
   });
@@ -124,9 +114,7 @@ export const Explore: React.FC<ExploreProps> = ({
         </div>
         <button
           type="button"
-          onClick={() =>
-            setPageParam((old) => Math.max(old - 1, 0))
-          }
+          onClick={() => setPageParam((old) => Math.max(old - 1, 0))}
           disabled={pageParam === 0}
         >
           Previous
