@@ -2,9 +2,33 @@
 /* eslint-disable no-console */
 import * as React from 'react';
 
-const UserContext = React.createContext<UserContext | null>(
-  {} as UserContext
-);
+// const UserContext = React.createContext<UserContext | null>(
+//   {} as UserContext
+// );
+
+export type UserContent = {
+  username: string;
+  setUsername: React.Dispatch<React.SetStateAction<string>>;
+  accessToken: string;
+  setAccessToken: React.Dispatch<React.SetStateAction<string>>;
+  loggedIn: boolean;
+  setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+  loading: boolean;
+  setLoading?: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export const UserContext = React.createContext<UserContent>({
+  username: '',
+  setUsername: () => {},
+  accessToken: '',
+  setAccessToken: () => {},
+  loggedIn: false,
+  setLoggedIn: () => {},
+  loading: false,
+  setLoading: () => {},
+});
+
+export const useUserContext = () => React.useContext(UserContext);
 
 type Props = {
   children: React.ReactNode;
@@ -27,14 +51,10 @@ export const UserProvider = ({ children }: Props) => {
       }
     }
 
-    window.addEventListener('storage', (e) =>
-      checkUserData(e)
-    );
+    window.addEventListener('storage', (e) => checkUserData(e));
 
     return () => {
-      window.removeEventListener('storage', (e) =>
-        checkUserData(e)
-      );
+      window.removeEventListener('storage', (e) => checkUserData(e));
     };
   }, []);
 
@@ -55,6 +75,3 @@ export const UserProvider = ({ children }: Props) => {
     </UserContext.Provider>
   );
 };
-
-export const useUserContext = () =>
-  React.useContext(UserContext);
