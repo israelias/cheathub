@@ -14,9 +14,7 @@ interface Props {
     f1: string;
   };
   person: Person;
-  handleChange: (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => void;
+  handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const TextField: React.FC<Props> = ({ handleChange }) => {
@@ -34,11 +32,7 @@ const TextField: React.FC<Props> = ({ handleChange }) => {
 
   return (
     <div>
-      <input
-        ref={inputRef}
-        onChange={handleChange}
-        type="text"
-      />
+      <input ref={inputRef} onChange={handleChange} type="text" />
     </div>
   );
 };

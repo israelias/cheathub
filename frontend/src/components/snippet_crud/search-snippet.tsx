@@ -19,10 +19,9 @@ export const SearchSnippet: React.FC<SearchSnippetProps> = ({
   // const [searchTerm, setSearchTerm] = React.useState<searchTerm>();
   // const [searchBy, setSearchBy] = React.useState<searchBy>();
   const [searchTerm, setSearchTerm] = React.useState('');
-  const [searchBy, setSearchBy] = React.useState<SearchBy>(
-    'title'
-  );
+  const [searchBy, setSearchBy] = React.useState<SearchBy>('title');
   const [query, setQuery] = React.useState('home');
+  const [tagParam, setTagParam] = React.useState('');
   const history = useHistory();
   return (
     <div>
@@ -47,6 +46,7 @@ export const SearchSnippet: React.FC<SearchSnippetProps> = ({
       </h1>
 
       <SnippetFeed
+        setTagParam={setTagParam}
         setTagId={setTagId}
         setUsernameId={setUsernameId}
         searchBy={searchBy}

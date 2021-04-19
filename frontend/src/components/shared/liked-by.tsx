@@ -1,5 +1,5 @@
 import React from 'react';
-import { ToUserButton } from './special-button';
+import { ToUserButton } from '../reference/special-button';
 
 type Username = string;
 

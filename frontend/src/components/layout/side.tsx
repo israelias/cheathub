@@ -24,21 +24,36 @@ export const SideNav: React.FC<Props> = ({
 
   return (
     <Flex
+      // position="fixed"
+      overflowY="scroll"
       display={{ base: 'none', md: 'flex' }}
-      bg={mode('gray.50', 'gray.800')}
+      bg={mode('#ffff', 'gray.800')}
       direction="column"
       borderRightWidth="1px"
-      width="72"
+      css={{
+        '&::-webkit-scrollbar': {
+          width: '0px',
+        },
+        '&::-webkit-scrollbar-track': {
+          width: '6px',
+        },
+        '&::-webkit-scrollbar-thumb': {
+          background: '#1c3535',
+          borderRadius: '0px',
+        },
+      }}
     >
-      <Box p={4} position="relative" height="100vh">
-        <Heading as="h5">Navigation</Heading>
-        <ToggleButtonBar
-          isOpen={isOpen}
-          onToggle={onToggle}
-        />
-        <Button mt={6} onClick={toggleColorMode}>
-          Toggle {colorMode === 'light' ? 'Dark' : 'Light'}
-        </Button>
+      <Box
+        rounded="lg"
+        mt={6}
+        bg={mode('#a1a2a3', 'gray.800')}
+        border={['1px solid']}
+        borderColor={mode('gray.100', '#e4e4e4')}
+        position="relative"
+        height="100vh"
+      >
+        {/* <Heading as="h5">Navigation</Heading> */}
+        {/* <ToggleButtonBar isOpen={isOpen} onToggle={onToggle} /> */}
 
         {children}
       </Box>

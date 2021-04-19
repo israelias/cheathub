@@ -42,6 +42,7 @@ export const CodeEditor: React.FC<IEditorProps> = ({
   return (
     <Editor
       height="40vh"
+      defaultLanguage="javascript"
       onChange={() => handleEditorChange}
       options={{
         minimap: {

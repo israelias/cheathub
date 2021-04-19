@@ -9,6 +9,8 @@ import {
 import { Content } from './main';
 import { SideNav } from './side';
 import Navbar from '../navbar';
+import Collections from '../collections';
+import Actions from '../actions';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -36,13 +38,14 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           height="100vh"
           width={{ base: '100%', lg: '72px' }}
           zIndex={{ base: 9997, lg: 'unset' }}
-          bg="pink"
+          bg="#fff"
           top={0}
         >
-          header nav
+          <Actions />
         </GridItem>
 
         <GridItem
+          id="main-header"
           templateArea={['titlebar']}
           alignItems="center"
           justifyContent="space-between"
@@ -60,6 +63,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         </GridItem>
 
         <GridItem
+          id="main-content"
           templateArea={['main']}
           height="100%"
           maxHeight={{ base: 'calc(100vh - 62px)', lg: '100vh' }}
@@ -67,6 +71,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           display="grid"
         >
           <Grid
+            id="main-secondary"
             templateAreas={[`'secondary primary'`]}
             templateColumns={{
               base: '1fr',
@@ -80,7 +85,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             justifySelf="center"
           >
             <GridItem
-              // as="section"
+              id="side-nav"
               height={{ base: 'calc(100vh - 62px)', lg: '100vh' }}
               display={{ base: 'none', lg: 'grid' }}
               overflow={['hidden auto']}
@@ -91,21 +96,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               bg="papayawhip"
             >
               <SideNav>
-                {' '}
-                dafafasfasf dafafasfasf
-                dafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasf
-                dafafasfasf dafafasfasf
-                dafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasf
-                dafafasfasf dafafasfasf
-                dafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasf
-                dafafasfasf dafafasfasf
-                dafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasf
-                dafafasfasf dafafasfasf
-                dafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasfdafafasfasf
+                <Collections />
               </SideNav>
             </GridItem>
 
             <GridItem
+              id="main-primary"
               templateArea={['primary']}
               templateRows={['1fr']}
               maxWidth={{ base: '100vw', lg: '968px' }}

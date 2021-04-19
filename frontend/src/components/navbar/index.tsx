@@ -23,6 +23,7 @@ import { HamburgerIcon, CloseIcon, AddIcon } from '@chakra-ui/icons';
 import { PATHS } from '../../constants/paths.constants';
 import { NavLink } from '../shared/link';
 import { LogoutButton } from './logout';
+import { ModeSwitch } from './mode';
 import { checkAuth } from '../../lib/checkAuth';
 import { useUserContext } from '../../context/user.context';
 
@@ -41,7 +42,9 @@ const NavBar: React.FC<NavBarProps> = ({ IloggedIn, Iusername }) => {
       <Box
         position="fixed"
         width="100%"
-        bg={mode('gray.100', 'gray.900')}
+        bg={mode('#fff', 'gray.900')}
+        borderBottom="1px"
+        borderColor="gray.200"
         px={4}
       >
         <Flex
@@ -82,7 +85,10 @@ const NavBar: React.FC<NavBarProps> = ({ IloggedIn, Iusername }) => {
           </HStack>
 
           {loggedIn ? (
-            <LogoutButton asLink />
+            <>
+              <LogoutButton asLink />
+              <ModeSwitch />
+            </>
           ) : (
             <Stack
               flex={{ base: 1, md: 0 }}
@@ -113,6 +119,8 @@ const NavBar: React.FC<NavBarProps> = ({ IloggedIn, Iusername }) => {
               >
                 Sign Up
               </Button>
+
+              <ModeSwitch />
             </Stack>
           )}
         </Flex>

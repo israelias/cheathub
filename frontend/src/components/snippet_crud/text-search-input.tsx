@@ -1,18 +1,19 @@
 import React from 'react';
 import {
   Input,
+  InputProps,
   FormLabel,
+  FormLabelProps,
   FormControl,
+  FormControlProps,
 } from '@chakra-ui/react';
 
-interface Props {
+interface Props extends InputProps {
   name?: string;
   label?: string;
   placeHolder?: string;
   value?: string;
-  onChange?: (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => void;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export const TextInput: React.FC<Props> = ({
@@ -21,6 +22,7 @@ export const TextInput: React.FC<Props> = ({
   placeHolder,
   value,
   onChange,
+  ...props
 }) => (
   <FormControl id={name}>
     {label && <FormLabel>{label}</FormLabel>}
@@ -29,6 +31,7 @@ export const TextInput: React.FC<Props> = ({
       placeholder={placeHolder}
       value={value}
       onChange={onChange}
+      {...props}
     />
   </FormControl>
 );

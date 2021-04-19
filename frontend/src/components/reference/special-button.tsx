@@ -1,8 +1,5 @@
 import * as React from 'react';
-import {
-  RouteComponentProps,
-  withRouter,
-} from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 export const SpecialButton = withRouter(({ history }) => (
   <button
@@ -18,9 +15,7 @@ export const SpecialButton = withRouter(({ history }) => (
 interface Props extends RouteComponentProps {
   user: string;
   label: string;
-  setUsernameId: (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => void;
+  setUsernameId: (event: React.ChangeEvent<HTMLInputElement>) => void;
   // setUsernameId: React.ChangeEventHandler<HTMLInputElement>;
 }
 

@@ -94,7 +94,7 @@ export const TreeListItemRow = styled.div`
 
 export const TreeListItemDisplay = styled.span`
   background-color: var(--neutral-background);
-  color: white;
+  color: black;
   font-size: 14px;
   padding: 3px 6px;
   border-radius: 3px;
@@ -119,7 +119,7 @@ export const TreeListItemDisplayLink = styled.a`
   cursor: pointer;
   margin-right: 5px;
   padding-right: 5px;
-  color: white;
+  color: black;
   border-right: 1px solid;
 
   &.expanded {
@@ -136,26 +136,18 @@ interface CollectionProps {
 export const CollectionList: React.FC<CollectionProps> = ({
   data,
 }) => {
-  const [
-    expandCollection,
-    setExpandCollection,
-  ] = React.useState(true);
-  const [expandSnippet, setExpandSnippet] = React.useState(
+  const [expandCollection, setExpandCollection] = React.useState(
     true
   );
+  const [expandSnippet, setExpandSnippet] = React.useState(true);
   const [expandTags, setExpandTags] = React.useState(true);
-  const [collectionId, setCollectionId] = React.useState(
-    ''
-  );
+  const [collectionId, setCollectionId] = React.useState('');
   const [snippetId, setSnippetId] = React.useState(0);
   const [tagId, setTagId] = React.useState(0);
 
   return (
     <TreeRoot>
-      <TreeContent
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-      >
+      <TreeContent initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
         {/* FIRST: Collections */}
         <TreeList exit={{ opacity: 0 }}>
           {data.map((data) => (
@@ -168,14 +160,11 @@ export const CollectionList: React.FC<CollectionProps> = ({
                       onClick={(e) => {
                         e.preventDefault();
                         false &&
-                          setExpandCollection(
-                            (val: boolean) => !val
-                          );
+                          setExpandCollection((val: boolean) => !val);
                         setCollectionId(data._id);
                       }}
                     >
-                      {expandCollection &&
-                      collectionId === data._id
+                      {expandCollection && collectionId === data._id
                         ? '\\/'
                         : '>'}
                     </TreeListItemDisplayLink>
@@ -188,8 +177,7 @@ export const CollectionList: React.FC<CollectionProps> = ({
                 <TreeBranch
                   layout
                   animate={
-                    expandCollection &&
-                    collectionId === data._id
+                    expandCollection && collectionId === data._id
                       ? 'expanded'
                       : 'collapsed'
                   }
@@ -198,112 +186,97 @@ export const CollectionList: React.FC<CollectionProps> = ({
                   {/* SECOND: Snippets */}
                   <AnimatePresence>
                     <TreeList layout exit={{ opacity: 0 }}>
-                      {data.snippets.map(
-                        (snippet, index) => (
-                          <TreeListItem key={snippet._id}>
-                            <TreeListItemRow>
-                              <TreeListItemDisplay>
-                                {snippet.tags?.length ? (
-                                  <TreeListItemDisplayLink
-                                    href="#"
-                                    onClick={(e) => {
-                                      e.preventDefault();
-                                      setSnippetId(index);
-                                      false &&
-                                        setExpandSnippet(
-                                          (val: boolean) =>
-                                            !val
-                                        );
-                                    }}
-                                  >
-                                    {expandSnippet &&
-                                    // collectionId === data._id
-                                    // &&
-                                    snippetId === index
-                                      ? '\\/'
-                                      : '>'}
-                                  </TreeListItemDisplayLink>
-                                ) : null}
-                                {snippet.children ||
-                                  snippet.title}
-                              </TreeListItemDisplay>
-                            </TreeListItemRow>
-                            <AnimateSharedLayout type="crossfade">
-                              <TreeBranch
-                                layout
-                                animate={
-                                  expandSnippet &&
+                      {data.snippets.map((snippet, index) => (
+                        <TreeListItem key={snippet._id}>
+                          <TreeListItemRow>
+                            <TreeListItemDisplay>
+                              {snippet.tags?.length ? (
+                                <TreeListItemDisplayLink
+                                  href="#"
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    setSnippetId(index);
+                                    false &&
+                                      setExpandSnippet(
+                                        (val: boolean) => !val
+                                      );
+                                  }}
+                                >
+                                  {expandSnippet &&
                                   // collectionId === data._id
                                   // &&
                                   snippetId === index
-                                    ? 'expanded'
-                                    : 'collapsed'
-                                }
-                                variants={treeVariants}
-                              >
-                                {/* THIRD: Likes */}
-                                <AnimatePresence>
-                                  <TreeList
-                                    layout
-                                    exit={{ opacity: 0 }}
-                                  >
-                                    {snippet.tags.map(
-                                      (tag, index) => (
-                                        <TreeListItem
-                                          key={`${index}-${tag}`}
-                                        >
-                                          <TreeListItemRow>
-                                            <TreeListItemDisplay>
-                                              {snippet.tag ? (
-                                                <TreeListItemDisplayLink
-                                                  href="#"
-                                                  onClick={(
-                                                    e
-                                                  ) => {
-                                                    e.preventDefault();
-                                                    setExpandTags(
-                                                      (
-                                                        val: boolean
-                                                      ) =>
-                                                        !val
-                                                    );
-                                                    setTagId(
-                                                      index
-                                                    );
-                                                  }}
-                                                >
-                                                  {expandTags &&
-                                                  tagId ===
-                                                    index
-                                                    ? '\\/'
-                                                    : '>'}
-                                                </TreeListItemDisplayLink>
-                                              ) : null}
-                                              {tag || tag}
-                                            </TreeListItemDisplay>
-                                          </TreeListItemRow>
-                                          <TreeBranch
-                                            animate={
-                                              expandTags &&
-                                              tagId ===
-                                                index
-                                                ? 'expanded'
-                                                : 'collapsed'
-                                            }
-                                            variants={
-                                              treeVariants
-                                            }
-                                          >
-                                            {/* NEXT */}
-                                            {/* <SubjectList
+                                    ? '\\/'
+                                    : '>'}
+                                </TreeListItemDisplayLink>
+                              ) : null}
+                              {snippet.children || snippet.title}
+                            </TreeListItemDisplay>
+                          </TreeListItemRow>
+                          <AnimateSharedLayout type="crossfade">
+                            <TreeBranch
+                              layout
+                              animate={
+                                expandSnippet &&
+                                // collectionId === data._id
+                                // &&
+                                snippetId === index
+                                  ? 'expanded'
+                                  : 'collapsed'
+                              }
+                              variants={treeVariants}
+                            >
+                              {/* THIRD: Likes */}
+                              <AnimatePresence>
+                                <TreeList
+                                  layout
+                                  exit={{ opacity: 0 }}
+                                >
+                                  {snippet.tags.map((tag, index) => (
+                                    <TreeListItem
+                                      key={`${index}-${tag}`}
+                                    >
+                                      <TreeListItemRow>
+                                        <TreeListItemDisplay>
+                                          {snippet.tag ? (
+                                            <TreeListItemDisplayLink
+                                              href="#"
+                                              onClick={(e) => {
+                                                e.preventDefault();
+                                                setExpandTags(
+                                                  (val: boolean) =>
+                                                    !val
+                                                );
+                                                setTagId(index);
+                                              }}
+                                            >
+                                              {expandTags &&
+                                              tagId === index
+                                                ? '\\/'
+                                                : '>'}
+                                            </TreeListItemDisplayLink>
+                                          ) : null}
+                                          {tag || tag}
+                                        </TreeListItemDisplay>
+                                      </TreeListItemRow>
+                                      <TreeBranch
+                                        animate={
+                                          expandTags &&
+                                          tagId === index
+                                            ? 'expanded'
+                                            : 'collapsed'
+                                        }
+                                        variants={treeVariants}
+                                      >
+                                        {/* NEXT */}
+                                        {/* <SubjectList
                                   data={snippets}
                                   /> */}
-                                          </TreeBranch>
-                                        </TreeListItem>
-                                      )
-                                    )}
+                                      </TreeBranch>
+                                    </TreeListItem>
+                                  ))}
 
-                                    {/* <TreeListItem>
+                                  {/* <TreeListItem>
                             <TreeListItemRow>
                               <TreeListItemDisplay>
                                 {snippet.language}
@@ -332,13 +305,12 @@ export const CollectionList: React.FC<CollectionProps> = ({
                               </TreeListItemDisplay>
                             </TreeListItemRow>
                           </TreeListItem> */}
-                                  </TreeList>
-                                </AnimatePresence>
-                              </TreeBranch>
-                            </AnimateSharedLayout>
-                          </TreeListItem>
-                        )
-                      )}
+                                </TreeList>
+                              </AnimatePresence>
+                            </TreeBranch>
+                          </AnimateSharedLayout>
+                        </TreeListItem>
+                      ))}
                     </TreeList>
                   </AnimatePresence>
                 </TreeBranch>

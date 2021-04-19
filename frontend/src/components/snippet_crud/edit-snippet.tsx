@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -11,7 +12,7 @@ import { SelectInput } from './select-input';
 import { TextInput } from './text-search-input';
 import { LANGUAGES } from '../../constants/languages.constants';
 import { CodeEditor } from '../editor/editor';
-
+import { Viewer } from '../editor/viewer';
 import {
   putRequest,
   getRequest,
@@ -76,9 +77,17 @@ export const EditSnippet = withRouter(
 
           <FormControl id="body">
             <FormLabel>Code Snippet:</FormLabel>
-            <CodeEditor value={value} language={snippet.language} />
+            <Viewer
+              id={snippet._id}
+              language={snippet.language}
+              value={value}
+            />
+            {/* <CodeEditor
+              value={value}
+              language={snippet.language}
+            /> */}
             <Textarea
-              hidden
+              // hidden
               value={value}
               onChange={(e) => setValue(e.target.value)}
             />
