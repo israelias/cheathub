@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   Box,
   Text,
@@ -8,7 +7,6 @@ import {
   Grid,
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
-import { ColorModeSwitcher } from '../components/actions/ColorModeSwitcher';
 import { Logo } from '../components/actions/Logo';
 import NavBar from '../components/navbar';
 import { checkAuth } from '../lib/checkAuth';
@@ -22,7 +20,7 @@ function Test() {
     <Box textAlign="center" fontSize="xl">
       <NavBar />
       <Grid minH="100vh" p={3}>
-        <ColorModeSwitcher justifySelf="flex-end" />
+        <div> </div>
         <VStack spacing={8}>
           <Logo h="40vmin" pointerEvents="none" />
           {loggedIn ? (

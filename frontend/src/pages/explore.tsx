@@ -14,18 +14,17 @@ import {
   // useQueryClient,
 } from 'react-query';
 import axios from 'axios';
-import { LoggedinHeader } from '../components/shared/header';
 import { Search } from '../components/snippet_crud/search-form';
 // import { ToUserButton } from '../components/shared/special-button'
 import { getRequest } from '../lib/fetcher';
 import { useUserContext } from '../context/user.context';
 import { isError } from '../lib/isError';
-import { FormPage } from '../components/layout/comonForm';
 import {
   MainFeed,
   Container as MainContainer,
 } from '../components/layout/commonCard';
 import useIntersectionObserver from '../lib/useIntersect';
+import Layout from '../components/layout';
 
 interface FetchProps {
   page: number;
@@ -102,7 +101,7 @@ export const Explore: React.FC<ExploreProps> = ({
   ) : status === 'error' && isError(error) ? (
     <p>Error: {error.message}</p>
   ) : (
-    <div>
+    <Layout>
       <MainContainer>
         <MainFeed snippets={data?.items} />
       </MainContainer>
@@ -135,6 +134,6 @@ export const Explore: React.FC<ExploreProps> = ({
 
         <div>{isFetching ? 'Fetching...' : null}</div>
       </div>
-    </div>
+    </Layout>
   );
 };

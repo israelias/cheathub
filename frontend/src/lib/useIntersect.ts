@@ -1,14 +1,39 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable consistent-return */
 import { useEffect, useState, RefObject } from 'react';
-// https://usehooks-typescript.com/react-hook/use-intersection-observer
 
+/**
+ * A typescript-safe implementation of generic "useIntersectionObserver" hook.
+ *
+ * @tutorial https://usehooks-typescript.com/react-hook/use-intersection-observer
+ * @link https://react-query.tanstack.com/
+ * @file defines useIntersectionObserver and its interface typedef
+ * @since 4.04.21
+ */
+
+/**
+ * Props interface for useIntersectionObserver.
+ * @interface
+ * @extends InterSectionObserverInit
+ */
 interface Args extends IntersectionObserverInit {
   freezeOnceVisible?: boolean;
   enabled?: boolean;
   onIntersect?: () => void;
 }
-
+/**
+ * useIntersectionObserver hook.
+ *
+ *
+ * @implements {Args}
+ * @param  {RefObject<Element>} elementRef
+ * @param  {num} threshold
+ * @param  {} root
+ * @param  {} rootMargin
+ * @param  {boolean} freezeOnceVisible
+ * @param  {boolean} enabled
+ * @param  {()=>{}} onIntersect
+ */
 function useIntersectionObserver(
   elementRef: RefObject<Element>,
   {
@@ -20,10 +45,7 @@ function useIntersectionObserver(
     onIntersect = () => {},
   }: Args
 ): IntersectionObserverEntry | undefined {
-  const [
-    entry,
-    setEntry,
-  ] = useState<IntersectionObserverEntry>();
+  const [entry, setEntry] = useState<IntersectionObserverEntry>();
 
   const frozen = entry?.isIntersecting && freezeOnceVisible;
 

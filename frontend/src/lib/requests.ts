@@ -1,5 +1,20 @@
 const API = 'http://localhost:5000';
 
+/**
+ * A request manager that pre-packages HTTP requests for a request handler.
+ *
+ * Requests are sorted per method for requests like signupRequest and loginRequest to send to the backend efficiently.
+ *
+ * @see signupRequest
+ * @see loginRequest
+ * @see LogoutRequest
+ * @see putRequest
+ * @see getRequest
+ * @see
+ * @file defines RequestTicket
+ * @since 3.15.21
+ */
+
 interface IRequestTicket {
   method: string;
   token?: string;
@@ -49,7 +64,7 @@ export const RequestTicket = ({
     credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: token ? `Bearer ${token}` : '',
+      // Authorization: token ? `Bearer ${token}` : '',
     },
   });
 };
