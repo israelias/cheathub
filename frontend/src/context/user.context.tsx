@@ -1,10 +1,9 @@
+/* eslint-disable react-hooks/rules-of-hooks */
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-alert */
 /* eslint-disable no-console */
 import * as React from 'react';
-
-// const UserContext = React.createContext<UserContext | null>(
-//   {} as UserContext
-// );
+import { checkLogoutEvent } from '../lib/checkStorage';
 
 export type UserContent = {
   username: string;
@@ -41,21 +40,22 @@ export const UserProvider = ({ children }: Props) => {
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
 
+  const eventName = 'app_logout';
+  const userLocal = window.localStorage.getItem('username');
+  const logoutEvent = window.localStorage.getItem('app_logout');
+  const shouldTerminate = !(userLocal || logoutEvent);
+
   React.useEffect(() => {
-    function checkUserData(e: StorageEvent) {
-      console.log('TRIGGER');
-
-      if (e.key === 'app_logout') {
-        console.log('TRIGGER LOGOUT');
-        window.alert('You have been logged out.');
-      }
+    if (shouldTerminate) {
+      console.log('what');
+      setLoggedIn(false);
+      setUsername('');
+      setAccessToken('');
     }
+  }, [shouldTerminate, userLocal, logoutEvent]);
 
-    window.addEventListener('storage', (e) => checkUserData(e));
-
-    return () => {
-      window.removeEventListener('storage', (e) => checkUserData(e));
-    };
+  React.useEffect(() => {
+    checkLogoutEvent();
   }, []);
 
   return (
