@@ -1,12 +1,10 @@
-/* eslint-disable react/no-array-index-key */
-/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-nested-ternary */
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import {
   useQuery,
   UseQueryResult,
-  useInfiniteQuery,
+  // useInfiniteQuery,
   // useQueryClient,
   // useMutation,
   useQueryClient,
@@ -17,17 +15,16 @@ import axios from 'axios';
 import { SnippetFeed } from '../components/snippet-feed';
 // import { ToUserButton } from '../components/shared/special-button'
 import { getRequest } from '../lib/fetcher';
-import { fetchSnippets, useSnippetsInfinite } from '../lib/axios';
+import { fetchSnippets } from '../lib/axios';
 import { useUserContext } from '../context/user.context';
 import { checkStatus } from '../lib/isError';
-import Layout from '../components/layout';
 import useIntersectionObserver from '../lib/useIntersect';
 import {
   MainHeader,
   // MainFeed,
   Container as MainContainer,
 } from '../components/layout/commonCard';
-import Navbar from '../components/navbar';
+
 // import useIntersectionObserver from '../lib/useIntersect';
 
 interface ProfileProps extends RouteComponentProps<{ id: string }> {
@@ -53,76 +50,68 @@ export const SnipTest: React.FC<ProfileProps> = ({
   const [pageParam, setPageParam] = React.useState<number>(1);
 
   const {
-    data,
-    status,
     error,
-    isLoading,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-  } = useInfiniteQuery(
-    ['snips', tagParam],
-    async () => fetchSnippets({ page: pageParam, tag: tagParam }),
+    status,
+    data,
+    isFetching,
+    isPreviousData,
+  } = useQuery(
+    ['snippets', pageParam, tagParam],
+    () => fetchSnippets({ page: pageParam, tag: tagParam }),
     {
-      getNextPageParam: (res) => {
-        if (res.meta.has_next) {
-          return res.meta.page + 1;
-        }
-        return false;
-      },
+      keepPreviousData: true,
+      staleTime: 5000,
     }
   );
+  React.useEffect(() => {
+    if (data?.meta.has_next) {
+      queryClient.prefetchQuery(['snippets', pageParam + 1], () =>
+        fetchSnippets({
+          page: pageParam + 1,
+          tag: tagParam,
+        })
+      );
+    }
+  }, [data, pageParam, tagParam, queryClient]);
 
-  const target = React.useRef<HTMLDivElement>(null);
-
-  useIntersectionObserver(target, {
-    enabled: hasNextPage,
-    onIntersect: fetchNextPage,
+  const loadMoreButtonRef = React.useRef<HTMLButtonElement>(null);
+  useIntersectionObserver(loadMoreButtonRef, {
+    enabled: data?.meta.has_next,
+    // onIntersect: fetchNextPage,
+    onIntersect: () => {
+      setPageParam((p) => p + 1);
+      queryClient.prefetchQuery(['snippets', pageParam + 1], () =>
+        fetchSnippets({
+          page: pageParam + 1,
+          tag: tagParam,
+        })
+      );
+    },
   });
 
   const message = checkStatus(status, error);
 
   if (message) return <p>{message}</p>;
   return (
-    <Layout>
+    <div>
       {/* <LoggedinHeader
         loggedIn={true}
         username={match.params.id}
       /> */}
-      {/* <Navbar /> */}
-      {/* <MainHeader>
-        {tagParam && (
-          <p style={{ color: '#fff' }}>Searching by {tagParam}</p>
-        )}
-        <button
-          type="button"
-          style={{ color: '#fff' }}
-          onClick={() => {
-            setPageParam(1);
-            setTagParam('');
-          }}
-        >
-          Reset
-        </button>
-      </MainHeader> */}
-
-      {data?.pages?.map((page, i) => (
-        <SnippetFeed
-          key={i}
-          setTagId={onTagIdClick}
-          setUsernameId={onUsernameIdClick}
-          searchBy={searchBy}
-          searchTerm={searchTerm}
-          snippets={page?.items}
-          username={username}
-          // tagParam={tagParam}
-          setTagParam={setTagParam}
-        />
-      ))}
-
-      <div ref={target} />
-      {isFetchingNextPage && <p>...loading more</p>}
-      {!isLoading && !hasNextPage && <p>You caught them all</p>}
-    </Layout>
+      <MainHeader />
+      <SnippetFeed
+        setTagId={onTagIdClick}
+        setUsernameId={onUsernameIdClick}
+        searchBy={searchBy}
+        searchTerm={searchTerm}
+        snippets={data?.items}
+        username={username}
+        // tagParam={tagParam}
+        setTagParam={setTagParam}
+      />
+      <button type="button" ref={loadMoreButtonRef}>
+        ''
+      </button>
+    </div>
   );
 };
