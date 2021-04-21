@@ -12,6 +12,9 @@ interface Props extends SelectProps {
   value?: string;
   options: Options[];
   onChange?: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+  // onChange: React.ChangeEventHandler<HTMLSelectElement>;
+
+  // onChange: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export const SelectInput: React.FC<Props> = ({
@@ -24,7 +27,12 @@ export const SelectInput: React.FC<Props> = ({
 }) => (
   <FormControl id={name}>
     {label && <FormLabel>{label}</FormLabel>}
-    <Select value={value} onChange={onChange} {...props}>
+    <Select
+      value={value}
+      // onChange={(e) => onChange(e.target.value)}
+      onChange={onChange}
+      {...props}
+    >
       {options.map((option) => (
         <option key={option.value} value={option.value}>
           {option.label}
