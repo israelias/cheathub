@@ -1,6 +1,6 @@
-import React, { StrictMode } from 'react';
+import { StrictMode } from 'react';
 import { render } from 'react-dom';
-import { ChakraProvider } from '@chakra-ui/react';
+import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { UserProvider } from './context/user.context';
@@ -10,7 +10,17 @@ render(
   <StrictMode>
     <UserProvider>
       <ReactQueryProvider>
-        <ChakraProvider>
+        <ChakraProvider
+          theme={extendTheme({
+            styles: {
+              global: (props) => ({
+                body: {
+                  bg: props.colorMode === 'dark' ? '#141625' : '#fff',
+                },
+              }),
+            },
+          })}
+        >
           <App />
         </ChakraProvider>
       </ReactQueryProvider>
