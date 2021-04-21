@@ -88,7 +88,10 @@ export function signUpRequest({
           pathname: redirectTo + data.username,
         });
       }
-    });
+    })
+    .catch((error) =>
+      console.log(error.data, error.status, error.headers)
+    );
 }
 
 /**
@@ -302,7 +305,9 @@ export function getRequest({ url, accessToken }: IGetRequest) {
   });
   return fetch(request)
     .then((res) => (res.ok ? res.json() : console.log(res)))
-    .catch((error) => console.error(error));
+    .catch((error) =>
+      console.log(error.data, error.status, error.headers)
+    );
 }
 
 /**
