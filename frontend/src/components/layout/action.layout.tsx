@@ -14,10 +14,10 @@ import MainGrid from './setout/main/grid/main.grid';
 import SecondaryArea from './setout/main/areas/secondary.area';
 import PrimaryArea from './setout/main/areas/primary.area';
 
-import { Primary } from './primary.layout';
-import { Secondary } from './secondary.layout';
+// import { Primary } from '../../containers/primary.container';
+// import { Secondary } from '../../containers/secondary.container';
 
-const Layout: React.FC<LayoutProps> = ({ children }) => {
+export const LayoutTest: React.FC<LayoutProps> = ({ children }) => {
   const wtf = 'wtf';
   return (
     <RootGrid>
@@ -44,4 +44,3 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     </RootGrid>
   );
 };
-export default Layout;

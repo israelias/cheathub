@@ -7,7 +7,7 @@ import {
   useColorMode,
   useColorModeValue as mode,
 } from '@chakra-ui/react';
-import { ToggleButtonBar } from './toggleDivider';
+import { ToggleButtonBar } from '../../reference/toggleDivider';
 
 interface Props {
   children: React.ReactNode;
