@@ -35,7 +35,7 @@ export const SideNav: React.FC<Props> = ({
           width: '0px',
         },
         '&::-webkit-scrollbar-track': {
-          width: '6px',
+          width: '0px',
         },
         '&::-webkit-scrollbar-thumb': {
           background: '#1c3535',

@@ -14,6 +14,9 @@ import MainGrid from './setout/main/grid/main.grid';
 import SecondaryArea from './setout/main/areas/secondary.area';
 import PrimaryArea from './setout/main/areas/primary.area';
 
+import { Primary } from './primary.layout';
+import { Secondary } from './secondary.layout';
+
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const wtf = 'wtf';
   return (
