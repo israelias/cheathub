@@ -6,12 +6,18 @@ import { RouteComponentProps } from 'react-router';
 // } from '../lib/fetcher';
 // import { useUserContext } from '../context/user.context';
 
-interface Props
-  extends RouteComponentProps<{ id: string }> {}
+interface Props extends RouteComponentProps<{ id: string }> {}
 
-export const Registration: React.FC<Props> = ({
-  match,
-}) => {
+/**
+ * Frontend public endpoing that handles redirects pre and post authentication.
+ * Potentially features trial of services.
+ * @file defines Registration endpoint.
+ * @date 2021-04-21
+ * @param {any} match
+ * @param {any}
+ * @return {=>}
+ */
+export const Registration: React.FC<Props> = ({ match }) => {
   // const user = useUserContext();
   // const router = useHistory()
   // const [error, setError] = React.useState(null);

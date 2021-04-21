@@ -9,6 +9,17 @@ import { useUserContext } from '../context/user.context';
 
 interface Props extends RouteComponentProps<{ id: string }> {}
 
+/**
+ * Frontend public endpoint that represents user authentication UI.
+ // TODO merge with registration logic
+ * @file defines Login page
+ * @date 2021-04-01
+ * @param {any} {history
+ * @param {any} match
+ * @param {any} location
+ * @param {any} }
+ * @return {=>}
+ */
 export const Login: React.FC<Props> = ({
   history,
   match,

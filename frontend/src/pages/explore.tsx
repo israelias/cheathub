@@ -24,7 +24,8 @@ import {
   Container as MainContainer,
 } from '../components/layout/commonCard';
 import useIntersectionObserver from '../lib/useIntersect';
-import Layout from '../components/layout';
+
+import { Primary } from '../containers/primary.container';
 
 interface FetchProps {
   page: number;
@@ -41,6 +42,17 @@ interface ExploreProps extends RouteComponentProps<{ id: string }> {
   snippets: Snippet[];
 }
 
+/**
+ * Frontend public endpoint that represents an array of snippets from an HTTP get request.
+ *
+ * @file defines Explore page route
+ * @since 2021-04-08
+ * @param {any} snippets
+ * @param {any} history
+ * @param {any} match
+ * @param {any}
+ * @return {=>}
+ */
 export const Explore: React.FC<ExploreProps> = ({
   snippets,
   history,
@@ -101,7 +113,7 @@ export const Explore: React.FC<ExploreProps> = ({
   ) : status === 'error' && isError(error) ? (
     <p>Error: {error.message}</p>
   ) : (
-    <Layout>
+    <Primary>
       <MainContainer>
         <MainFeed snippets={data?.items} />
       </MainContainer>
@@ -134,6 +146,6 @@ export const Explore: React.FC<ExploreProps> = ({
 
         <div>{isFetching ? 'Fetching...' : null}</div>
       </div>
-    </Layout>
+    </Primary>
   );
 };
