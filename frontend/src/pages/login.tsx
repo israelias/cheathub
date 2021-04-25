@@ -53,12 +53,12 @@ export const Login: React.FC<Props> = ({
               setAccessToken,
               history,
               // from,
-              redirectTo: '/posts',
+              redirectTo: '/collections',
             });
           } catch (err) {
             setError(err);
           }
-          history.replace(from);
+          // history.replace(from);
         }}
       >
         <input
