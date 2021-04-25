@@ -1,0 +1,156 @@
+
+/**
+ * Styles for accordion module.
+ *
+ * @tutorial https://codesandbox.io/s/framer-motion-accordion-vmj0n?file=/src/Example.tsx
+ */
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background-repeat: no-repeat;
+  padding: 0;
+  margin: 0;
+}
+
+.example-container {
+  width: 75%;
+  padding: 20px;
+}
+
+.refresh {
+  padding: 10px;
+  position: absolute;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 10px;
+  width: 20px;
+  height: 20px;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.accordion {
+  border: 1px solid #bbb;
+  border-bottom: 0;
+  overflow: hidden;
+  padding: 0 10px;
+}
+
+.accordion + .accordion {
+  border-top: 0;
+}
+
+.accordion.accordion--open {
+  border-bottom: 1px solid #bbb;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  margin-bottom: 20px;
+  padding: 10px;
+}
+
+.accordion.accordion--next-to-open {
+  border-bottom: 1px solid #ddd;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  padding-bottom: 10px;
+}
+
+.accordion.accordion--next-to-open header {
+  border-bottom: 0;
+}
+.accordion + .accordion.accordion--open {
+  border-top: 1px solid #bbb;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  margin-top: 20px;
+}
+
+.accordion.accordion--open + .accordion {
+  border-top: 1px solid #bbb;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  padding-top: 10px;
+}
+.accordion:first-child {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  padding-top: 10px;
+}
+
+.accordion:last-child {
+  border-bottom: 1px solid #bbb;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  padding-bottom: 10px;
+}
+
+.accordion:last-child header {
+  border-bottom: 0;
+}
+
+header {
+  border-bottom: 1px solid #f6f6f6;
+  color: #000;
+  cursor: pointer;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  justify-content: space-between;
+}
+
+header:hover {
+  background: #f6f6f6;
+  border-radius: 6px;
+}
+
+.accordion.accordion--open header {
+  background: #f6f6f6;
+  border: 0;
+  border-radius: 6px;
+}
+
+.word {
+  height: 18px;
+  border-radius: 10px;
+  display: inline-block;
+  margin-bottom: 8px;
+  margin-right: 8px;
+  background: #0055ff;
+  border-radius: 10px;
+  display: inline-block;
+}
+
+.paragraph {
+  margin-bottom: 20px;
+}
+
+.paragraph:last-child {
+  margin: 0;
+}
+
+section {
+  overflow: hidden;
+}
+
+@media (max-width: 600px) {
+  .content-placeholder {
+    padding-left: 20px;
+  }
+
+  .header .word {
+    height: 30px;
+  }
+
+  .word {
+    height: 14px;
+    margin-bottom: 5px;
+    margin-right: 5px;
+  }
+
+  .paragraph {
+    margin-bottom: 20px;
+  }
+}

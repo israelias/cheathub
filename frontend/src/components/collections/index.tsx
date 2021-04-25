@@ -36,17 +36,19 @@ import {
 } from '@chakra-ui/icons';
 import { PATHS } from '../../constants/paths.constants';
 import { useUserContext } from '../../context/user.context';
-import { data as collections, data } from '../../testapi';
+// import { data as collections, data } from '../../testapi';
 import { TimeAgo } from '../shared/time';
 
 interface CollectionsProps {
   IloggedIn?: Boolean;
   Iusername?: String;
+  collections: Collection[];
 }
 
 const Collections: React.FC<CollectionsProps> = ({
   IloggedIn,
   Iusername,
+  collections,
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { username } = useUserContext();
@@ -127,7 +129,7 @@ const Collections: React.FC<CollectionsProps> = ({
                                 <Select>
                                   {collections.map((col) =>
                                     col.snippets.map(
-                                      (snip: { _id: any }, j: any) =>
+                                      (snip: Snippet, j: number) =>
                                         snip._id === snippet._id && (
                                           <option value={col.name}>
                                             {col.name}
