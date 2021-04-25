@@ -156,8 +156,8 @@ export async function loginRequest({
     );
     // history.replace(from);
     history.push({
-      // pathname: `${redirectTo}/${token.username}`,
-      pathname: redirectTo,
+      pathname: `${redirectTo}/${token.username}`,
+      // pathname: redirectTo,
     });
   }
 }

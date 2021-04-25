@@ -59,6 +59,17 @@ export const RequestTicket = ({
       body: JSON.stringify(body),
     });
   }
+
+  if (method === 'delete') {
+    return new Request(`${API}/${url}`, {
+      method: 'DELETE',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  }
   return new Request(`${API}/${url}`, {
     method: 'GET',
     credentials: 'include',
