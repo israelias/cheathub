@@ -22,11 +22,11 @@ from bson import ObjectId
 
 
 class CollectionsApi(Resource):
-    # @jwt_required()
+    @jwt_required()
     def get(self):
-        # user_id = get_jwt_identity()
+        user_id = get_jwt_identity()
         collections = []
-        for doc in Collection.objects(private=False):
+        for doc in Collection.objects(private=False, owner=user_id):
             collections.append(
                 {
                     "_id": str(ObjectId(doc["id"])),
@@ -51,11 +51,12 @@ class CollectionsApi(Resource):
             user_id = get_jwt_identity()
             body = request.get_json()
             owner = User.objects.get(username=user_id)
+            now = datetime.datetime.now(datetime.timezone.utc)
 
-            collection = Collection(**body, owner=owner)
+            collection = Collection(**body, owner=owner, date=now)
             collection.save()
-            user.update(push__collections=collection)
-            user.save()
+            owner.update(push__collections=collection)
+            owner.save()
             id = collection.id
             return {"id": str(id)}, 200
 
