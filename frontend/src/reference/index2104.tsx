@@ -4,11 +4,11 @@ import {
   GridItem,
   useColorModeValue as mode,
 } from '@chakra-ui/react';
-import { Content } from '../components/layout/main';
-import { SideNav } from '../components/layout/side';
-import Navbar from '../components/navbar';
-import Collections from '../components/collections';
-import Actions from '../components/actions';
+import { Content } from '../connectors/main';
+import { SideNav } from '../connectors/side';
+import Navbar from '../components/navigation/navbar';
+// import Collections from '../components/collections';
+import Actions from '../components/navigation/actions';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -98,9 +98,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               gridArea={['secondary']}
               bg="papayawhip"
             >
-              <SideNav>
-                <Collections />
-              </SideNav>
+              <SideNav>{/* <Collections /> */}</SideNav>
             </GridItem>
 
             <GridItem

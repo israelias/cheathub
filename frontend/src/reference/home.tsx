@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import * as React from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import FormElement from '../components/form';
+import FormElement from './form';
 import { SpecialButton } from './special-button';
 
 interface Props extends RouteComponentProps {}
