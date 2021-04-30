@@ -1,38 +1,146 @@
-import React from 'react';
-import { useHistory } from 'react-router-dom';
-import { Button, Container } from '@chakra-ui/react';
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable no-alert */
+/* eslint-disable no-console */
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable react-hooks/exhaustive-deps */
+import * as React from 'react';
+
+import {
+  Flex,
+  Heading,
+  IconButton,
+  Button,
+  ButtonGroup,
+  Text,
+  FormControl,
+  FormLabel,
+  Input,
+  FormHelperText,
+  Textarea,
+  Box,
+  HStack,
+  useMediaQuery,
+  GridItem,
+  useToast,
+  AlertDialog,
+  AlertDialogOverlay,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogBody,
+  AlertDialogFooter,
+  useBoolean,
+  Tooltip,
+  useClipboard,
+  VStack,
+} from '@chakra-ui/react';
+
+import {
+  CheckIcon,
+  InfoIcon,
+  WarningIcon,
+  CopyIcon,
+  AddIcon,
+  CloseIcon,
+  LinkIcon,
+  EditIcon,
+  MinusIcon,
+} from '@chakra-ui/icons';
+
+import { AnimatePresence, motion } from 'framer-motion';
 
 interface Props {
-  snippet: Snippet;
+  title: string;
+  alert: boolean;
+  setAlert: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const DeleteSnippet: React.FC<Props> = ({
-  snippet,
+/**
+ * Frontend private endpoint that represents a single code snippet post.
+ * Selected by `_id`.
+ * CRUD operations begin from this component tree.
+ * @file defines route for one unique Snippet.
+ * @date 2021-04-21
+ * @param {any} title
+ * @param {any} alert
+ * @param {any} setAlert
+ * @return {=>}
+ */
+export const DeleteModal: React.FC<Props> = ({
+  title,
+  alert,
+  setAlert,
 }) => {
-  const history = useHistory();
+  const [baseLg] = useMediaQuery('(min-width: 62em)');
+  const cancelRef = React.useRef<HTMLButtonElement>(null);
+
+  const closeAlert = () => setAlert(false);
+
   return (
-    <div>
-      <Container>
-        <div>
-          <h1>
-            Are you sure you want to delete your code
-            snippet {snippet.title}?
-          </h1>
-          <form
-            action={`/delete/${snippet.id}`}
-            method="POST"
+    <>
+      <AlertDialog
+        motionPreset="scale"
+        isOpen={alert}
+        leastDestructiveRef={cancelRef}
+        onClose={closeAlert}
+        isCentered
+        returnFocusOnClose
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent
+            bg="#fff"
+            border={['1px solid #bbb']}
+            p="10px"
+            borderRadius="10px"
           >
-            <Button type="submit">YES, DELETE</Button>
-          </form>
-          <Button
-            onClick={() => {
-              history.push('/snippets/all');
-            }}
-          >
-            NEVERMIND
-          </Button>
-        </div>
-      </Container>
-    </div>
+            <Box
+              bg="#fff"
+              border={['1px solid #bbb']}
+              p="10px"
+              borderRadius="10px"
+            >
+              <AlertDialogHeader
+                display="flex"
+                alignItems="center"
+                justifyContent="space-between"
+                height="50px"
+                borderRadius="10px"
+                cursor="normal"
+                bg="#f6f6f6"
+                p={['0 10px']}
+                borderBottom={['1px solid #f6f6f6']}
+              >
+                Delete Snippet?
+                <WarningIcon />
+              </AlertDialogHeader>
+
+              <AlertDialogBody height="50px" p={0.5} m="10px">
+                Are you sure you want to delete {title}? You can't
+                undo this action afterwards.
+              </AlertDialogBody>
+
+              <AlertDialogFooter>
+                <Button
+                  variant="outline"
+                  ref={cancelRef}
+                  onClick={closeAlert}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  form="delete"
+                  type="submit"
+                  variant="outline"
+                  colorScheme="red"
+                  onClick={closeAlert}
+                  ml={3}
+                >
+                  Delete
+                </Button>
+              </AlertDialogFooter>
+            </Box>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
+    </>
   );
 };
