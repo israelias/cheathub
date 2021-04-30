@@ -2,20 +2,30 @@ from .db import db
 from flask_bcrypt import generate_password_hash, check_password_hash
 import datetime
 
+from flask_restful import url_for
+
 
 class Snippet(db.Document):
-    meta = {"collection": "snippet"}
+    meta = {
+        "collection": "snippet",
+        # "indexes": [
+        #     {
+        #         "name": "search_by",
+        #         "unique": True,
+        #         "fields": ["$title", "$description"],
+        #         "default_language": "en",
+        #         "language_override": "en",
+        #         "weights": {"title": 10, "description": 2},
+        #     }
+        # ],
+    }
+
     title = db.StringField(required=True)
-
-    def __str__(self):
-        return self.title
-
     filename = db.StringField(unique=False)
     tags = db.ListField(db.StringField())
     description = db.StringField()
     language = db.StringField(default="javascript")
     value = db.StringField(required=True)
-
     addedBy = db.ReferenceField("User", required=True)
     likedBy = db.ListField(db.ReferenceField("User"))
     addedOn = db.DateTimeField(required=True, default=datetime.datetime.utcnow)
@@ -23,8 +33,15 @@ class Snippet(db.Document):
     private = db.BooleanField(default=False)
     active: db.BooleanField(default=True)
     source = db.URLField(unique=False)
+    score = db.IntField(required=True, default=0)
+
+    def like_count(self):
+        return len(self.likedBy)
 
     def __repr__(self):
+        return self.title
+
+    def __str__(self):
         return self.title
 
 
@@ -35,6 +52,7 @@ class Collection(db.Document):
     owner = db.ReferenceField("User", required=True)
     snippets = db.ListField(db.ReferenceField("Snippet", reverse_delete_rule=db.PULL))
     private = db.BooleanField(default=False)
+    date = db.DateTimeField(default=datetime.datetime.utcnow)
 
     def __repr__(self):
         return self.name
@@ -44,30 +62,17 @@ class Collection(db.Document):
 
 
 class User(db.Document):
-    meta = {
-        "collection": "user",
-        "cascade": True,
-        "indexes": [
-            {
-                "fields": ["$username", "$email"],
-                # "default_language": "english",
-                "weights": {"username": 10, "email": 2},
-            }
-        ],
-    }
-
+    meta = {"collection": "user"}
     username = db.StringField(required=True, unique=True)
     email = db.EmailField(required=True, unique=True)
     password = db.StringField(required=True, min_length=6)
     online = db.BooleanField(default=True)
-
     snippets_created = db.ListField(
         db.ReferenceField("Snippet", reverse_delete_rule=db.PULL)
     )
     snippets_liked = db.ListField(
         db.ReferenceField("Snippet", reverse_delete_rule=db.PULL)
     )
-
     collections = db.ListField(db.ReferenceField("Collection"))
 
     def hash_password(self):
@@ -86,7 +91,12 @@ class User(db.Document):
 User.register_delete_rule(Snippet, "addedBy", db.CASCADE)
 User.register_delete_rule(Snippet, "likedBy", db.CASCADE)
 User.register_delete_rule(Collection, "owner", db.CASCADE)
-# Collection.register_delete_rule(Snippet, 'owner', db.CASCADE)
+# Collection.register_delete_rule(Snippet, "owner", db.CASCADE)
+
+# class Favorite(db.Document):
+#     meta = {"collection": "favorite"}
+#     user_id = db.ReferenceField('User')
+#     snippet_id = db.ReferenceField('Snippet')
 
 
 class TokenBlocklist(db.Document):
