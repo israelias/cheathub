@@ -41,6 +41,10 @@
     "strict": [2, "never"],
     "react/jsx-uses-react": 2,
     "react/jsx-uses-vars": 2,
+    "no-nested-ternary": "off",
+    "react/no-array-index-key": "off",
+    "no-underscore-dangle": "off",
+    "react-hooks/exhaustive-deps": "off",
 
     // "object-property-newline": ["warn", { "allowMultiplePropertiesPerLine": 1 }],
     // "object-curly-spacing": "off",
@@ -93,10 +97,7 @@
         ]
       }
     ],
-    "no-object-literal-type-assertion": [
-      0,
-      { "allow-arguments": 0 }
-    ],
+    "no-object-literal-type-assertion": [0, { "allow-arguments": 0 }],
 
     // React
     "react/jsx-props-no-spreading": "off",
