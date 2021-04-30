@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable no-console */
 /* eslint-disable no-underscore-dangle */
@@ -9,42 +11,25 @@ import {
   Textarea,
   Button,
   Select,
-  Container,
   Box,
   Text,
 } from '@chakra-ui/react';
 import { AddIcon, MinusIcon } from '@chakra-ui/icons';
 import { AnimatePresence } from 'framer-motion';
 import cn from 'classnames';
-import { SelectInput } from '../snippet_crud/select-input';
-import { TextInput } from '../snippet_crud/text-search-input';
-import { LANGUAGES } from '../../constants/languages.constants';
+import { TextInput } from '../../../snippet/crud/text-search-input';
 import {
   putRequest,
   getRequest,
   postRequest,
-} from '../../lib/fetcher';
-import { Viewer } from '../editor/viewer';
+} from '../../../../lib/fetcher';
 
-import {
-  CodeBlock,
-  Display,
-  Card,
-  Heading,
-  Description,
-  ButtonGroup,
-  Button as CardButton,
-} from '../layout/styled/commonCard';
-import {
-  MotionBox,
-  MotionInput,
-  MotionSelect,
-} from '../shared/motion-box';
-import { useUserContext } from '../../context/user.context';
+import { MotionBox } from '../../../shared/motion-box';
+import { useUserContext } from '../../../../context/user.context';
 
-import './styles.css';
+import '../../styles.css';
 
-interface AddCollectionProps extends RouteComponentProps {
+interface CollectionActionProps extends RouteComponentProps {
   collectionsData: Collection[];
   allSnippetsData: Snippet[];
   collectionId?: string;
@@ -55,7 +40,7 @@ interface AddCollectionProps extends RouteComponentProps {
   setCollectionId?: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export const AddCollection = withRouter(
+const CollectionAction = withRouter(
   ({
     history,
     allSnippetsData,
@@ -66,7 +51,7 @@ export const AddCollection = withRouter(
     setCollectionId,
     id,
     j,
-  }: AddCollectionProps) => {
+  }: CollectionActionProps) => {
     const { accessToken } = useUserContext();
     const [message, setMessage] = React.useState(null);
     const [name, setName] = React.useState('Your Title');
@@ -90,7 +75,6 @@ export const AddCollection = withRouter(
         setCollection('');
       }
       setCollection(value);
-      // setCollection(value.split(';'));
     };
 
     const onNameChange = (
@@ -108,18 +92,12 @@ export const AddCollection = withRouter(
     return (
       <>
         <Box className={className}>
-          <header>
+          <header onClick={() => setExpandedCollection(-1)}>
             <Box>
-              <Text>Collections</Text>
-              <Text as="span" color="gray.600" fontSize="sm">
-                Add New
-              </Text>
+              <Text>Add New</Text>
             </Box>
 
-            <Box
-              justifySelf="end"
-              onClick={() => setExpandedCollection(-1)}
-            >
+            <Box justifySelf="end">
               {isOpen ? (
                 <MinusIcon fontSize="12px" />
               ) : (
@@ -171,51 +149,26 @@ export const AddCollection = withRouter(
                   />
                   <FormControl id={name}>
                     <FormLabel>Choose Snippets to add</FormLabel>
-
-                    <AnimatePresence>
-                      {allSnippetsData &&
-                        allSnippetsData.map((data, i) => (
-                          <MotionBox
-                            as="option"
-                            key={`${i}-add-option-${data._id}`}
-                            // value={data._id}
-                            // positionTransition
-                            initial={{
-                              opacity: 0,
-                              y: 50,
-                              scale: 0.3,
-                            }}
-                            animate={{
-                              opacity: 1,
-                              y: 0,
-                              scale: 1,
-                            }}
-                            exit={{
-                              opacity: 0,
-                              scale: 0.5,
-                              transition: { duration: 0.2 },
-                            }}
-                          >
-                            {data.title}
-                            {/* <CloseButton
-                                close={() =>
-                                  setNotifications(
-                                    remove(notifications, id)
-                                  )
-                                } */}
-                            {/* /> */}
-                          </MotionBox>
-                        ))}
-                    </AnimatePresence>
-                    <MotionSelect
+                    <Select
                       value={collection}
                       onChange={onCollectionChange}
                     >
-                      <option>test</option>
-                    </MotionSelect>
+                      {allSnippetsData &&
+                        allSnippetsData.map((data, i) => (
+                          <option
+                            key={`${i}-add-option-${data._id}`}
+                            value={data._id}
+                          >
+                            {data.title}
+                          </option>
+                        ))}
+                    </Select>
                   </FormControl>
 
                   <Button type="submit">Add Collection</Button>
+                  <Button onClick={() => setExpandedCollection(0)}>
+                    Cancel
+                  </Button>
                 </form>
                 {message && (
                   <div style={{ color: 'tomato' }}>
@@ -230,3 +183,5 @@ export const AddCollection = withRouter(
     );
   }
 );
+
+export default CollectionAction;

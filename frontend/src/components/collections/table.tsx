@@ -33,7 +33,7 @@ import cn from 'classnames';
 import { TimeAgo } from '../shared/time';
 import { MotionBox } from '../shared/motion-box';
 
-import { CardButton } from '../card/view';
+import { CardButton } from '../snippet/view';
 
 import './styles.css';
 
@@ -65,28 +65,6 @@ export const CollectionTable: React.FC<CollectionTableProps> = ({
   const [sharedCols, setSharedCols] = React.useState<
     Array<Collection>
   >([collection]);
-
-  // const allCols: Array<Collection> = [collection];
-
-  // const allCols: any = [];
-
-  // React.useEffect(() => {
-  //   if (collections) {
-  //     collections.forEach((col) => {
-  //       col.snippets.forEach((snip) => {
-  //         if (snip._id === snippet._id) {
-  //           allCols.push(col);
-
-  //           if (col.name !== allCols[allCols.length - 1].name) {
-  //             allCols.push(col);
-  //           }
-  //         }
-  //       });
-  //     });
-  //     setSharedCols(allCols);
-  //     console.log('totes', allCols);
-  //   }
-  // }, [allCols]);
 
   return (
     <Table size="sm">

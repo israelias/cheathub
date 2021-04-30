@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable no-param-reassign */
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable array-callback-return */
@@ -16,7 +17,10 @@ import {
   HStack,
   Flex,
   Link,
+  List,
+  ListItem,
 } from '@chakra-ui/react';
+
 import {
   HamburgerIcon,
   CloseIcon,
@@ -24,15 +28,12 @@ import {
   MinusIcon,
 } from '@chakra-ui/icons';
 import { AnimatePresence } from 'framer-motion';
-import { Link as RouterLink } from 'react-router-dom';
+
 import cn from 'classnames';
 
-import { TimeAgo } from '../shared/time';
-import { MotionBox } from '../shared/motion-box';
-import { CollectionTable } from './table';
-import { CardButton } from '../card/view';
+import { MotionBox } from '../../../shared/motion-box';
 
-import './styles.css';
+import '../../styles.css';
 
 /**
  * Frontend user dashboard endpoint that represents an array of collections from an HTTP get request.
@@ -42,7 +43,7 @@ import './styles.css';
  * @tutorial https://codesandbox.io/s/framer-motion-accordion-vmj0n?file=/src/Example.tsx:366-489
  */
 
-interface ViewProps {
+interface CollectionItemProps {
   collection: Collection;
   collections: Collection[];
   i: number;
@@ -51,13 +52,25 @@ interface ViewProps {
   setCollectionId: React.Dispatch<React.SetStateAction<string>>;
   expandedCollection: number;
   setExpandedCollection: React.Dispatch<React.SetStateAction<number>>;
-  expandedCollectionDetails: false | number;
+  expandedCollectionDetails: number | false;
   setExpandedCollectionDetails: React.Dispatch<
     React.SetStateAction<number | false>
   >;
+  selectedSnippets: Snippet[] | undefined;
+  setSelectedSnippets: React.Dispatch<
+    React.SetStateAction<Snippet[] | undefined>
+  >;
+  selectedCollection: Collection | undefined;
+  setSelectedCollection: React.Dispatch<
+    React.SetStateAction<Collection | undefined>
+  >;
+  selectedSnippetId: string;
+  setSelectedSnippetId: React.Dispatch<React.SetStateAction<string>>;
+  setHeading: React.Dispatch<React.SetStateAction<string>>;
+  setExpandedSnippet: React.Dispatch<React.SetStateAction<number>>;
 }
 
-export const View: React.FC<ViewProps> = ({
+const CollectionItem: React.FC<CollectionItemProps> = ({
   collection,
   collections,
   i,
@@ -68,6 +81,14 @@ export const View: React.FC<ViewProps> = ({
   setExpandedCollection,
   expandedCollectionDetails,
   setExpandedCollectionDetails,
+  selectedSnippets,
+  setSelectedSnippets,
+  selectedCollection,
+  setSelectedCollection,
+  selectedSnippetId,
+  setSelectedSnippetId,
+  setHeading,
+  setExpandedSnippet,
 }) => {
   const isOpen = i === expandedCollection || id === collectionId;
   const isOpenDetails = i === expandedCollectionDetails;
@@ -79,25 +100,41 @@ export const View: React.FC<ViewProps> = ({
   return (
     <>
       <Box className={className}>
-        <header onClick={() => setExpandedCollection(isOpen ? 0 : i)}>
-          <Box>
+        <header
+          onClick={() => {
+            setExpandedCollection(isOpen ? 0 : i);
+            setExpandedSnippet(0);
+            setSelectedSnippets(collection.snippets);
+            setSelectedCollection(collection);
+            setHeading(collection.name);
+          }}
+        >
+          <HStack>
             <Text>{collection.name}</Text>
-            <Text as="span" color="gray.600" fontSize="sm">
+          </HStack>
+          <Box>
+            <Text
+              justifySelf="end"
+              as="span"
+              color="gray.600"
+              fontSize="sm"
+              mr="10px"
+            >
               {collection.snippets.length} snips
             </Text>
+            {isOpen ? (
+              <MinusIcon fontSize="12px" />
+            ) : (
+              <AddIcon fontSize="12px" />
+            )}
           </Box>
-
-          {isOpen ? (
-            <MinusIcon fontSize="12px" />
-          ) : (
-            <AddIcon fontSize="12px" />
-          )}
         </header>
 
         <AnimatePresence initial={false}>
           {isOpen && (
             <MotionBox
               as="section"
+              overflow="hidden"
               initial="collapsed"
               animate="open"
               exit="collapsed"
@@ -122,18 +159,26 @@ export const View: React.FC<ViewProps> = ({
                 </Text>
                 <MinusIcon />
               </Flex>
-              {collection.snippets &&
-                collection.snippets.map((snippet, index) => (
-                  <CollectionTable
-                    key={`${index}-table-collection-${collection._id}-snippet-${snippet._id}`}
-                    snippet={snippet}
-                    i={i}
-                    collection={collection}
-                    collections={collections}
-                    setCollectionId={setCollectionId}
-                    setExpandedCollection={setExpandedCollection}
-                  />
-                ))}
+              <List>
+                {collection.snippets &&
+                  collection.snippets.map((snippet, index) => (
+                    <ListItem
+                      key={`${index}-list-item-${collection._id}-snippet-${snippet._id}`}
+                      cursor="pointer"
+                      bg={
+                        selectedSnippetId === snippet.title
+                          ? '#f6f6f6'
+                          : 'white'
+                      }
+                      _hover={{ bg: '#f6f6f6', borderRadius: '6px' }}
+                      onClick={() => {
+                        setSelectedSnippets([snippet]);
+                      }}
+                    >
+                      {snippet.title}
+                    </ListItem>
+                  ))}
+              </List>
             </MotionBox>
           )}
         </AnimatePresence>
@@ -141,3 +186,5 @@ export const View: React.FC<ViewProps> = ({
     </>
   );
 };
+
+export default CollectionItem;
