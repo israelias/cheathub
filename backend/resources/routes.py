@@ -12,6 +12,20 @@ from .reset_password import ForgotPassword, ResetPassword
 from .search import SearchApi
 from .status import Status
 
+from .auth import SignupApi, LoginApi, LogoutApi
+from .user import UsersApi, UserApi
+from .snippet import SnippetsApi, SnippetApi, LikeSnippetApi
+from .collection import CollectionApi, CollectionsApi
+from .profile import (
+    MySnippetsApi,
+    MyFaveSnippetsApi,
+    MyCollectionsApi,
+    MyCollectionApi,
+)
+from .reset_password import ForgotPassword, ResetPassword
+from .search import SearchApi
+from .status import Status
+
 from .tags import TagsApi
 
 

@@ -36,8 +36,6 @@ from services.pagination_service import pagination_meta, pagination_links
 from database.constants import (
     all_languages,
     all_tags,
-    # all_fans,
-    # all_usernames
 )
 
 
@@ -95,7 +93,7 @@ class SearchApi(Resource):
             all_tags_arr = all_tags()
 
             if len(search) == 0:
-                print("NO QUERY", search)
+                # print("NO QUERY", search)
                 query = (
                     Snippet.objects(
                         language__in=[language] if language else all_langs_arr,
@@ -142,7 +140,7 @@ class SearchApi(Resource):
                 return jsonify(resp)
 
             else:
-                print("HAS QUERY", search, type(search), len(search))
+                # print("HAS QUERY", search, type(search), len(search))
                 query = (
                     Snippet.objects(
                         # language__in=[language] if language else all_langs_arr,

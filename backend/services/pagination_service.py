@@ -1,5 +1,3 @@
-# from flask_mongoengine import Pagination,
-# from flask import Pagination
 from flask import Response, request, jsonify
 from flask_restful import Resource, abort, marshal, url_for
 from database.models import Snippet, User, Collection
@@ -51,15 +49,3 @@ def pagination_meta(pagination):
         "total_items": pagination.total,
     }
     return meta
-
-
-def retrieve_widget_list(page, per_page):
-    pagination = Snippet.objects.paginate(page=page, per_page=per_page)
-    response_data = marshal(pagination, "pagination_model")
-    response_data["links"] = pagination_links(pagination)
-    # response = jsonify(response_data)
-    response = jsonify([elem for elem in response_data])
-    # response = [obj.to_mongo().to_dict() for obj in pagination.objects]
-    # response.headers["Link"] = _pagination_nav_header_links(pagination)
-    # response.headers["Total-Count"] = pagination.total
-    return response

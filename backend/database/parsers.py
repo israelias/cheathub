@@ -59,28 +59,4 @@ user_parser.add_argument("author", type=str, required=False)
 user_parser.add_argument("liked_by", type=str, required=False)
 
 
-create_widget_reqparser = RequestParser(bundle_errors=True)
-create_widget_reqparser.add_argument(
-    "name",
-    type=String,
-    location="form",
-    required=True,
-    nullable=False,
-    case_sensitive=True,
-)
-create_widget_reqparser.add_argument(
-    "info_url",
-    type=url,
-    location="form",
-    required=True,
-    nullable=False,
-)
-create_widget_reqparser.add_argument(
-    "deadline",
-    type=DateTime,
-    location="form",
-    required=True,
-    nullable=False,
-)
-update_widget_reqparser = create_widget_reqparser.copy()
-update_widget_reqparser.remove_argument("name")
+

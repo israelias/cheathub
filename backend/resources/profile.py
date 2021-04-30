@@ -123,7 +123,7 @@ class MyCollectionsApi(Resource):
                         "updatedOn": k["updatedOn"],
                         "private": k["private"],
                         "source": k["source"],
-                        "score": doc["score"],
+                        # "score": doc["score"],
                         "url": url_for("snippetapi", id=str(ObjectId(doc["id"]))),
                     }
                     for k in doc["snippets"]
