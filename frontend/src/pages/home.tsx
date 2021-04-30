@@ -1,6 +1,7 @@
+import React from 'react';
 import { Box, Text, Link, VStack, Grid } from '@chakra-ui/react';
-import { Link as RouterLink } from 'react-router-dom';
-import { Logo } from '../components/actions/Logo';
+import { Link as RouterLink, useHistory } from 'react-router-dom';
+import { Logo } from '../components/navigation/actions/Logo';
 import { checkAuth } from '../lib/checkAuth';
 import { useUserContext } from '../context/user.context';
 
@@ -13,7 +14,14 @@ import { useUserContext } from '../context/user.context';
  */
 export const Home: React.FC = () => {
   const { username } = useUserContext();
+  const history = useHistory();
   const loggedIn = checkAuth({ username });
+
+  React.useEffect(() => {
+    if (loggedIn) {
+      history.push(`/collections/${username}`);
+    }
+  }, [loggedIn]);
 
   return (
     <Box textAlign="center" fontSize="xl">
