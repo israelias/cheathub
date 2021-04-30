@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { useInfiniteQuery } from 'react-query';
 
 // const { API } = process.env;
 const API = 'http://localhost:5000';
@@ -64,24 +63,24 @@ export const setInitialData = async ({
   return data;
 };
 
-export function useSnippetsInfinite(tag: string) {
-  const { data, ...rest } = useInfiniteQuery(
-    'snips',
-    ({ pageParam = 1 }) => fetchSnippets(pageParam),
-    {
-      getNextPageParam: (res) => {
-        if (res.meta.has_next) {
-          return res.page + 1;
-        }
-        return false;
-      },
-    }
-  );
+// export function useSnippetsInfinite(tag: string) {
+//   const { data, ...rest } = useInfiniteQuery(
+//     'snips',
+//     ({ pageParam = 1 }) => fetchSnippets(pageParam),
+//     {
+//       getNextPageParam: (res) => {
+//         if (res.meta.has_next) {
+//           return res.page + 1;
+//         }
+//         return false;
+//       },
+//     }
+//   );
 
-  const snips = data?.pages.flatMap((page) => page.items);
+//   const snips = data?.pages.flatMap((page) => page.items);
 
-  return {
-    ...rest,
-    snips,
-  };
-}
+//   return {
+//     ...rest,
+//     snips,
+//   };
+// }

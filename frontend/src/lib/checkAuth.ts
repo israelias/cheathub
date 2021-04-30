@@ -3,7 +3,7 @@ interface ICheckAuth {
 }
 
 export function checkAuth({ username }: ICheckAuth) {
-  const userMemory = username;
+  const userMemory = username && username.length > 0;
   const userLocal = localStorage.getItem('username');
   const shouldRedirect = !(userMemory || userLocal);
   if (shouldRedirect) {
