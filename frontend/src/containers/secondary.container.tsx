@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { SideNav } from '../components/layout/side';
+import { SideNav } from '../connectors/side';
 
 import SecondaryArea from '../components/layout/setout/main/areas/secondary.area';
 
@@ -21,7 +21,9 @@ interface ContainerProps {
 export const Secondary: React.FC<ContainerProps> = ({ children }) => (
   <>
     <SecondaryArea>
-      <SideNav>{children}</SideNav>
+      {/* <SideNav> */}
+      {children}
+      {/* </SideNav> */}
     </SecondaryArea>
   </>
 );

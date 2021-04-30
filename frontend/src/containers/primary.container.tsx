@@ -1,5 +1,5 @@
 import React from 'react';
-import { Content } from '../components/layout/main';
+import { Content } from '../connectors/main';
 
 import PrimaryArea from '../components/layout/setout/main/areas/primary.area';
 
@@ -20,7 +20,9 @@ interface ContainerProps {
 export const Primary: React.FC<ContainerProps> = ({ children }) => (
   <>
     <PrimaryArea>
-      <Content>{children}</Content>
+      {/* <Content> */}
+      {children}
+      {/* </Content> */}
     </PrimaryArea>
   </>
 );

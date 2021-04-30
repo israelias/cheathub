@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Navbar from '../components/navbar';
+import Navbar from '../components/navigation/navbar';
 
 import TitleBarArea from '../components/layout/setout/root/areas/titlebar.area';
 
