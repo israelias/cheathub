@@ -1,3 +1,5 @@
+// import { IconName } from 'react-icons/si';
+
 export const LANGUAGES = [
   {
     value: 'applescript',

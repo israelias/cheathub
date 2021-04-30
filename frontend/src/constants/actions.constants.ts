@@ -12,13 +12,6 @@ import {
   GoDiffAdded,
 } from 'react-icons/go';
 
-export const PATHS = [
-  { label: 'Collections', path: '/collections' },
-  { label: 'Faves', path: '/faves' },
-  { label: 'Explore', path: '/explore' },
-  { label: 'Add', path: '/explore/add' },
-];
-
 export const ACTIONS = [
   {
     label: 'Collections',
@@ -27,7 +20,16 @@ export const ACTIONS = [
   },
   { label: 'Faves', path: '/faves', icon: GoBookmark },
   { label: 'Explore', path: '/explore', icon: GoTelescope },
-  { label: 'Add', path: '/explore/add', icon: GoDiffAdded },
+  { label: 'Add', path: '/add', icon: GoFileCode },
+];
 
-  { label: 'Sign Out', path: '/logout', icon: GoSignOut },
+export const ADDING = [
+  { label: 'Save', path: '/', icon: GoFileCode },
+  { label: 'Cancel', path: '/faves', icon: GoFileCode },
+];
+
+export const EDITING = [
+  { label: 'Save', path: '/', icon: GoFileCode },
+  { label: 'Cancel', path: '/faves', icon: GoFileCode },
+  { label: 'Delete', path: '/explore', icon: GoFileCode },
 ];
