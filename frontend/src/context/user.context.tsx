@@ -40,23 +40,23 @@ export const UserProvider = ({ children }: Props) => {
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
 
-  const eventName = 'app_logout';
-  const userLocal = window.localStorage.getItem('username');
-  const logoutEvent = window.localStorage.getItem('app_logout');
-  const shouldTerminate = !(userLocal || logoutEvent);
+  // const eventName = 'app_logout';
+  // const userLocal = window.localStorage.getItem('username');
+  // const logoutEvent = window.localStorage.getItem('app_logout');
+  // const shouldTerminate = !(userLocal || logoutEvent);
 
-  React.useEffect(() => {
-    if (shouldTerminate) {
-      console.log('what');
-      setLoggedIn(false);
-      setUsername('');
-      setAccessToken('');
-    }
-  }, [shouldTerminate, userLocal, logoutEvent]);
+  // React.useEffect(() => {
+  //   if (shouldTerminate) {
+  //     console.log('what');
+  //     setLoggedIn(false);
+  //     setUsername('');
+  //     setAccessToken('');
+  //   }
+  // }, [shouldTerminate, userLocal, logoutEvent]);
 
-  React.useEffect(() => {
-    checkLogoutEvent();
-  }, []);
+  // React.useEffect(() => {
+  //   checkLogoutEvent();
+  // }, []);
 
   return (
     <UserContext.Provider
