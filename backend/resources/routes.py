@@ -9,12 +9,16 @@ from .profile import (
     MyCollectionApi,
 )
 from .reset_password import ForgotPassword, ResetPassword
+from .search import SearchApi
 from .status import Status
 
+from .tags import TagsApi
+
+
 def initialize_routes(api):
-    
+
     # Root
-    api.add_resource(Status, '/')
+    api.add_resource(Status, "/")
     # Sign Up
     # Post, username, email and password (Token returned)
     api.add_resource(SignupApi, "/api/auth/signup")
@@ -58,3 +62,9 @@ def initialize_routes(api):
     api.add_resource(MyCollectionsApi, "/api/users/<user_id>/collections")
     # My Profile Collection (Full with Snippets)
     api.add_resource(MyCollectionApi, "/api/users/<user_id>/collections/<id>")
+
+    # SEARCH endpoint
+    api.add_resource(SearchApi, "/api/search")
+
+    # TAGS list endpoint (reference)
+    api.add_resource(TagsApi, "/api/tags")
