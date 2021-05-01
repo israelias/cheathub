@@ -17,6 +17,10 @@ import {
   Select as BasicSelect,
   Box,
   Text,
+  useOutsideClick,
+  Switch,
+  HStack,
+  ButtonGroup,
 } from '@chakra-ui/react';
 import { AddIcon, MinusIcon } from '@chakra-ui/icons';
 import { AnimatePresence } from 'framer-motion';
@@ -34,6 +38,7 @@ import CreatableSelect, {
 
 import { SelectInput } from '../../../snippet/crud/select-input';
 import { TextInput } from '../../../snippet/crud/text-search-input';
+import { StyledLabel } from '../../../snippet/crud/form-label';
 import {
   putRequest,
   getRequest,
@@ -59,6 +64,7 @@ interface SnippetActionProps extends RouteComponentProps {
   setExpandedSnippet: React.Dispatch<React.SetStateAction<number>>;
   setCollectionId?: React.Dispatch<React.SetStateAction<string>>;
   snippetActionRef: React.RefObject<HTMLInputElement>;
+  setEditingSnippet: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const SnippetAction = withRouter(
@@ -72,6 +78,7 @@ const SnippetAction = withRouter(
     expandedSnippet,
     setExpandedSnippet,
     snippetActionRef,
+    setEditingSnippet,
   }: SnippetActionProps) => {
     const API = 'http://localhost5000/api';
 
@@ -256,6 +263,13 @@ const SnippetAction = withRouter(
       }
     };
 
+    const snippetItemRef = React.useRef<HTMLDivElement>(null);
+
+    useOutsideClick({
+      ref: snippetItemRef,
+      handler: () => setEditingSnippet(false),
+    });
+
     React.useEffect(() => {
       if (selectedSnippet) {
         setTitle(selectedSnippet.title);
@@ -278,13 +292,10 @@ const SnippetAction = withRouter(
 
     return (
       <>
-        <Box className={className}>
+        <Box ref={snippetItemRef} className={className}>
           <header onClick={() => setExpandedSnippet(-1)}>
             <Box>
               <Text>Add New</Text>
-              {/* <Text as="span" color="gray.600" fontSize="sm">
-                Add New
-              </Text> */}
             </Box>
 
             <Box justifySelf="end">
@@ -318,16 +329,10 @@ const SnippetAction = withRouter(
                   codeLanguage={language}
                 />
                 <Box>
-                  <form onSubmit={handleSubmit}>
+                  <form id="snippet" onSubmit={handleSubmit}>
                     <Box pb="10px">
                       <FormControl id="title">
-                        <FormLabel
-                          color="gray.600"
-                          fontWeight="light"
-                          fontSize="sm"
-                        >
-                          Title
-                        </FormLabel>
+                        <StyledLabel label="Title" />
                         <Input
                           ref={snippetActionRef}
                           type="text"
@@ -341,33 +346,8 @@ const SnippetAction = withRouter(
                         <FormHelperText hidden>Title.</FormHelperText>
                       </FormControl>
 
-                      {/* <TextInput
-                        name="title"
-                        label="Snippet Title:"
-                        value={title}
-                        onChange={onTitleChange}
-                      /> */}
-
-                      <FormControl id="collection">
-                        <FormLabel>Choose Snippets to add</FormLabel>
-                        <BasicSelect
-                          value={collection}
-                          onChange={onCollectionChange}
-                        >
-                          {allSnippetsData &&
-                            allSnippetsData.map((data, i) => (
-                              <option
-                                key={`${i}-add-option-${data._id}`}
-                                value={data._id}
-                              >
-                                {data.title}
-                              </option>
-                            ))}
-                        </BasicSelect>
-                      </FormControl>
-
                       <FormControl id="body">
-                        <FormLabel>Code Snippet:</FormLabel>
+                        <StyledLabel label="Code Snippet" />
 
                         <Textarea
                           value={codeValue}
@@ -375,12 +355,20 @@ const SnippetAction = withRouter(
                         />
                       </FormControl>
 
-                      <TextInput
-                        name="description"
-                        label="Description:"
-                        value={description}
-                        onChange={onDescriptionChange}
-                      />
+                      <FormControl
+                        pt="10px"
+                        isRequired
+                        id="description"
+                      >
+                        <StyledLabel label="Description" />
+                        <Input
+                          mt="10px"
+                          borderColor="#f6f6f6"
+                          fontSize="sm"
+                          value={description}
+                          onChange={onDescriptionChange}
+                        />
+                      </FormControl>
 
                       <SelectInput
                         label="Language:"
@@ -394,43 +382,97 @@ const SnippetAction = withRouter(
                         // value={tags}
                         onChange={onTagsChange}
                       />
-                      {/* <TextInput
-                    name="tags"
-                    label="Tags: (separate by semicolon)"
-                    // value={snippet.tags.join(';')}
-                    value={tags}
-                    onChange={(e) => setTags(e.target.value)}
-                  /> */}
 
-                      <Box pt="10px" pb="10px">
-                        {/* <MultiSelect
-                          options={tagOptions}
-                          value={tags}
-                          onChange={setTags}
-                          labelledBy="Select"
-                        /> */}
-                      </Box>
+                      <FormControl pt="10px" id="source">
+                        <StyledLabel label="Source" />
+                        <Input
+                          mt="10px"
+                          type="text"
+                          size="sm"
+                          borderColor="#f6f6f6"
+                          value="source"
+                          placeholder="https://"
+                          onChange={() => {}}
+                        />
+                        <FormHelperText hidden>
+                          Add a URL source?
+                        </FormHelperText>
+                      </FormControl>
+
+                      <FormControl
+                        // justifyContent="space-between"
+                        pt="10px"
+                        display="flex"
+                        alignItems="center"
+                      >
+                        <FormLabel
+                          p={['0 10px']}
+                          m={0}
+                          bg="#f6f6f6"
+                          borderRadius="md"
+                          color="gray.700"
+                          fontWeight="light"
+                          size="sm"
+                          fontSize="sm"
+                          htmlFor="private"
+                          mb="0"
+                        >
+                          Make private
+                        </FormLabel>
+                        <Switch ml="10px" size="sm" id="private" />
+                        <FormHelperText hidden>
+                          Snippets are public by default
+                        </FormHelperText>
+                      </FormControl>
                     </Box>
-
-                    <Button type="submit">
-                      {selectedSnippet
-                        ? 'Update Snippet'
-                        : 'Add Snippet'}
-                    </Button>
-
-                    <Button
-                      onClick={() => {
-                        setTitle('');
-                        setDescription('');
-                        setCodeValue('');
-                        setLanguage('');
-                        // setTags('');
-                        setExpandedSnippet(0);
-                      }}
-                    >
-                      Cancel
-                    </Button>
                   </form>
+                  <HStack>
+                    <form
+                      id="delete"
+                      // onSubmit={handleDelete}
+                    >
+                      <Button
+                        type="button"
+                        // isLoading={deleting}
+                        loadingText="Deleting"
+                        // onClick={() => setAlert(true)}
+                      >
+                        Delete
+                      </Button>
+                    </form>
+                    <ButtonGroup
+                      variant="outline"
+                      spacing="8"
+                      alignSelf="center"
+                      padding={['20px 10px']}
+                    >
+                      <Button
+                        ml="12px"
+                        type="button"
+                        // onClick={handleCancel}
+                        onClick={() => {
+                          setTitle('');
+                          setDescription('');
+                          setCodeValue('');
+                          setLanguage('');
+                          // setTags('');
+                          setExpandedSnippet(0);
+                          setEditingSnippet(false);
+                        }}
+                      >
+                        Cancel
+                      </Button>
+
+                      <Button
+                        type="submit"
+                        form="snippet"
+                        // isLoading={submitting}
+                        loadingText="Submitting"
+                      >
+                        {selectedSnippet ? 'Update' : 'Add'}
+                      </Button>
+                    </ButtonGroup>
+                  </HStack>
                   {message && (
                     <div style={{ color: 'tomato' }}>
                       {JSON.stringify(message, null, 2)}
