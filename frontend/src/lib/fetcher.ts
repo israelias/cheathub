@@ -370,6 +370,7 @@ export async function postRequest({
 interface ISimplePostRequest {
   accessToken: string;
   url: string;
+  body: object;
 }
 
 /**
@@ -377,7 +378,6 @@ interface ISimplePostRequest {
  * (for Likes, and Adds)
  *
  * @see RequestTicket
- * @see useUserContext
  * @implements {ISimplePostRequest}
  * @param  {} url url string of backend resource (/api/snippets or /api/collections)
  * @param  {} accessToken access token stored in context memory for request Authorization header
@@ -386,18 +386,15 @@ interface ISimplePostRequest {
 export async function likeRequest({
   url,
   accessToken,
+  body,
 }: ISimplePostRequest) {
   const request = RequestTicket({
     method: 'post',
     url,
     token: accessToken,
+    body,
   });
-  const res = await fetch(request);
-  if (res.ok) {
-    res.json();
-  } else {
-    console.log(res);
-  }
+  return fetch(request);
 }
 
 /**
