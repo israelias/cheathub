@@ -1,7 +1,6 @@
-/* eslint-disable react/no-array-index-key */
 /* eslint-disable no-alert */
 /* eslint-disable no-console */
-/* eslint-disable no-underscore-dangle */
+
 /* eslint-disable react-hooks/exhaustive-deps */
 import * as React from 'react';
 
@@ -34,6 +33,13 @@ import {
   Tooltip,
   useClipboard,
   VStack,
+  Editable,
+  EditableInput,
+  EditablePreview,
+  Checkbox,
+  Switch,
+  Divider,
+  Select,
 } from '@chakra-ui/react';
 
 import {
@@ -61,8 +67,7 @@ import {
 
 import { LANGUAGES } from '../../../constants/languages.constants';
 
-import { SelectInput } from './select-input';
-import { TextInput } from './text-search-input';
+import { StyledLabel } from './form-label';
 
 import {
   MotionSection,
@@ -75,7 +80,17 @@ import {
   MotionP,
 } from '../../shared/motion-box';
 
-interface OneFormProps {
+/**
+ * Frontend private endpoint that represents a single code snippet post.
+ * Selected by `_id`.
+ * CRUD operations begin from this component tree.
+ * @file defines route for one unique Snippet.
+ * @date 2021-04-21
+ * @param {any} match
+ * @param {any} history
+ * @return {=>}
+ */
+const SnippetCrud: React.FC<{
   snippet: Snippet | undefined;
   editing: boolean;
   setAlert: React.Dispatch<React.SetStateAction<boolean>>;
@@ -91,6 +106,8 @@ interface OneFormProps {
   setTags: React.Dispatch<React.SetStateAction<string>>;
   source: string;
   setSource: React.Dispatch<React.SetStateAction<string>>;
+  privatize?: string;
+  setPrivatize?: React.Dispatch<React.SetStateAction<string>>;
   submitting?: boolean;
   deleting: boolean;
   setId?: React.Dispatch<React.SetStateAction<string>>;
@@ -98,19 +115,7 @@ interface OneFormProps {
   handleDelete: React.FormEventHandler<HTMLFormElement>;
   handleCancel: React.MouseEventHandler<HTMLButtonElement>;
   message: string;
-}
-
-/**
- * Frontend private endpoint that represents a single code snippet post.
- * Selected by `_id`.
- * CRUD operations begin from this component tree.
- * @file defines route for one unique Snippet.
- * @date 2021-04-21
- * @param {any} match
- * @param {any} history
- * @return {=>}
- */
-const SnippetCrud: React.FC<OneFormProps> = ({
+}> = ({
   editing,
   setAlert,
   title,
@@ -125,6 +130,8 @@ const SnippetCrud: React.FC<OneFormProps> = ({
   setTags,
   source,
   setSource,
+  privatize,
+  setPrivatize,
   submitting,
   deleting,
   handleSubmit,
@@ -139,89 +146,75 @@ const SnippetCrud: React.FC<OneFormProps> = ({
         borderRadius="10px"
         padding={['0 10px']}
         border={['1px solid #bbb']}
+        mt="10px"
       >
-        <form onSubmit={handleSubmit}>
-          <FormControl id="title">
-            <FormLabel
-              color="gray.600"
-              fontWeight="light"
-              fontSize="sm"
-            >
-              Title
-            </FormLabel>
+        <form id="snippet" onSubmit={handleSubmit}>
+          <FormControl pt="10px" isRequired id="title">
+            <StyledLabel label="Title" />
             <Input
               type="text"
               borderColor="#f6f6f6"
-              variant="flushed"
-              height="50px"
-              padding={['0 10px']}
+              fontSize="sm"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
             />
             <FormHelperText hidden>Title.</FormHelperText>
           </FormControl>
 
-          <FormControl id="body">
-            <FormLabel
-              color="gray.600"
-              fontWeight="light"
-              fontSize="sm"
-              height="50px"
-            >
-              Code Snippet
-            </FormLabel>
+          <FormControl pt="10px" isRequired id="body">
+            <StyledLabel label="Code Snippet" />
             <Textarea
+              mt="10px"
               mr="-10px"
+              minHeight="20vh"
+              fontSize="sm"
+              // variant="outline"
               borderRadius={0}
               value={value}
               onChange={(e) => setValue(e.target.value)}
             />
+            <FormHelperText hidden>
+              Paste code from a source or type here directly.
+            </FormHelperText>
           </FormControl>
 
-          <FormControl id="description">
-            <FormLabel
-              color="gray.600"
-              fontWeight="light"
-              fontSize="sm"
-            >
-              Description
-            </FormLabel>
-            <Input
-              type="text"
+          <FormControl pt="10px" isRequired id="description">
+            <StyledLabel label="Description" />
+            <Textarea
+              mt="10px"
               borderColor="#f6f6f6"
-              variant="flushed"
-              height="50px"
-              padding={['0 10px']}
+              fontSize="sm"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
-            <FormHelperText hidden>Description.</FormHelperText>
+            <FormHelperText hidden>
+              A short description of your code snippet.
+            </FormHelperText>
           </FormControl>
 
-          <SelectInput
-            height="50px"
-            padding={['0 10px']}
-            variant="flushed"
-            label="Language:"
-            options={languages}
-            value={language}
-            onChange={(e) => setLanguage(e.target.value)}
-          />
-
-          <FormControl id="tags">
-            <FormLabel
-              color="gray.600"
-              fontWeight="light"
-              fontSize="sm"
+          <FormControl pt="10px" isRequired id="language">
+            <StyledLabel label="Language" />
+            <Select
+              mt="10px"
+              size="sm"
+              value={language}
+              onChange={(e) => setLanguage(e.target.value)}
             >
-              Tags
-            </FormLabel>
+              {languages.map((lang: Options) => (
+                <option key={lang.value} value={lang.value}>
+                  {lang.label}
+                </option>
+              ))}
+            </Select>
+          </FormControl>
+
+          <FormControl pt="10px" id="tags">
+            <StyledLabel label="Tags" />
             <Input
+              mt="10px"
               type="text"
+              size="sm"
               borderColor="#f6f6f6"
-              variant="flushed"
-              height="50px"
-              padding={['0 10px']}
               value={tags}
               onChange={(e) => setTags(e.target.value)}
             />
@@ -230,56 +223,130 @@ const SnippetCrud: React.FC<OneFormProps> = ({
             </FormHelperText>
           </FormControl>
 
-          <FormControl id="source">
-            <FormLabel
-              color="gray.600"
-              fontWeight="light"
-              fontSize="sm"
-            >
-              Source
-            </FormLabel>
+          <FormControl pt="10px" id="source">
+            <StyledLabel label="Source" />
             <Input
+              mt="10px"
               type="text"
+              size="sm"
               borderColor="#f6f6f6"
-              variant="flushed"
-              height="50px"
-              padding={['0 10px']}
               value={source}
+              placeholder="https://"
               onChange={(e) => setSource(e.target.value)}
             />
-            <FormHelperText hidden>Description.</FormHelperText>
+            <FormHelperText hidden>Add a URL source?</FormHelperText>
           </FormControl>
 
-          <ButtonGroup
-            variant="outline"
-            spacing="12"
-            alignSelf="center"
-            padding={['10px 10px']}
+          <FormControl
+            // justifyContent="space-between"
+            pt="10px"
+            display="flex"
+            alignItems="center"
           >
-            <Button type="button" onClick={handleCancel}>
-              Cancel
-            </Button>
-
-            <Button
-              type="submit"
-              isLoading={submitting}
-              loadingText="Submitting"
+            <FormLabel
+              p={['0 10px']}
+              m={0}
+              bg="#f6f6f6"
+              borderRadius="md"
+              color="gray.700"
+              fontWeight="light"
+              size="sm"
+              fontSize="sm"
+              htmlFor="private"
+              mb="0"
             >
-              {editing ? 'Update' : 'Add'}
-            </Button>
-          </ButtonGroup>
+              Make private
+            </FormLabel>
+            {privatize && setPrivatize && (
+              <Switch
+                ml="10px"
+                size="sm"
+                id="private"
+                value={privatize}
+                onChange={(e) => setPrivatize(e.target.value)}
+              />
+            )}
+            <FormHelperText hidden>
+              Snippets are public by default
+            </FormHelperText>
+          </FormControl>
         </form>
-        {editing && (
-          <form id="delete" onSubmit={handleDelete}>
-            <Button
-              type="button"
-              isLoading={deleting}
-              loadingText="Deleting"
-              onClick={() => setAlert(true)}
+        {editing ? (
+          <HStack>
+            <form id="delete" onSubmit={handleDelete}>
+              <Button
+                type="button"
+                isLoading={deleting}
+                loadingText="Deleting"
+                onClick={() => setAlert(true)}
+              >
+                Delete
+              </Button>
+            </form>
+            <ButtonGroup
+              variant="outline"
+              spacing="8"
+              alignSelf="center"
+              padding={['20px 10px']}
             >
-              Delete
-            </Button>
-          </form>
+              <Button ml="12px" type="button" onClick={handleCancel}>
+                Cancel
+              </Button>
+
+              <Button
+                type="submit"
+                form="snippet"
+                isLoading={submitting}
+                loadingText="Submitting"
+              >
+                {editing ? 'Update' : 'Add'}
+              </Button>
+            </ButtonGroup>
+          </HStack>
+        ) : (
+          <HStack>
+            <form id="delete" onSubmit={handleDelete}>
+              <Button
+                type="button"
+                isLoading={deleting}
+                loadingText="Deleting"
+                onClick={() => setAlert(true)}
+              >
+                Delete
+              </Button>
+            </form>
+            <ButtonGroup
+              variant="outline"
+              spacing="8"
+              alignSelf="center"
+              padding={['20px 10px']}
+            >
+              <Button
+                ml="12px"
+                type="button"
+                onClick={() => {
+                  setTitle('');
+                  setDescription('');
+                  setValue('');
+                  setLanguage('');
+                  setTags('');
+                  // setExpandedSnippet(0);
+                  // setEditingSnippet(false);
+                }}
+              >
+                Cancel
+              </Button>
+
+              <Button
+                type="submit"
+                form="snippet"
+                isLoading={submitting}
+                loadingText="Submitting"
+              >
+                {editing ? 'Update' : 'Add'}
+              </Button>
+            </ButtonGroup>
+          </HStack>
         )}
         {message && (
           <div style={{ color: 'tomato' }}>

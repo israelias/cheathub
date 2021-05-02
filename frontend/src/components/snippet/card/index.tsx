@@ -5,7 +5,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import * as React from 'react';
 
-import { RouteComponentProps } from 'react-router';
+import { RouteComponentProps, useHistory } from 'react-router';
 
 import {
   Flex,
@@ -86,19 +86,6 @@ import {
 
 const MotionArticle = motion(Box);
 
-interface OneSnipProps {
-  snippet: Snippet | undefined;
-  editing: boolean;
-  loading: boolean;
-  title: string;
-  language: string;
-  value: string;
-  description: string;
-  tags: string;
-  source: string;
-  id: string;
-}
-
 /**
  * Frontend private endpoint that represents a single code snippet post.
  * Selected by `_id`.
@@ -109,7 +96,33 @@ interface OneSnipProps {
  * @param {any} history
  * @return {=>}
  */
-const SnippetCard: React.FC<OneSnipProps> = ({
+const SnippetCard: React.FC<{
+  setTags: React.Dispatch<React.SetStateAction<string>>;
+  // handleFave: (
+  //   e: React.MouseEvent<HTMLButtonElement>
+  // ) => Promise<void>;
+  handleFave: (snipId: string) => Promise<void>;
+  setFaveSnippet: {
+    readonly on: () => void;
+    readonly off: () => void;
+    readonly toggle: () => void;
+  };
+  faveSnippet: boolean;
+  snippet: Snippet | undefined;
+  editing: boolean;
+  loading: boolean;
+  title: string;
+  language: string;
+  value: string;
+  description: string;
+  tags: string;
+  source: string;
+  id: string;
+}> = ({
+  setTags,
+  handleFave,
+  setFaveSnippet,
+  faveSnippet,
   snippet,
   editing,
   loading,
@@ -123,12 +136,11 @@ const SnippetCard: React.FC<OneSnipProps> = ({
 }) => {
   const { accessToken, username } = useUserContext();
   const [baseLg] = useMediaQuery('(min-width: 62em)');
-
+  const history = useHistory();
   const { hasCopied, onCopy } = useClipboard(value);
 
   const [lineNumbers, setLineNumbers] = useBoolean();
   const [wrapLines, setWrapLines] = useBoolean();
-  const [faveSnippet, setFaveSnippet] = useBoolean();
 
   return (
     <>
@@ -298,13 +310,12 @@ const SnippetCard: React.FC<OneSnipProps> = ({
                               key={`form-${tag}`}
                               color="gray.600"
                               fontSize="sm"
-                              cursor="pointer"
+                              cursor="default"
                               pr="12px"
                               _before={{
                                 content: `'+ '`,
                                 fontWeight: 'bold',
                               }}
-                              _hover={{ textDecoration: 'underline' }}
                             >
                               {tag}
                             </MotionLi>
@@ -325,6 +336,7 @@ const SnippetCard: React.FC<OneSnipProps> = ({
                                 fontWeight: 'bold',
                               }}
                               _hover={{ textDecoration: 'underline' }}
+                              onClick={() => setTags(tag)}
                             >
                               {tag}
                             </MotionLi>
@@ -420,39 +432,47 @@ const SnippetCard: React.FC<OneSnipProps> = ({
                     <Button
                       variant="outline"
                       size="xs"
-                      onClick={() => snippet._id}
                       mr="-px"
                       fontWeight="light"
                       rightIcon={<EditIcon fontSize="10px" />}
+                      onClick={() =>
+                        history.push(`/explore/${snippet._id}`)
+                      }
                     >
                       Edit
                     </Button>
                   ) : (
-                    <Button
-                      variant="outline"
-                      size="xs"
-                      mr="-px"
-                      fontWeight="light"
-                      rightIcon={
-                        faveSnippet ? (
-                          <MinusIcon fontSize="10px" />
-                        ) : (
-                          <AddIcon fontSize="10px" />
-                        )
-                      }
-                      onClick={() => {
-                        setFaveSnippet.toggle();
-                        // handleFave();
-                      }}
-                    >
-                      {!editing &&
-                      username &&
-                      snippet &&
-                      !faveSnippet &&
-                      snippet.likedBy.includes(username)
-                        ? 'Unfave'
-                        : 'Fave'}
-                    </Button>
+                    !editing &&
+                    snippet &&
+                    username && (
+                      // <form onSubmit={handleFave} id="fave">
+                      <Button
+                        type="submit"
+                        // form="fave"
+                        variant="outline"
+                        size="xs"
+                        mr="-px"
+                        fontWeight="light"
+                        rightIcon={
+                          faveSnippet ? (
+                            <MinusIcon fontSize="10px" />
+                          ) : (
+                            <AddIcon fontSize="10px" />
+                          )
+                        }
+                        onClick={() => handleFave(snippet._id)}
+                        // onClick={() => {
+                        //   setFaveSnippet.toggle();
+
+                        // }}
+                      >
+                        {!faveSnippet &&
+                        snippet.likedBy.includes(username)
+                          ? 'Unfave'
+                          : 'Fave'}
+                      </Button>
+                      // </form>
+                    )
                   )}
                 </HStack>
               </MotionFooter>
