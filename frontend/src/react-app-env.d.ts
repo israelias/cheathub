@@ -1,5 +1,18 @@
 /// <reference types="react-scripts" />
 
+declare namespace NodeJS {
+  interface ProcessEnv {
+    NODE_ENV: 'development' | 'production' | 'test';
+    PUBLIC_URL: string;
+    REACT_APP_HASH: string;
+    REACT_APP_API_URI: string;
+    REACT_APP_WS_URI: string;
+    PUBLIC_API: string;
+  }
+}
+interface Window {
+  Stripe: any;
+}
 interface Snippet {
   [id: string]: string;
   title: string;
@@ -13,6 +26,10 @@ interface Snippet {
   updatedOn: string;
   collection: Array<Collection>;
   private: boolean;
+  filename: string;
+  source: string;
+  score: number;
+  url: string;
 }
 
 type SearchBy = 'title' | 'language' | 'tags';
@@ -43,18 +60,12 @@ interface UserContext {
   username: string;
   setUsername: React.Dispatch<React.SetStateAction<string>>;
   accessToken: string;
-  setAccessToken: React.Dispatch<
-    React.SetStateAction<string>
-  >;
+  setAccessToken: React.Dispatch<React.SetStateAction<string>>;
   loggedIn: boolean;
-  setLoggedIn: React.Dispatch<
-    React.SetStateAction<boolean>
-  >;
+  setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
   // setLoggedIn: (loggedIn: boolean) => void;
   loading: boolean;
-  setLoading?: React.Dispatch<
-    React.SetStateAction<boolean>
-  >;
+  setLoading?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface Collection {
@@ -62,30 +73,24 @@ interface Collection {
   name: string;
   private: boolean;
   owner: User['username'];
+  url: string;
   snippets: Array<Snippet>;
 }
 
 interface SnippetProps {
   snippets: Array<Snippet>;
   onTagClick?: React.Dispatch<React.SetStateAction<string>>;
-  setCurrentTag?: React.Dispatch<
-    React.SetStateAction<string>
-  >;
+  setCurrentTag?: React.Dispatch<React.SetStateAction<string>>;
   setTagId?: React.Dispatch<React.SetStateAction<string>>;
   tags?: Array<string>;
-  // onTagClick?(
-  //   event: React.MouseEvent<HTMLButtonElement>
-  // ): void;
-
-  // onTagClick?: (
-  //   event: React.MouseEvent<HTMLButtonElement>
-  // ) => void;
 }
 
 interface TagProps {
   tags: Array<string>;
-  setCurrentTag: React.Dispatch<
-    React.SetStateAction<string>
-  >;
+  setCurrentTag: React.Dispatch<React.SetStateAction<string>>;
   setTagId: React.Dispatch<React.SetStateAction<string>>;
+}
+
+interface LayoutProps {
+  children: React.ReactNode;
 }
