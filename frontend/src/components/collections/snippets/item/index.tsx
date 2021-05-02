@@ -45,41 +45,27 @@ import '../../styles.css';
 
 interface SnippetItemProps {
   snippet: Snippet;
-  snippets: Snippet[];
   k: number;
-  id?: string;
-  selectedSnippetId: string | '';
   setSelectedSnippetId: React.Dispatch<React.SetStateAction<string>>;
-  selectedSnippet: Snippet | undefined;
   setSelectedSnippet: React.Dispatch<
     React.SetStateAction<Snippet | undefined>
   >;
   expandedSnippet: number;
   setExpandedSnippet: React.Dispatch<React.SetStateAction<number>>;
-  expandedSnippetDetails: number | false;
-  setExpandedSnippetDetails: React.Dispatch<
-    React.SetStateAction<number | false>
-  >;
-  editSnippet: (id: string) => Promise<void>;
+  setEditingSnippet: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const SnippetItem: React.FC<SnippetItemProps> = ({
   snippet,
-  snippets,
   k,
-  id,
-  selectedSnippetId,
   setSelectedSnippetId,
-  selectedSnippet,
   setSelectedSnippet,
   expandedSnippet,
   setExpandedSnippet,
-  expandedSnippetDetails,
-  setExpandedSnippetDetails,
-  editSnippet,
+  setEditingSnippet,
 }) => {
   const isOpen = k === expandedSnippet;
-  const isOpenDetails = k === expandedSnippetDetails;
+
   const className = cn('accordion', {
     'accordion--open': isOpen,
     'accordion--next-to-open': k === expandedSnippet - 1,
@@ -173,6 +159,7 @@ const SnippetItem: React.FC<SnippetItemProps> = ({
                     setSelectedSnippet(snippet);
                     // editSnippet(snippet._id);
                     setIsEditing(true);
+                    setEditingSnippet(true);
                   }}
                 >
                   Edit this snippet
