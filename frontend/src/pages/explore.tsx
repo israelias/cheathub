@@ -6,15 +6,9 @@
 /* eslint-disable no-extra-boolean-cast */
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
-import {
-  useQuery,
-  useInfiniteQuery,
-  useQueryClient,
-  // useMutation,
-  // useQueryClient,
-} from 'react-query';
+
 import axios from 'axios';
-import { Search } from '../components/snippet_crud/search-form';
+import { Search } from '../components/snippet/crud/search-form';
 // import { ToUserButton } from '../components/shared/special-button'
 import { getRequest } from '../lib/fetcher';
 import { useUserContext } from '../context/user.context';
@@ -33,8 +27,8 @@ import { Secondary } from '../containers/secondary.container';
 import { Content } from '../connectors/main';
 import { SideNav } from '../connectors/side';
 
-import { View } from '../components/card/view';
-import { Wrapper } from '../components/card/wrapper';
+import { View } from '../components/snippet/view';
+
 // interface FetchProps {
 //   page: number;
 //   tag: string;
@@ -68,70 +62,61 @@ export const Explore: React.FC<ExploreProps> = ({
   history,
   match,
 }) => {
-  const queryClient = useQueryClient();
   const user = useUserContext();
   const [tagParam, setTagParam] = React.useState('');
   const [pageParam, setPageParam] = React.useState(1);
-  // const [currentTag, setCurrentTag] = React.useState('');
-  // const onTagParamClick = (tag: string) => setTagParam(tag);
+
   const [expanded, setExpanded] = React.useState<false | number>(0);
   const [expandDetails, setExpandDetails] = React.useState<
     false | number
   >(false);
-  const {
-    error,
-    status,
-    data,
-    isFetching,
-    isPreviousData,
-  } = useQuery(
-    ['snippets', pageParam, tagParam],
-    () => fetchSnippets({ page: pageParam, tag: tagParam }),
-    {
-      keepPreviousData: true,
-      staleTime: 5000,
-    }
-  );
 
-  React.useEffect(() => {
-    if (data?.has_next) {
-      queryClient.prefetchQuery(['snippets', pageParam + 1], () =>
-        fetchSnippets({
-          page: pageParam + 1,
-          tag: tagParam,
-        })
-      );
-    }
-  }, [data, pageParam, tagParam, queryClient]);
+  // const {
+  //   error,
+  //   status,
+  //   data,
+  //   isFetching,
+  //   isPreviousData,
+  // } = useQuery(
+  //   ['snippets', pageParam, tagParam],
+  //   () => fetchSnippets({ page: pageParam, tag: tagParam }),
+  //   {
+  //     keepPreviousData: true,
+  //     staleTime: 5000,
+  //   }
+  // );
+
+  // React.useEffect(() => {
+  //   if (data?.has_next) {
+  //     queryClient.prefetchQuery(['snippets', pageParam + 1], () =>
+  //       fetchSnippets({
+  //         page: pageParam + 1,
+  //         tag: tagParam,
+  //       })
+  //     );
+  //   }
+  // }, [data, pageParam, tagParam, queryClient]);
 
   const loadMoreButtonRef = React.useRef<HTMLButtonElement>(null);
-  useIntersectionObserver(loadMoreButtonRef, {
-    enabled: data?.has_next,
-    // onIntersect: fetchNextPage,
-    onIntersect: () => {
-      setPageParam((p) => p + 1);
-      queryClient.prefetchQuery(['snippets', pageParam + 1], () =>
-        fetchSnippets({
-          page: pageParam + 1,
-          tag: tagParam,
-        })
-      );
-    },
-  });
+  // useIntersectionObserver(loadMoreButtonRef, {
+  //   enabled: data?.has_next,
+  //   onIntersect: () => {
+  //     setPageParam((p) => p + 1);
+  //     queryClient.prefetchQuery(['snippets', pageParam + 1], () =>
+  //       fetchSnippets({
+  //         page: pageParam + 1,
+  //         tag: tagParam,
+  //       })
+  //     );
+  //   },
+  // });
   // const isVisible = !!entry?.isIntersecting;
 
-  return status === 'loading' ? (
-    <p>Loading...</p>
-  ) : status === 'error' && isError(error) ? (
-    <p>Error: {error.message}</p>
-  ) : (
+  return (
     <>
       <Secondary>fff</Secondary>
       <Content>
-        {/* <MainContainer>
-        <MainFeed snippets={data?.items} />
-      </MainContainer> */}
-        <Wrapper>
+        {/* <>
           {data?.items?.map((item: Snippet, i: number) => (
             <View
               key={i}
@@ -143,7 +128,7 @@ export const Explore: React.FC<ExploreProps> = ({
               setExpandDetails={setExpandDetails}
             />
           ))}
-        </Wrapper>
+        </> */}
 
         <div>
           <div>
@@ -164,14 +149,14 @@ export const Explore: React.FC<ExploreProps> = ({
             ref={loadMoreButtonRef}
             // onClick={() => setPageParam((p) => p + 1)}
             onClick={() => {
-              setPageParam((old) => (data?.has_next ? old + 1 : old));
+              // setPageParam((old) => (data?.has_next ? old + 1 : old));
             }}
-            disabled={isPreviousData || !data?.has_next}
+            // disabled={isPreviousData || !data?.has_next}
           >
             Next Page
           </button>
 
-          <div>{isFetching ? 'Fetching...' : null}</div>
+          {/* <div>{isFetching ? 'Fetching...' : null}</div> */}
         </div>
       </Content>
     </>
