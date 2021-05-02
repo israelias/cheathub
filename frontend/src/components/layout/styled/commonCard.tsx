@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 
 import { FiPlus, FiMinus } from 'react-icons/fi';
 import { NavLink } from '../../shared/link';
-import { Viewer } from '../../editor/viewer';
+import { Viewer } from '../../snippet/editor/viewer';
 
 export const CodeCardItem = styled(motion.div)`
   border-radius: 16px;

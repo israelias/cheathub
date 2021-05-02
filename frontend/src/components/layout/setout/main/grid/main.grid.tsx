@@ -33,11 +33,10 @@ import { Grid } from '@chakra-ui/react';
 const MainGrid: React.FC<LayoutProps> = ({ children }) => (
   <>
     <Grid
-      id="main-secondary"
       templateAreas={[`'secondary primary'`]}
       gridTemplateColumns={{
         base: '1fr',
-        lg: 'minmax(320px, 400px) minmax(600px, 968px)',
+        lg: 'minmax(200px, 400px) minmax(400px, 968px)',
       }}
       gridTemplateRows={{ base: '1fr', lg: '100%' }}
       gap={{ base: '0px', lg: '24px' }}

@@ -22,13 +22,13 @@ const TitleBarArea: React.FC<LayoutProps> = ({ children }) => (
       justifyContent="space-between"
       width="100%"
       zIndex={9996}
-      pr="16px"
-      pl="8px"
+      // pr="16px"
+      // pl="8px"
       display={{ base: 'flex', lg: 'none' }}
       flex={['0 0 auto']}
       height="62px"
       maxHeight="62px"
-      bg={mode('aquamarine', 'white')}
+      // bg={mode('aquamarine', 'white')}
     >
       {children}
     </GridItem>

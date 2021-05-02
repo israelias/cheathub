@@ -16,12 +16,14 @@ import { GridItem } from '@chakra-ui/react';
 const MainArea: React.FC<LayoutProps> = ({ children }) => (
   <GridItem
     // MAIN.AREA
+    as="main"
     id="main-content"
     gridArea={['main']}
     height="100%"
     maxHeight={{ base: 'calc(100vh - 62px)', lg: '100vh' }}
-    overflow={['hidden auto']}
+    // overflow={{ base: 'scroll auto', lg: 'hidden auto' }}
     display="grid"
+    p={{ lg: '0 24px' }}
   >
     {children}
   </GridItem>

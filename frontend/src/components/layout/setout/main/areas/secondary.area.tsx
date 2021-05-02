@@ -20,15 +20,20 @@ import {
 const SecondaryArea: React.FC<LayoutProps> = ({ children }) => (
   <>
     <GridItem
-      id="side-nav"
+      id="main-secondary"
+      as="section"
       height={{ base: 'calc(100vh - 62px)', lg: '100vh' }}
       display={{ base: 'none', lg: 'grid' }}
       overflow={['hidden auto']}
       position="sticky"
       top="0px"
-      pb="48px"
+      borderLeft={['1px solid']}
+      borderRight={['1px solid']}
+      borderColor={['rgb(235, 236, 237)']}
+      pr={0}
+      pl={0}
+      // pb="48px"
       gridArea={['secondary']}
-      bg="papayawhip"
     >
       {children}
     </GridItem>

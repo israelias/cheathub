@@ -1,9 +1,9 @@
 import React from 'react';
-import { Content } from './main';
-import { SideNav } from './side';
-import Navbar from '../navbar';
-import Collections from '../collections';
-import Actions from '../actions';
+import { Content } from '../../connectors/main';
+import { SideNav } from '../../connectors/side';
+import Navbar from '../navigation/navbar';
+// import Collections from '../collections';
+import Actions from '../navigation/actions';
 
 import RootGrid from './setout/root/grid/root.grid';
 import NavigationArea from './setout/root/areas/navigation.area';
@@ -29,9 +29,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <MainArea>
         <MainGrid>
           <SecondaryArea>
-            <SideNav>
-              <Collections />
-            </SideNav>
+            <SideNav>{/* <Collections /> */}</SideNav>
           </SecondaryArea>
           <PrimaryArea>
             <Content>{children}</Content>

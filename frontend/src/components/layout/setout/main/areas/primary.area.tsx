@@ -16,6 +16,7 @@ const PrimaryArea: React.FC<LayoutProps> = ({ children }) => (
   <>
     <GridItem
       id="main-primary"
+      as="section"
       gridArea={['primary']}
       gridTemplateRows={['1fr']}
       maxWidth={{ base: '100vw', lg: '968px' }}
