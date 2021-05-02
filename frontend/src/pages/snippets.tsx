@@ -1,89 +1,95 @@
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-shadow */
-/* eslint-disable react/no-array-index-key */
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable no-nested-ternary */
-import * as React from 'react';
-import { RouteComponentProps } from 'react-router';
-import {
-  useQuery,
-  UseQueryResult,
-  useInfiniteQuery,
-  useQueryClient,
-} from 'react-query';
-import axios from 'axios';
 
-// import { SnippetFeed } from '../components/snippet-feed';
+import React, { RefObject } from 'react';
+import { useHistory } from 'react-router';
+import {
+  Heading,
+  Link,
+  Flex,
+  Text,
+  Box,
+  VStack,
+  IconButton,
+  Button,
+  useDisclosure,
+  ButtonProps,
+  useToast,
+  useBoolean,
+  useMediaQuery,
+} from '@chakra-ui/react';
+
 import { Primary } from '../containers/primary.container';
 import { Secondary } from '../containers/secondary.container';
 import { Content } from '../connectors/main';
 import { SideNav } from '../connectors/side';
+import { SidePanel } from '../connectors/drawer';
 
-import SnippetFeed from '../components/feed';
-import SearchBar from '../components/searchbar';
+import SearchBar from '../components/navigation/searchbar';
 
-import { getRequest } from '../lib/fetcher';
-import {
-  fetchSnippets,
-  useSnippetsInfinite,
-  searchSnippets,
-  setInitialData,
-} from '../lib/axios';
-import { getSnippets } from '../services/get.service';
 import { useUserContext } from '../context/user.context';
-import { checkStatus } from '../lib/isError';
+import { useAppData } from '../context/appdata.context';
+import { useDataHandler } from '../context/datahandler.context';
 
+import { TimeAgo } from '../components/shared/time';
 import useIntersectionObserver from '../lib/useIntersect';
 
-import { TAGS } from '../constants/tags.constants';
-import { queryClient } from '../context/query.context';
+import { SnippetDataTable } from '../components/snippet/table/data.table';
+import { SnippetQueryTable } from '../components/snippet/table/query.table';
+import { SnippetPaginationTable } from '../components/snippet/table/pagination.table';
+import { HeaderBox } from '../components/shared/header-box';
 
-interface SnippetProps {
-  allSnippets: Snippet[];
-}
+import SnippetCard from '../components/snippet/card';
 
-export const Snippets: React.FC<SnippetProps> = ({ allSnippets }) => {
-  const { username, accessToken } = useUserContext();
-
-  const queryClient = useQueryClient();
-
-  const [searchText, setSearchText] = React.useState<string>('');
-  const [language, setLanguage] = React.useState<string>('');
-  const [tags, setTags] = React.useState<string>('');
-  const [page, setPage] = React.useState<number>(1);
-  const [loading, setLoading] = React.useState<boolean>(false);
-  const [allTagOptions, setAllTagOptions] = React.useState(TAGS);
-
-  const resetAll = () => {
-    setSearchText('');
-    setLanguage('');
-    setTags('');
-  };
-
+const Snippets: React.FC = () => {
   const {
-    isLoading: queryLoading,
-    data: queryData,
-    status: queryStatus,
-    error: queryError,
-    isFetching,
-    isPreviousData,
-  } = useQuery(
-    ['loadSnippets', searchText, language, tags, page],
-    () =>
-      searchSnippets({
-        searchText,
-        language,
-        tags,
-        page,
-      }),
-    {
-      keepPreviousData: true,
-      staleTime: 50000,
-    }
-  );
+    data,
+    setData,
+    loading,
+    setLoading,
+    searchText,
+    setSearchText,
+    language,
+    setLanguage,
+    tags,
+    setTags,
+    page,
+    setPage,
+    allTags,
+    setAllTags,
+    loadResultsData,
+    loadInitialData,
+    loadAllTags,
+  } = useAppData();
+  const {
+    faveSnippet,
+    setFaveSnippet,
+    handleFave,
+  } = useDataHandler();
+  const { username, accessToken } = useUserContext();
+  const router = useHistory();
+  const [baseLg] = useMediaQuery('(min-width: 62em)');
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const sidePanelRef = React.useRef<HTMLButtonElement>(null);
+
+  const [heading, setHeading] = React.useState<string>('');
+  const [snippets, setSnippets] = React.useState<Snippet[] | []>([]);
+
+  const [title, setTitle] = React.useState<string>('');
+
+  const [source, setSource] = React.useState<string>('');
+  const [likedBy, setLikedBy] = React.useState<string[]>([]);
+
+  const [updatedOn, setUpdatedOn] = React.useState<string>('');
+  const [filename, setFilename] = React.useState<string>('');
+
+  const [editing, setEditing] = React.useState(false);
+
   const onSearchTextChange = async (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
+    setLanguage('');
+    setTags('');
     const {
       target: { value },
     } = e;
@@ -92,14 +98,6 @@ export const Snippets: React.FC<SnippetProps> = ({ allSnippets }) => {
         setSearchText('');
       }
       setSearchText(value);
-      await queryClient.fetchQuery(['loadSnippets', searchText], () =>
-        searchSnippets({
-          searchText: value,
-          language,
-          tags,
-          page,
-        })
-      );
     } catch (err) {
       console.log(err);
     }
@@ -107,6 +105,8 @@ export const Snippets: React.FC<SnippetProps> = ({ allSnippets }) => {
   const onLanguageChange = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
+    setSearchText('');
+    setTags('');
     const {
       target: { value },
     } = event;
@@ -114,18 +114,12 @@ export const Snippets: React.FC<SnippetProps> = ({ allSnippets }) => {
       setLanguage('');
     }
     setLanguage(value);
-    queryClient.fetchQuery(['loadSnippets', language], () =>
-      searchSnippets({
-        searchText,
-        language: value,
-        tags,
-        page,
-      })
-    );
   };
   const onTagChange = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
+    setSearchText('');
+    setLanguage('');
     const {
       target: { value },
     } = event;
@@ -133,26 +127,87 @@ export const Snippets: React.FC<SnippetProps> = ({ allSnippets }) => {
       setTags('');
     }
     setTags(value);
-    queryClient.fetchQuery(['loadSnippets', tags], () =>
-      searchSnippets({
-        searchText,
-        language,
-        tags: value,
-        page,
-      })
-    );
   };
-  const onTagParamChange = (value: string) => {
-    setTags(value);
+  const resetAll = () => {
+    setSearchText('');
+    setLanguage('');
+    setTags('');
+    loadInitialData();
   };
-
-  if (queryStatus === 'loading') {
-    return <p>Loading...</p>;
-  }
+  React.useEffect(() => {
+    if (data) {
+      setSnippets(data?.items);
+    }
+  }, [data]);
+  React.useEffect(() => {
+    if (!(username || accessToken)) {
+      router.push('/login');
+    }
+  }, [username, accessToken]);
 
   return (
     <>
-      <Secondary>gegegegeg</Secondary>
+      <Secondary>
+        <HeaderBox left heading="Explore Snippets" />
+        <SideNav>
+          <SnippetQueryTable
+            searchText={searchText}
+            setSearchText={setSearchText}
+            language={language}
+            setLanguage={setLanguage}
+            tags={tags}
+            setTags={setTags}
+          />
+          <SnippetPaginationTable
+            totalItems={data?.total_items}
+            perPage={snippets.length}
+            currentPage={data?.page}
+          />
+          <SnippetDataTable
+            title={title}
+            language={language}
+            updatedOn={updatedOn}
+            source={source}
+            likedBy={likedBy}
+            filename={filename}
+          />
+        </SideNav>
+      </Secondary>
+      {!baseLg && (
+        <SidePanel
+          isOpen={isOpen}
+          onOpen={onOpen}
+          onClose={onClose}
+          buttonRef={sidePanelRef}
+          heading="Query Data"
+        >
+          {!baseLg && (
+            <>
+              <SnippetQueryTable
+                searchText={searchText}
+                setSearchText={setSearchText}
+                language={language}
+                setLanguage={setLanguage}
+                tags={tags}
+                setTags={setTags}
+              />
+              <SnippetPaginationTable
+                totalItems={data?.total_items}
+                perPage={snippets.length}
+                currentPage={data?.page}
+              />
+              <SnippetDataTable
+                title={title}
+                language={language}
+                updatedOn={updatedOn}
+                source={source}
+                likedBy={likedBy}
+                filename={filename}
+              />
+            </>
+          )}
+        </SidePanel>
+      )}
       <Content>
         <SearchBar
           searchText={searchText}
@@ -161,16 +216,44 @@ export const Snippets: React.FC<SnippetProps> = ({ allSnippets }) => {
           onSearchTextChange={onSearchTextChange}
           onLanguageChange={onLanguageChange}
           onTagsChange={onTagChange}
-          allTagOptions={allTagOptions}
-          setAllTagOptions={() => setAllTagOptions}
+          allTags={allTags}
+          resetAll={resetAll}
         />
+        {!baseLg && (
+          <Button ref={sidePanelRef} onClick={onOpen}>
+            {' '}
+            Open
+          </Button>
+        )}
 
-        <SnippetFeed
-          snippets={queryData?.items}
-          loading={loading}
-          setTags={setTags}
-        />
+        {loading ? (
+          <p>Loading..</p>
+        ) : (
+          <Box paddingTop="10px">
+            {snippets.map((snippet: Snippet, i: number) => (
+              <SnippetCard
+                key={snippet._id}
+                editing={editing}
+                snippet={snippet}
+                loading={loading}
+                title={snippet.title}
+                language={snippet.language}
+                value={snippet.value}
+                description={snippet.description}
+                tags={snippet.tags.join(', ')}
+                source={snippet.source}
+                id={snippet._id}
+                setTags={setTags}
+                handleFave={handleFave}
+                faveSnippet={faveSnippet}
+                setFaveSnippet={setFaveSnippet}
+              />
+            ))}
+          </Box>
+        )}
       </Content>
     </>
   );
 };
+
+export default Snippets;
