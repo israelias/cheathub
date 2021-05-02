@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-console */
 /* eslint-disable no-return-assign */
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-underscore-dangle */
@@ -6,13 +8,7 @@
 /* eslint-disable no-extra-boolean-cast */
 import * as React from 'react';
 import { RouteComponentProps, useHistory } from 'react-router';
-import {
-  useQuery,
-  useInfiniteQuery,
-  useQueryClient,
-  // useMutation,
-  // useQueryClient,
-} from 'react-query';
+
 import axios from 'axios';
 import {
   Box,
@@ -20,33 +16,29 @@ import {
   Text,
   HStack,
   Flex,
+  Button,
   IconButton,
+  useMediaQuery,
+  useOutsideClick,
 } from '@chakra-ui/react';
-import { AddIcon, MinusIcon } from '@chakra-ui/icons';
-import { Search } from '../components/snippet_crud/search-form';
-// import { ToUserButton } from '../components/shared/special-button'
+
 import { getRequest } from '../lib/fetcher';
 import { useUserContext } from '../context/user.context';
-import { isError } from '../lib/isError';
-import {
-  MainFeed,
-  Container as MainContainer,
-} from '../components/layout/styled/commonCard';
-import useIntersectionObserver from '../lib/useIntersect';
+import { useAppData } from '../context/appdata.context';
+import { useProfileData } from '../context/profiledata.context';
 
-import { fetchSnippets } from '../lib/axios';
-import { searchSnippets } from '../services/get.service';
+import useIntersectionObserver from '../lib/useIntersect';
 
 import { Primary } from '../containers/primary.container';
 import { Secondary } from '../containers/secondary.container';
 import { Content } from '../connectors/main';
 import { SideNav } from '../connectors/side';
+import { HeaderBox } from '../components/shared/header-box';
 
-import { View } from '../components/card/view';
-import { Wrapper } from '../components/card/wrapper';
-// import Collections from '../components/collections';
-import { View as CollectionView } from '../components/collections/view';
-import { AddCollection } from '../components/collections/add-collection';
+import CollectionItem from '../components/collections/collection/item';
+import CollectionAction from '../components/collections/collection/action';
+import SnippetItem from '../components/collections/snippets/item';
+import SnippetAction from '../components/collections/snippets/action';
 
 interface CollectionsProps
   extends RouteComponentProps<{ id: string }> {}
@@ -62,55 +54,24 @@ interface CollectionsProps
  * @param {any}
  * @return {=>}
  */
-export const CollectionsHome: React.FC<CollectionsProps> = ({
-  match,
-}) => {
-  const user = useUserContext();
-  const username = match.params.id || user?.username;
-
-  const router = useHistory();
-  React.useEffect(() => {
-    if (!(user.username || user.accessToken)) {
-      router.push('/login');
-    }
-  });
-
-  const { status, data } = useQuery(
-    'myCollections',
-    () =>
-      getRequest({
-        url: `api/users/${username}/collections`,
-        accessToken: user?.accessToken,
-      }),
-    {
-      keepPreviousData: true,
-      staleTime: 5000,
-    }
-  );
-
+const Collections: React.FC<CollectionsProps> = ({ match }) => {
   const {
-    status: allSnippetsStatus,
-    data: allSnippetsData,
-  } = useQuery(
-    'allSnippets',
-    () =>
-      getRequest({
-        url: `api/users/${username}/snippets`,
-        accessToken: user?.accessToken,
-      }),
-    {
-      keepPreviousData: true,
-      staleTime: 5000,
-    }
-  );
+    loadSnippetsData,
+    loadCollectionsData,
+    collectionsProfile,
+    loadingCollections,
+    setLoadingCollections,
+    snippetsProfile,
+    loadingSnippets,
+    setLoadingSnippets,
+  } = useProfileData();
 
-  const [tagParam, setTagParam] = React.useState('');
-  const [pageParam, setPageParam] = React.useState(1);
-
-  const [expanded, setExpanded] = React.useState<false | number>(0);
-  const [expandDetails, setExpandDetails] = React.useState<
-    false | number
-  >(false);
+  const [allSnippetsData, setAllSnippetsData] = React.useState<
+    Snippet[] | []
+  >([]);
+  const [allCollectionsData, setAllCollectionsData] = React.useState<
+    Collection[] | []
+  >([]);
 
   const [
     expandedCollection,
@@ -120,95 +81,214 @@ export const CollectionsHome: React.FC<CollectionsProps> = ({
   const [
     expandedCollectionDetails,
     setExpandedCollectionDetails,
-  ] = React.useState<false | number>(0);
+  ] = React.useState<number | false>(0);
+
+  const [
+    expandedSnippet,
+    setExpandedSnippet,
+  ] = React.useState<number>(0);
+
+  const [selectedCollection, setSelectedCollection] = React.useState<
+    Collection | undefined
+  >();
 
   const [selectedSnippets, setSelectedSnippets] = React.useState<
-    false | number
-  >(0);
+    Snippet[] | undefined
+  >(snippetsProfile?.data);
 
-  const [collectionsData, setCollectionsData] = React.useState(data);
+  const [selectedSnippet, setSelectedSnippet] = React.useState<
+    Snippet | undefined
+  >();
 
   const [collectionId, setCollectionId] = React.useState<string>('');
+  const [selectedSnippetId, setSelectedSnippetId] = React.useState<
+    string | ''
+  >('');
   const [addCollection, setAddCollection] = React.useState<boolean>(
     false
   );
-  return status === 'loading' ? (
-    <Secondary>
-      <p>Loading...</p>
-    </Secondary>
-  ) : status === 'error' ? (
-    <Secondary>
-      <p>Error fetching data...</p>
-    </Secondary>
-  ) : (
+
+  const [heading, setHeading] = React.useState<string>(
+    'All Snippets'
+  );
+
+  const [editing, setEditing] = React.useState<boolean>(false);
+  const [editingSnippet, setEditingSnippet] = React.useState<boolean>(
+    false
+  );
+  const snippetActionRef = React.useRef<HTMLInputElement>(null);
+
+  const onActivate = () => {
+    const scrollToTop = window.setInterval(() => {
+      const pos = window.pageYOffset;
+      if (pos > 0) {
+        window.scrollTo(0, pos - 20); // how far to scroll on each step
+      } else {
+        window.clearInterval(scrollToTop);
+      }
+    }, 16);
+  };
+
+  const user = useUserContext();
+  const editSnippet = async (id: string) => {
+    setEditing(true);
+    const res = await getRequest({
+      url: `api/users/${id}`,
+      accessToken: user?.accessToken,
+    });
+    setSelectedSnippet(res[0]);
+    setSelectedSnippetId(id);
+  };
+
+  React.useEffect(() => {
+    if (selectedSnippets) {
+      setAllSnippetsData(selectedSnippets);
+    }
+  }, [selectedSnippets]);
+
+  React.useEffect(() => {
+    if (snippetsProfile) {
+      setSelectedSnippets(snippetsProfile.data);
+    }
+  }, [snippetsProfile]);
+
+  React.useEffect(() => {
+    if (collectionsProfile) {
+      setAllCollectionsData(collectionsProfile.data);
+    }
+  }, [collectionsProfile]);
+
+  React.useEffect(() => {
+    if (editingSnippet) {
+      onActivate();
+      snippetActionRef?.current?.focus();
+    }
+  }, [editingSnippet, snippetActionRef]);
+
+  React.useEffect(() => {
+    if (!editingSnippet) {
+      setExpandedSnippet(0);
+    }
+  }, [editingSnippet]);
+
+  return (
     <>
       <Secondary>
+        <HeaderBox left heading="Collections" />
         <SideNav>
-          <Box marginBottom="10px">
-            {/* <Flex
-              flex="1"
-              textAlign="left"
-              justifyContent="space-between"
-              alignItems="center"
-            >
-              <Box fontWeight="light" fontSize="16px">
-                Collections
+          {loadingCollections ? (
+            <p>Loading Collections...</p>
+          ) : (
+            <>
+              <Box paddingTop="10px">
+                <CollectionAction
+                  j={-1}
+                  id="formData"
+                  collectionId="formData"
+                  allSnippetsData={allSnippetsData}
+                  collectionsData={allCollectionsData}
+                  setCollectionId={setCollectionId}
+                  expandedCollection={expandedCollection}
+                  setExpandedCollection={setExpandedCollection}
+                />
               </Box>
-              <IconButton
-                aria-label="add collection"
-                onClick={() => setAddCollection(true)}
-                icon={<AddIcon fontSize="12px" />}
-              />
-            </Flex> */}
-          </Box>
-          <Box paddingTop="10px">
-            <AddCollection
-              j={-1}
-              id="formData"
-              collectionId="formData"
-              allSnippetsData={allSnippetsData}
-              collectionsData={collectionsData}
-              setCollectionId={setCollectionId}
-              expandedCollection={expandedCollection}
-              setExpandedCollection={setExpandedCollection}
-            />
-          </Box>
-          <Box paddingTop="10px">
-            {data?.map((collection: Collection, i: number) => (
-              <CollectionView
-                key={i}
-                i={i}
-                id={collection._id}
-                collection={collection}
-                collections={collectionsData}
-                collectionId={collectionId}
-                setCollectionId={setCollectionId}
-                expandedCollection={expandedCollection}
-                setExpandedCollection={setExpandedCollection}
-                expandedCollectionDetails={expandedCollectionDetails}
-                setExpandedCollectionDetails={
-                  setExpandedCollectionDetails
-                }
-              />
-            ))}
-          </Box>
+              <Box paddingTop="10px">
+                {allCollectionsData?.map(
+                  (collection: Collection, i: number) => (
+                    <CollectionItem
+                      key={i}
+                      i={i}
+                      id={collection._id}
+                      collection={collection}
+                      collections={allCollectionsData}
+                      collectionId={collectionId}
+                      setCollectionId={setCollectionId}
+                      expandedCollection={expandedCollection}
+                      setExpandedCollection={setExpandedCollection}
+                      expandedCollectionDetails={
+                        expandedCollectionDetails
+                      }
+                      setExpandedCollectionDetails={
+                        setExpandedCollectionDetails
+                      }
+                      selectedCollection={selectedCollection}
+                      setSelectedCollection={setSelectedCollection}
+                      selectedSnippets={selectedSnippets}
+                      setSelectedSnippets={setSelectedSnippets}
+                      selectedSnippetId={selectedSnippetId}
+                      setSelectedSnippetId={setSelectedSnippetId}
+                      setHeading={setHeading}
+                      setExpandedSnippet={setExpandedSnippet}
+                    />
+                  )
+                )}
+              </Box>
+            </>
+          )}
         </SideNav>
       </Secondary>
       <Content>
-        <Wrapper>
-          {data[0].snippets.map((item: Snippet, i: number) => (
-            <View
-              key={i}
-              i={i}
-              snippet={item}
-              expanded={expanded}
-              setExpanded={setExpanded}
-              expandDetails={expandDetails}
-              setExpandDetails={setExpandDetails}
-            />
-          ))}
-        </Wrapper>
+        <HeaderBox heading={heading}>
+          <Button
+            onClick={() => {
+              loadSnippetsData();
+              setHeading('All Snippets');
+            }}
+          >
+            All
+          </Button>
+        </HeaderBox>
+
+        {loadingSnippets ? (
+          <p> Loading Snippets...</p>
+        ) : (
+          <>
+            <Box paddingTop="10px">
+              <SnippetAction
+                j={-1}
+                id="snippetForm"
+                collectionId="snipData"
+                allSnippetsData={allSnippetsData}
+                selectedSnippet={selectedSnippet}
+                selectedId={selectedSnippetId}
+                setSelectedId={setSelectedSnippetId}
+                setCollectionId={setCollectionId}
+                expandedSnippet={expandedSnippet}
+                setExpandedSnippet={setExpandedSnippet}
+                snippetActionRef={snippetActionRef}
+                setEditingSnippet={setEditingSnippet}
+              />
+            </Box>
+            <Box paddingTop="10px">
+              {selectedSnippets?.map(
+                (snippet: Snippet, k: number) => (
+                  <SnippetItem
+                    key={k}
+                    k={k}
+                    id={snippet._id}
+                    snippet={snippet}
+                    snippets={allSnippetsData}
+                    editSnippet={editSnippet}
+                    setEditingSnippet={setEditingSnippet}
+                    selectedSnippet={selectedSnippet}
+                    setSelectedSnippet={setSelectedSnippet}
+                    selectedSnippetId={selectedSnippetId}
+                    setSelectedSnippetId={setSelectedSnippetId}
+                    expandedSnippet={expandedSnippet}
+                    setExpandedSnippet={setExpandedSnippet}
+                    expandedSnippetDetails={expandedCollectionDetails}
+                    setExpandedSnippetDetails={
+                      setExpandedCollectionDetails
+                    }
+                  />
+                )
+              )}
+            </Box>
+          </>
+        )}
       </Content>
     </>
   );
 };
+
+export default Collections;
