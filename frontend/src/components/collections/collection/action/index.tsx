@@ -1,8 +1,8 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable react/no-array-index-key */
+
 /* eslint-disable no-console */
-/* eslint-disable no-underscore-dangle */
+
 import React from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import {
@@ -30,33 +30,22 @@ import { useUserContext } from '../../../../context/user.context';
 import '../../styles.css';
 
 interface CollectionActionProps extends RouteComponentProps {
-  collectionsData: Collection[];
   allSnippetsData: Snippet[];
-  collectionId?: string;
   expandedCollection: number;
-  j: number;
-  id?: string;
   setExpandedCollection: React.Dispatch<React.SetStateAction<number>>;
-  setCollectionId?: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const CollectionAction = withRouter(
   ({
     history,
     allSnippetsData,
-    collectionsData,
-    collectionId,
     expandedCollection,
     setExpandedCollection,
-    setCollectionId,
-    id,
-    j,
   }: CollectionActionProps) => {
     const { accessToken } = useUserContext();
     const [message, setMessage] = React.useState(null);
     const [name, setName] = React.useState('Your Title');
     const [collection, setCollection] = React.useState<string>('');
-    const [snippetId, setSnippetId] = React.useState<string>('');
 
     const isOpen = expandedCollection === -1;
 

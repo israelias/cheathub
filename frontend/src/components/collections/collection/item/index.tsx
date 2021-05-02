@@ -4,19 +4,16 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-console */
-/* eslint-disable react-hooks/exhaustive-deps */
+
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable react/no-array-index-key */
-/* eslint-disable no-underscore-dangle */
+
 import React from 'react';
 import {
   Box,
-  Heading,
   Text,
   HStack,
   Flex,
-  Link,
   List,
   ListItem,
 } from '@chakra-ui/react';
@@ -45,53 +42,29 @@ import '../../styles.css';
 
 interface CollectionItemProps {
   collection: Collection;
-  collections: Collection[];
   i: number;
-  id?: string;
-  collectionId: string;
-  setCollectionId: React.Dispatch<React.SetStateAction<string>>;
+
   expandedCollection: number;
   setExpandedCollection: React.Dispatch<React.SetStateAction<number>>;
-  expandedCollectionDetails: number | false;
-  setExpandedCollectionDetails: React.Dispatch<
-    React.SetStateAction<number | false>
-  >;
-  selectedSnippets: Snippet[] | undefined;
   setSelectedSnippets: React.Dispatch<
     React.SetStateAction<Snippet[] | undefined>
   >;
-  selectedCollection: Collection | undefined;
-  setSelectedCollection: React.Dispatch<
-    React.SetStateAction<Collection | undefined>
-  >;
   selectedSnippetId: string;
-  setSelectedSnippetId: React.Dispatch<React.SetStateAction<string>>;
   setHeading: React.Dispatch<React.SetStateAction<string>>;
   setExpandedSnippet: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const CollectionItem: React.FC<CollectionItemProps> = ({
   collection,
-  collections,
   i,
-  id,
-  collectionId,
-  setCollectionId,
   expandedCollection,
   setExpandedCollection,
-  expandedCollectionDetails,
-  setExpandedCollectionDetails,
-  selectedSnippets,
   setSelectedSnippets,
-  selectedCollection,
-  setSelectedCollection,
   selectedSnippetId,
-  setSelectedSnippetId,
   setHeading,
   setExpandedSnippet,
 }) => {
-  const isOpen = i === expandedCollection || id === collectionId;
-  const isOpenDetails = i === expandedCollectionDetails;
+  const isOpen = i === expandedCollection;
   const className = cn('accordion', {
     'accordion--open': isOpen,
     'accordion--next-to-open': i === expandedCollection - 1,
@@ -105,7 +78,6 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
             setExpandedCollection(isOpen ? 0 : i);
             setExpandedSnippet(0);
             setSelectedSnippets(collection.snippets);
-            setSelectedCollection(collection);
             setHeading(collection.name);
           }}
         >
