@@ -19,7 +19,15 @@ import {
   Button,
   IconButton,
   useMediaQuery,
+  useDisclosure,
   useOutsideClick,
+  Drawer,
+  DrawerBody,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
 } from '@chakra-ui/react';
 
 import { getRequest } from '../lib/fetcher';
@@ -33,6 +41,7 @@ import { Primary } from '../containers/primary.container';
 import { Secondary } from '../containers/secondary.container';
 import { Content } from '../connectors/main';
 import { SideNav } from '../connectors/side';
+import { SidePanel } from '../connectors/drawer';
 import { HeaderBox } from '../components/shared/header-box';
 
 import CollectionItem from '../components/collections/collection/item';
@@ -66,6 +75,10 @@ const Collections: React.FC<CollectionsProps> = ({ match }) => {
     setLoadingSnippets,
   } = useProfileData();
 
+  const [baseLg] = useMediaQuery('(min-width: 62em)');
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const sidePanelRef = React.useRef<HTMLButtonElement>(null);
+
   const [allSnippetsData, setAllSnippetsData] = React.useState<
     Snippet[] | []
   >([]);
@@ -79,18 +92,9 @@ const Collections: React.FC<CollectionsProps> = ({ match }) => {
   ] = React.useState<number>(0);
 
   const [
-    expandedCollectionDetails,
-    setExpandedCollectionDetails,
-  ] = React.useState<number | false>(0);
-
-  const [
     expandedSnippet,
     setExpandedSnippet,
   ] = React.useState<number>(0);
-
-  const [selectedCollection, setSelectedCollection] = React.useState<
-    Collection | undefined
-  >();
 
   const [selectedSnippets, setSelectedSnippets] = React.useState<
     Snippet[] | undefined
@@ -100,7 +104,6 @@ const Collections: React.FC<CollectionsProps> = ({ match }) => {
     Snippet | undefined
   >();
 
-  const [collectionId, setCollectionId] = React.useState<string>('');
   const [selectedSnippetId, setSelectedSnippetId] = React.useState<
     string | ''
   >('');
@@ -182,12 +185,7 @@ const Collections: React.FC<CollectionsProps> = ({ match }) => {
             <>
               <Box paddingTop="10px">
                 <CollectionAction
-                  j={-1}
-                  id="formData"
-                  collectionId="formData"
                   allSnippetsData={allSnippetsData}
-                  collectionsData={allCollectionsData}
-                  setCollectionId={setCollectionId}
                   expandedCollection={expandedCollection}
                   setExpandedCollection={setExpandedCollection}
                 />
@@ -198,25 +196,11 @@ const Collections: React.FC<CollectionsProps> = ({ match }) => {
                     <CollectionItem
                       key={i}
                       i={i}
-                      id={collection._id}
                       collection={collection}
-                      collections={allCollectionsData}
-                      collectionId={collectionId}
-                      setCollectionId={setCollectionId}
                       expandedCollection={expandedCollection}
                       setExpandedCollection={setExpandedCollection}
-                      expandedCollectionDetails={
-                        expandedCollectionDetails
-                      }
-                      setExpandedCollectionDetails={
-                        setExpandedCollectionDetails
-                      }
-                      selectedCollection={selectedCollection}
-                      setSelectedCollection={setSelectedCollection}
-                      selectedSnippets={selectedSnippets}
                       setSelectedSnippets={setSelectedSnippets}
                       selectedSnippetId={selectedSnippetId}
-                      setSelectedSnippetId={setSelectedSnippetId}
                       setHeading={setHeading}
                       setExpandedSnippet={setExpandedSnippet}
                     />
@@ -227,8 +211,43 @@ const Collections: React.FC<CollectionsProps> = ({ match }) => {
           )}
         </SideNav>
       </Secondary>
+      {!baseLg && (
+        <SidePanel
+          isOpen={isOpen}
+          onOpen={onOpen}
+          onClose={onClose}
+          buttonRef={sidePanelRef}
+          heading="Collections"
+        >
+          {!baseLg &&
+            allCollectionsData?.map(
+              (collection: Collection, i: number) => (
+                <CollectionItem
+                  key={i}
+                  i={i}
+                  collection={collection}
+                  expandedCollection={expandedCollection}
+                  setExpandedCollection={setExpandedCollection}
+                  setSelectedSnippets={setSelectedSnippets}
+                  selectedSnippetId={selectedSnippetId}
+                  setHeading={setHeading}
+                  setExpandedSnippet={setExpandedSnippet}
+                />
+              )
+            )}
+        </SidePanel>
+      )}
       <Content>
         <HeaderBox heading={heading}>
+          {!baseLg && (
+            <Button
+              ref={sidePanelRef}
+              colorScheme="teal"
+              onClick={onOpen}
+            >
+              Open
+            </Button>
+          )}
           <Button
             onClick={() => {
               loadSnippetsData();
@@ -245,17 +264,9 @@ const Collections: React.FC<CollectionsProps> = ({ match }) => {
           <>
             <Box paddingTop="10px">
               <SnippetAction
-                j={-1}
-                id="snippetForm"
-                collectionId="snipData"
-                allSnippetsData={allSnippetsData}
                 selectedSnippet={selectedSnippet}
-                selectedId={selectedSnippetId}
-                setSelectedId={setSelectedSnippetId}
-                setCollectionId={setCollectionId}
                 expandedSnippet={expandedSnippet}
                 setExpandedSnippet={setExpandedSnippet}
-                snippetActionRef={snippetActionRef}
                 setEditingSnippet={setEditingSnippet}
               />
             </Box>
@@ -265,21 +276,12 @@ const Collections: React.FC<CollectionsProps> = ({ match }) => {
                   <SnippetItem
                     key={k}
                     k={k}
-                    id={snippet._id}
                     snippet={snippet}
-                    snippets={allSnippetsData}
-                    editSnippet={editSnippet}
                     setEditingSnippet={setEditingSnippet}
-                    selectedSnippet={selectedSnippet}
                     setSelectedSnippet={setSelectedSnippet}
-                    selectedSnippetId={selectedSnippetId}
                     setSelectedSnippetId={setSelectedSnippetId}
                     expandedSnippet={expandedSnippet}
                     setExpandedSnippet={setExpandedSnippet}
-                    expandedSnippetDetails={expandedCollectionDetails}
-                    setExpandedSnippetDetails={
-                      setExpandedCollectionDetails
-                    }
                   />
                 )
               )}
