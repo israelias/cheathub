@@ -4,26 +4,23 @@ import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { UserProvider } from './context/user.context';
-import { ReactQueryProvider } from './context/query.context';
 
 render(
   <StrictMode>
     <UserProvider>
-      <ReactQueryProvider>
-        <ChakraProvider
-          theme={extendTheme({
-            styles: {
-              global: (props) => ({
-                body: {
-                  bg: props.colorMode === 'dark' ? '#141625' : '#fff',
-                },
-              }),
-            },
-          })}
-        >
-          <App />
-        </ChakraProvider>
-      </ReactQueryProvider>
+      <ChakraProvider
+        theme={extendTheme({
+          styles: {
+            global: (props) => ({
+              body: {
+                bg: props.colorMode === 'dark' ? '#141625' : '#fff',
+              },
+            }),
+          },
+        })}
+      >
+        <App />
+      </ChakraProvider>
     </UserProvider>
   </StrictMode>,
   document.getElementById('root')

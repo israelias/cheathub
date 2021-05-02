@@ -1,98 +1,126 @@
+/* eslint-disable consistent-return */
+
 /* eslint-disable no-console */
 /* eslint-disable prefer-rest-params */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable func-names */
-/* eslint-disable no-alert */
+
 import * as React from 'react';
-// import { Component } from 'react';
+
 import {
   BrowserRouter,
   Switch,
   Route,
   Redirect,
-  RouteProps,
 } from 'react-router-dom';
 
-import { Profile } from './pages/profile';
-import { Snippet } from './pages/snippets';
+import { AppContainer } from './containers/app.container';
+
+import { AppDataProvider } from './context/appdata.context';
+import { ProfileDataProvider } from './context/profiledata.context';
+import { HandlerDataProvider } from './context/datahandler.context';
+
+import Snippets from './pages/snippets';
+import Snippet from './pages/snippet';
 import { Registration } from './pages/registration';
 import { Login } from './pages/login';
-import { AddPage } from './pages/add';
-import Test from './pages/test';
-import { Explore } from './pages/explore';
-import { SnipTest } from './pages/snippet-test';
+import { Home } from './pages/home';
+import Faves from './pages/faves';
+import Collections from './pages/collections';
+
+import { PrivateRoute } from './lib/router/privateRoute';
 import { useUserContext } from './context/user.context';
+import { SignInPrompt } from './components/modals/auth-prompt';
+
 import { checkAuth } from './lib/checkAuth';
 
-interface PrivateRouteProps {
-  // children?: React.ReactNode;
-}
-
-const PrivateRoute: React.FC<RouteProps> = ({
-  component: Component,
-  ...rest
-}) => {
-  const { username } = useUserContext();
-  const loggedIn = checkAuth({ username });
-  return (
-    <Route
-      {...rest}
-      render={(props) =>
-        loggedIn ? (
-          Component && <Component {...props} />
-        ) : (
-          <Redirect
-            to={{ pathname: '/', state: { from: props.location } }}
-          />
-        )
-      }
-    />
-  );
-};
-
 const App: React.FC = () => {
-  const {
-    setAccessToken,
-    setUsername,
-    setLoggedIn,
-  } = useUserContext();
-  const logoutEventName = 'app_logout';
+  const { username } = useUserContext();
 
-  window.addEventListener('storage', () => {
-    alert('session storage variable value changed');
-  });
+  const [alert, setAlert] = React.useState(false);
+  const closeAlert = () => {
+    setAlert(false);
+  };
+  const openAlert = () => {
+    setAlert(true);
+  };
 
-  // This listener will allow to disconnect a session of ra started in another tab
-  window.addEventListener('storage', (event) => {
-    if (event.key === logoutEventName) {
-      setAccessToken('');
-      setUsername('');
-      setLoggedIn(false);
+  function checkUserData(e: StorageEvent) {
+    console.log('TRIGGER!!!');
+
+    if (e.key === 'app_logout') {
+      console.log('TRIGGER LOGOUT');
+      openAlert();
     }
-  });
+  }
 
-  console.log(process.env.PUBLIC_URL);
+  React.useEffect(() => {
+    window.addEventListener('storage', (e) => checkUserData(e));
+
+    return () => {
+      window.removeEventListener('storage', (e) => checkUserData(e));
+    };
+  }, []);
+
+  // window.removeEventListener('storage', () => {
+  //   window.alert('session storage variable value changed');
+  // });
 
   return (
     <BrowserRouter>
-      <Switch>
-        <Route path="/" exact component={Test} />
-        <Route path="/login" exact component={Login} />
-        <Route
-          path="/registration/:id"
-          exact
-          component={Registration}
-        />
-        <Route path="/explore" exact component={Explore} />
+      <AppDataProvider>
+        <ProfileDataProvider>
+          <HandlerDataProvider>
+            <AppContainer>
+              <SignInPrompt
+                onOpen={openAlert}
+                onClose={closeAlert}
+                isOpen={alert}
+              />
+              <Switch>
+                <Route path="/" exact component={Home} />
+                <Route path="/login" exact component={Login} />
+                <Route
+                  path="/registration/:id"
+                  exact
+                  component={Registration}
+                />
+                {/* Potential Public Preview */}
+                {/* <Route path="/test" exact component={Explore} /> */}
 
-        <PrivateRoute path="/profile/:id" exact component={Profile} />
-        <PrivateRoute path="/posts" exact component={SnipTest} />
-        <PrivateRoute path="/posts/:id" exact component={Snippet} />
-        <PrivateRoute path="/add" exact component={AddPage} />
-        <PrivateRoute path="/test" exact component={Test} />
+                {/* DASHBOARD COLLECTIONS|SNIPPETS FEED */}
 
-        <Route path="/" render={() => <div>404</div>} />
-      </Switch>
+                <PrivateRoute
+                  path="/collections/:id"
+                  exact
+                  component={Collections}
+                />
+
+                {/* Search/explore SNIPPETS FEED */}
+                <PrivateRoute
+                  path="/explore"
+                  exact
+                  component={Snippets}
+                />
+                {/*  TO SNIPPET ID. Main Crud. */}
+                <PrivateRoute
+                  path="/explore/:id"
+                  exact
+                  component={Snippet}
+                />
+
+                <PrivateRoute path="/faves" exact component={Faves} />
+
+                {/* TO SNIPPET ID. Alternative. */}
+                <PrivateRoute path="/add" exact component={Snippet} />
+                <PrivateRoute path="/test" exact component={Home} />
+
+                <Route path="/" render={() => <div>404</div>} />
+              </Switch>
+            </AppContainer>
+          </HandlerDataProvider>
+        </ProfileDataProvider>
+      </AppDataProvider>
     </BrowserRouter>
   );
 };
