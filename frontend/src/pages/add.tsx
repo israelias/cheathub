@@ -1,7 +1,7 @@
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { useUserContext } from '../context/user.context';
-import { AddSnippet } from '../components/snippet_crud/add-snippet';
+import { AddSnippet } from '../components/snippet/crud/add-snippet';
 import { getRequest, putRequest } from '../lib/fetcher';
 
 interface AddProps extends RouteComponentProps {}
