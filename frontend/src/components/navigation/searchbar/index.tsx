@@ -12,45 +12,32 @@ import { MdArrowDropDown } from 'react-icons/md';
 
 import { SelectInput } from '../../snippet/crud/select-input';
 import { TextInput } from '../../snippet/crud/text-search-input';
-import { SimpleSelect } from '../../shared/select-simple';
 import { LANGUAGES } from '../../../constants/languages.constants';
 
-interface Props {
+const SearchBar: React.FC<{
+  searchText: string;
+  onSearchTextChange: (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => void;
   language: string;
   onLanguageChange: (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => void;
   tags: string;
   onTagsChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
-  searchText: string;
-  // onSearchTextChange: (value: string) => void;
-  onSearchTextChange: (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => void;
-  // onSearchTextChange: React.Dispatch<React.SetStateAction<string>>;
-  // onSearchTextChange: (
-  //   event: React.ChangeEvent<HTMLInputElement>
-  // ) => void;
-  // onSearchTextChange: (value: React.SetStateAction<string>) => void;
-  allTagOptions: Array<string>;
-  setAllTagOptions?: React.Dispatch<React.SetStateAction<string>>;
+  allTags: Options[];
   resetAll: () => void;
-}
-
-const SearchBar: React.FC<Props> = ({
+}> = ({
   searchText,
   onSearchTextChange,
   language,
   onLanguageChange,
   tags,
   onTagsChange,
-  allTagOptions,
-  setAllTagOptions,
+  allTags,
   resetAll,
 }) => {
-  const wtf = 'wtf';
   const languages = [{ value: '', label: 'All' }, ...LANGUAGES];
-  const [value, setValue] = React.useState('Hello world!');
 
   return (
     <>
@@ -92,7 +79,7 @@ const SearchBar: React.FC<Props> = ({
               value={searchText}
               onChange={onSearchTextChange}
             />
-            {/* <Flex justifyContent="space-between"> */}
+
             <SelectInput
               size="sm"
               isFullWidth
@@ -107,19 +94,21 @@ const SearchBar: React.FC<Props> = ({
               value={language}
               onChange={onLanguageChange}
             />
-            <SimpleSelect
+            <SelectInput
               size="sm"
-              ml="10px"
+              isFullWidth
               variant="outline"
               borderRadius="32px"
               fontWeight={600}
               fontSize="15px"
+              name="filter"
               placeholder="Tag"
               icon={<MdArrowDropDown />}
-              items={allTagOptions}
+              options={allTags}
               value={tags}
               onChange={onTagsChange}
             />
+
             <Button
               ml="10px"
               size="sm"
@@ -127,25 +116,11 @@ const SearchBar: React.FC<Props> = ({
               borderRadius="32px"
               onClick={() => resetAll()}
             >
-              Reset
+              Clear
             </Button>
-            {/* </Flex> */}
           </HStack>
         </Flex>
       </Flex>
-      {/* <Flex
-        id="terciary-header"
-        alignItems="center"
-        // justifyContent="space-between"
-        // bg={mode('#fff', 'gray.600')}
-        // borderBottom="1px"
-        borderColor="gray.200"
-        height="62px"
-        top={0}
-        position="sticky"
-        pl="10px"
-        pr="10px"
-      ></Flex> */}
     </>
   );
 };
