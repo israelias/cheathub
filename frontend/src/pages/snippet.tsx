@@ -1,58 +1,13 @@
-/* eslint-disable react/no-array-index-key */
-/* eslint-disable no-alert */
 /* eslint-disable no-console */
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable react-hooks/exhaustive-deps */
+
 import * as React from 'react';
 
 import { RouteComponentProps } from 'react-router';
+import { Button, useMediaQuery } from '@chakra-ui/react';
 
-import {
-  Flex,
-  Heading,
-  IconButton,
-  Button,
-  ButtonGroup,
-  Text,
-  FormControl,
-  FormLabel,
-  Input,
-  FormHelperText,
-  Textarea,
-  Box,
-  HStack,
-  useMediaQuery,
-  GridItem,
-  useToast,
-  AlertDialog,
-  AlertDialogOverlay,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogBody,
-  AlertDialogFooter,
-  useBoolean,
-  Tooltip,
-  useClipboard,
-  VStack,
-} from '@chakra-ui/react';
-
-import {
-  CheckIcon,
-  InfoIcon,
-  WarningIcon,
-  CopyIcon,
-  AddIcon,
-  CloseIcon,
-  LinkIcon,
-  EditIcon,
-  MinusIcon,
-} from '@chakra-ui/icons';
-
-import { AnimatePresence, motion } from 'framer-motion';
 import SnippetCard from '../components/snippet/card';
 import SnippetCrud from '../components/snippet/crud';
 import { DeleteModal } from '../components/modals/delete-snippet';
-import { Prompt } from '../components/modals/toast-feedback';
 
 import {
   putRequest,
@@ -125,22 +80,15 @@ const Snippet: React.FC<SnippetPageProps> = ({ match, history }) => {
     heading,
     setHeading,
     clearValues,
+    faveSnippet,
+    setFaveSnippet,
+    handleFave,
     handleDelete,
     handleCancel,
     handleSubmit,
   } = useDataHandler();
   const { accessToken, username } = useUserContext();
   const [baseLg] = useMediaQuery('(min-width: 62em)');
-  const toast = useToast();
-  // const editing = match.params.id !== 'add';
-
-  React.useEffect(() => {
-    if (match.params.id !== 'add') {
-      setEditing(true);
-    } else {
-      setEditing(false);
-    }
-  }, [match.params.id]);
 
   const cancelRef = React.useRef<HTMLButtonElement>(null);
 
@@ -150,8 +98,6 @@ const Snippet: React.FC<SnippetPageProps> = ({ match, history }) => {
   const [loading, setLoading] = React.useState(false);
 
   const [message, setMessage] = React.useState('');
-
-  const [faveSnippet, setFaveSnippet] = useBoolean();
 
   const getSnippet = async (snippetId: string) => {
     setLoading(true);
@@ -165,30 +111,15 @@ const Snippet: React.FC<SnippetPageProps> = ({ match, history }) => {
     }
   };
 
-  const handleFave = async (snipId: string) => {
-    try {
-      await likeRequest({
-        url: `api/likesnippet/${snipId}`,
-        accessToken,
-        body: { fave: id },
-      })
-        .then((res) => res.ok && res.json())
-        .then((data) => {
-          if (data) {
-            setFaveSnippet.toggle();
-            setTimeout(() => {
-              toast({
-                duration: 2500,
-                isClosable: true,
-                render: () => <Prompt message={data?.message} />,
-              });
-            }, 100);
-          }
-        });
-    } catch (err) {
-      setHeading(err.message);
+  React.useEffect(() => {
+    if (match.params.id !== 'add') {
+      setEditing(true);
+      getSnippet(match.params.id);
+    } else {
+      setEditing(false);
+      clearValues();
     }
-  };
+  }, [match.params.id]);
 
   React.useEffect(() => {
     if (snippet) {
@@ -199,17 +130,10 @@ const Snippet: React.FC<SnippetPageProps> = ({ match, history }) => {
       setDescription(snippet.description);
       setLanguage(snippet.language);
       setTags(snippet.tags.join(', '));
+      setPrivatize(snippet.private === false ? '' : 'On');
       snippet.source && setSource(snippet.source);
     }
   }, [snippet]);
-
-  React.useEffect(() => {
-    if (match.params.id !== 'add') {
-      getSnippet(match.params.id);
-    } else {
-      clearValues();
-    }
-  }, [match.params.id]);
 
   return (
     <>
@@ -232,6 +156,8 @@ const Snippet: React.FC<SnippetPageProps> = ({ match, history }) => {
             setTags={setTags}
             source={source}
             setSource={setSource}
+            privatize={privatize}
+            setPrivatize={setPrivatize}
             submitting={submitting}
             deleting={deleting}
             handleSubmit={handleSubmit}
@@ -270,6 +196,8 @@ const Snippet: React.FC<SnippetPageProps> = ({ match, history }) => {
             setTags={setTags}
             source={source}
             setSource={setSource}
+            privatize={privatize}
+            setPrivatize={setPrivatize}
             submitting={submitting}
             deleting={deleting}
             handleSubmit={handleSubmit}
