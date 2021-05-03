@@ -22,7 +22,7 @@ import {
 const NavigationArea: React.FC<LayoutProps> = ({ children }) => (
   <>
     <GridItem
-      // NAVIGATION.AREA
+      as="nav"
       gridArea={['navigation']}
       position={{ base: 'fixed', lg: 'sticky' }}
       display={{ base: 'none', lg: 'inherit' }}
@@ -30,7 +30,7 @@ const NavigationArea: React.FC<LayoutProps> = ({ children }) => (
       height="100vh"
       width={{ base: '100%', lg: '72px' }}
       zIndex={{ base: 9997, lg: 'unset' }}
-      bg="#fff"
+      bg={mode('#fff', '#141625')}
       top={0}
     >
       {children}

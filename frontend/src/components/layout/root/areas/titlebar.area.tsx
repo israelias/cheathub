@@ -15,20 +15,19 @@ import {
 const TitleBarArea: React.FC<LayoutProps> = ({ children }) => (
   <>
     <GridItem
-      // TITLEBAR.AREAS
+      as="header"
       id="main-header"
       gridArea={['titlebar']}
       alignItems="center"
       justifyContent="space-between"
       width="100%"
       zIndex={9996}
-      // pr="16px"
-      // pl="8px"
       display={{ base: 'flex', lg: 'none' }}
       flex={['0 0 auto']}
       height="62px"
       maxHeight="62px"
-      // bg={mode('aquamarine', 'white')}
+      bg={mode('#fff', '#141625')}
+      p={0}
     >
       {children}
     </GridItem>
