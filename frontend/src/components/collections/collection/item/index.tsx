@@ -16,6 +16,7 @@ import {
   Flex,
   List,
   ListItem,
+  useColorModeValue as mode,
 } from '@chakra-ui/react';
 
 import {
@@ -72,8 +73,17 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
 
   return (
     <>
-      <Box className={className}>
-        <header
+      <Box bg={mode('#fff', '#141625')} className={className}>
+        <Box
+          as="header"
+          _hover={{
+            bg: mode('#f6f6f6', '#252945'),
+          }}
+          bg={
+            isOpen
+              ? mode('#f6f6f6', '#252945')
+              : mode('#fff', '#141625')
+          }
           onClick={() => {
             setExpandedCollection(isOpen ? 0 : i);
             setExpandedSnippet(0);
@@ -100,7 +110,7 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
               <AddIcon fontSize="12px" />
             )}
           </Box>
-        </header>
+        </Box>
 
         <AnimatePresence initial={false}>
           {isOpen && (
@@ -139,10 +149,13 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
                       cursor="pointer"
                       bg={
                         selectedSnippetId === snippet.title
-                          ? '#f6f6f6'
-                          : 'white'
+                          ? mode('#f6f6f6', '#252945')
+                          : 'none'
                       }
-                      _hover={{ bg: '#f6f6f6', borderRadius: '6px' }}
+                      _hover={{
+                        bg: mode('#f6f6f6', '#252945'),
+                        borderRadius: '6px',
+                      }}
                       onClick={() => {
                         setSelectedSnippets([snippet]);
                       }}

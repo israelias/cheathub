@@ -3,11 +3,10 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-console */
-/* eslint-disable react-hooks/exhaustive-deps */
+
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable react/no-array-index-key */
-/* eslint-disable no-underscore-dangle */
+
 import React from 'react';
 import {
   Box,
@@ -17,12 +16,14 @@ import {
   Flex,
   Link,
   Button,
+  useColorModeValue as mode,
 } from '@chakra-ui/react';
 import {
   HamburgerIcon,
   CloseIcon,
   AddIcon,
   MinusIcon,
+  EditIcon,
 } from '@chakra-ui/icons';
 import { AnimatePresence } from 'framer-motion';
 import { Link as RouterLink, useHistory } from 'react-router-dom';
@@ -53,6 +54,7 @@ interface SnippetItemProps {
   expandedSnippet: number;
   setExpandedSnippet: React.Dispatch<React.SetStateAction<number>>;
   setEditingSnippet: React.Dispatch<React.SetStateAction<boolean>>;
+  snippetRef: React.RefObject<HTMLDivElement>;
 }
 
 const SnippetItem: React.FC<SnippetItemProps> = ({
@@ -63,6 +65,7 @@ const SnippetItem: React.FC<SnippetItemProps> = ({
   expandedSnippet,
   setExpandedSnippet,
   setEditingSnippet,
+  snippetRef,
 }) => {
   const isOpen = k === expandedSnippet;
 
@@ -76,14 +79,30 @@ const SnippetItem: React.FC<SnippetItemProps> = ({
 
   return (
     <>
-      <Box className={className}>
-        <header
+      <Box
+        ref={snippetRef}
+        className={className}
+        bg={mode('#fff', '#141625')}
+      >
+        <Box
           onClick={() => {
             setExpandedSnippet(isOpen ? 0 : k);
             setSelectedSnippetId(snippet.title);
           }}
         >
-          <Box>
+          <Box
+            as="header"
+            borderRadius="6px"
+            border={['1px solid transparent']}
+            _hover={{
+              border: mode('1px solid #f6f6f6', '1px solid #6400e4'),
+            }}
+            bg={
+              isOpen
+                ? mode('#f6f6f6', '#252945')
+                : mode('#fff', '#252945')
+            }
+          >
             <Text>{snippet.title}</Text>
           </Box>
           <Box>
@@ -103,7 +122,7 @@ const SnippetItem: React.FC<SnippetItemProps> = ({
               <AddIcon fontSize="12px" />
             )}
           </Box>
-        </header>
+        </Box>
 
         <AnimatePresence initial={false}>
           {isOpen && (
@@ -151,8 +170,11 @@ const SnippetItem: React.FC<SnippetItemProps> = ({
                   fontSize="sm"
                   fontWeight="medium"
                   color="gray.600"
-                  bg="#fff"
-                  _hover={{ bg: '#f6f6f6', borderRadius: '6px' }}
+                  bg={mode('#fff', '#141625')}
+                  _hover={{
+                    bg: mode('#f6f6f6', '#252945'),
+                    borderRadius: '6px',
+                  }}
                   onClick={() => {
                     setExpandedSnippet(isOpen ? -1 : -1);
                     setSelectedSnippetId(snippet._id);
@@ -163,7 +185,7 @@ const SnippetItem: React.FC<SnippetItemProps> = ({
                   }}
                 >
                   Edit this snippet
-                  <MinusIcon />
+                  <EditIcon />
                 </Flex>
               ) : (
                 <Flex
@@ -171,8 +193,13 @@ const SnippetItem: React.FC<SnippetItemProps> = ({
                   padding="10px"
                   width="100%"
                   justifyContent="space-between"
-                  bg="#fff"
-                  _hover={{ bg: '#f6f6f6', borderRadius: '6px' }}
+                  fontSize="sm"
+                  fontWeight="medium"
+                  bg={mode('#fff', '#141625')}
+                  _hover={{
+                    bg: mode('#f6f6f6', '#252945'),
+                    borderRadius: '6px',
+                  }}
                   onClick={() => {
                     postRequest({
                       url: `api/likesnippet/${snippet._id}`,

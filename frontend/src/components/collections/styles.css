@@ -27,7 +27,7 @@
 }
 
 .accordion {
-  border: 1px solid #bbb;
+  border: 1px solid #777;
   border-bottom: 0;
   overflow: hidden;
   padding: 0 10px;
@@ -38,7 +38,7 @@
 }
 
 .accordion.accordion--open {
-  border-bottom: 1px solid #bbb;
+  border-bottom: 1px solid #777;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
   margin-bottom: 20px;
@@ -46,7 +46,7 @@
 }
 
 .accordion.accordion--next-to-open {
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #777;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
   padding-bottom: 10px;
@@ -56,14 +56,14 @@
   border-bottom: 0;
 }
 .accordion + .accordion.accordion--open {
-  border-top: 1px solid #bbb;
+  border-top: 1px solid #777;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   margin-top: 20px;
 }
 
 .accordion.accordion--open + .accordion {
-  border-top: 1px solid #bbb;
+  border-top: 1px solid #777;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   padding-top: 10px;
@@ -75,7 +75,7 @@
 }
 
 .accordion:last-child {
-  border-bottom: 1px solid #bbb;
+  border-bottom: 1px solid #777;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
   padding-bottom: 10px;
@@ -86,8 +86,7 @@
 }
 
 header {
-  border-bottom: 1px solid #f6f6f6;
-  color: #000;
+  /* border-bottom: 1px solid #f6f6f6; */
   cursor: pointer;
   height: 50px;
   display: flex;
@@ -97,12 +96,12 @@ header {
 }
 
 header:hover {
-  background: #f6f6f6;
+  /* background: #f6f6f6; */
   border-radius: 6px;
 }
 
 .accordion.accordion--open header {
-  background: #f6f6f6;
+  /* background: #f6f6f6; */
   border: 0;
   border-radius: 6px;
 }
