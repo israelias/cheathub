@@ -1,45 +1,27 @@
-/* eslint-disable react/no-array-index-key */
-/* eslint-disable no-alert */
 /* eslint-disable no-console */
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable react-hooks/exhaustive-deps */
+
 import * as React from 'react';
 
-import { RouteComponentProps, useHistory } from 'react-router';
+import { useHistory } from 'react-router';
 
 import {
   Flex,
-  Heading,
   IconButton,
   Button,
   ButtonGroup,
   Text,
-  FormControl,
-  FormLabel,
-  Input,
-  FormHelperText,
-  Textarea,
   Box,
   HStack,
   useMediaQuery,
-  GridItem,
-  useToast,
-  AlertDialog,
-  AlertDialogOverlay,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogBody,
-  AlertDialogFooter,
   useBoolean,
   Tooltip,
   useClipboard,
   VStack,
+  useColorModeValue as mode,
 } from '@chakra-ui/react';
 
 import {
   CheckIcon,
-  InfoIcon,
-  WarningIcon,
   CopyIcon,
   AddIcon,
   CloseIcon,
@@ -50,24 +32,7 @@ import {
 
 import { AnimatePresence, motion } from 'framer-motion';
 
-import {
-  putRequest,
-  getRequest,
-  postRequest,
-  deleteRequest,
-  putReload,
-  postReload,
-} from '../../../lib/fetcher';
-
 import { useUserContext } from '../../../context/user.context';
-import { LANGUAGES } from '../../../constants/languages.constants';
-import { EditSnippet } from '../crud/edit-snippet';
-import { Primary } from '../../../containers/primary.container';
-import { Secondary } from '../../../containers/secondary.container';
-import { Content } from '../../../connectors/main';
-import { SideNav } from '../../../connectors/side';
-import { SelectInput } from '../crud/select-input';
-import { TextInput } from '../crud/text-search-input';
 
 import { Viewer } from '../editor/viewer';
 
@@ -84,6 +49,8 @@ import {
   MotionP,
 } from '../../shared/motion-box';
 
+import { collection } from '../../../constants/colors.constants';
+
 const MotionArticle = motion(Box);
 
 /**
@@ -98,9 +65,6 @@ const MotionArticle = motion(Box);
  */
 const SnippetCard: React.FC<{
   setTags: React.Dispatch<React.SetStateAction<string>>;
-  // handleFave: (
-  //   e: React.MouseEvent<HTMLButtonElement>
-  // ) => Promise<void>;
   handleFave: (snipId: string) => Promise<void>;
   setFaveSnippet: {
     readonly on: () => void;
@@ -147,10 +111,12 @@ const SnippetCard: React.FC<{
       <AnimatePresence exitBeforeEnter>
         {!loading && (
           <MotionArticle
+            bg={mode('#fff', '#141625')}
             as="article"
             borderWidth="1px"
             borderRadius="lg"
-            border={['1px solid #bbb']}
+            border={['1px solid']}
+            borderColor={mode('#bbb', '#7e88c3')}
             overflow="hidden"
             mx="auto"
             my={6}
@@ -170,15 +136,16 @@ const SnippetCard: React.FC<{
             positionTransition
           >
             <Flex
+              bg={mode('#f6f6f6', '#252945')}
               as="header"
               height="50px"
-              bg="#f6f6f6"
               borderRadius="6px"
-              borderBottom={['1px solid #f6f6f6']}
               alignItems="center"
               padding="20px"
               justifyContent="space-between"
-              _hover={{ bg: '#fff' }}
+              _hover={{
+                bg: mode('#f6f6f6', '#252945'),
+              }}
               cursor="default"
             >
               <h2>{title}</h2>
@@ -445,10 +412,8 @@ const SnippetCard: React.FC<{
                     !editing &&
                     snippet &&
                     username && (
-                      // <form onSubmit={handleFave} id="fave">
                       <Button
                         type="submit"
-                        // form="fave"
                         variant="outline"
                         size="xs"
                         mr="-px"
@@ -461,17 +426,12 @@ const SnippetCard: React.FC<{
                           )
                         }
                         onClick={() => handleFave(snippet._id)}
-                        // onClick={() => {
-                        //   setFaveSnippet.toggle();
-
-                        // }}
                       >
                         {!faveSnippet &&
                         snippet.likedBy.includes(username)
                           ? 'Unfave'
                           : 'Fave'}
                       </Button>
-                      // </form>
                     )
                   )}
                 </HStack>
