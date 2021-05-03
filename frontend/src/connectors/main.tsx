@@ -4,6 +4,7 @@ import { Flex, useColorModeValue as mode } from '@chakra-ui/react';
 
 import PrimaryArea from '../components/layout/main/areas/primary.area';
 import SubNav from '../components/navigation/subnav';
+import { Primary } from '../containers/primary.container';
 
 interface Props {
   children: React.ReactNode;
@@ -13,17 +14,10 @@ export const Content: React.FC<Props> = ({ children }) => {
   const wtf = 'wtf';
 
   return (
-    <PrimaryArea>
-      <Flex
-        as="section"
-        flexDirection="column"
-        // bg="main.bgColor"
-        // borderBottom="1px"
-      >
-        <SubNav />
+    <Primary>
+      {/* <SubNav /> */}
 
-        <>{children}</>
-      </Flex>
-    </PrimaryArea>
+      <>{children}</>
+    </Primary>
   );
 };

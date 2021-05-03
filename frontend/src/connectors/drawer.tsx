@@ -4,10 +4,12 @@ import {
   Drawer,
   DrawerOverlay,
   DrawerContent,
+  DrawerBody,
   DrawerHeader,
   DrawerCloseButton,
   Flex,
   Box,
+  Stack,
 } from '@chakra-ui/react';
 
 export const SidePanel: React.FC<{
@@ -20,22 +22,30 @@ export const SidePanel: React.FC<{
 }> = ({ heading, isOpen, onClose, buttonRef, children }) => (
   <Drawer
     isOpen={isOpen}
-    placement="left"
+    placement="right"
     onClose={onClose}
     finalFocusRef={buttonRef}
   >
     <DrawerOverlay>
-      <DrawerContent>
+      <DrawerContent bg="transparent">
         <>
-          <Flex
+          <DrawerHeader>{heading}</DrawerHeader>
+          <DrawerBody bg="transparent">
+            {/* <Stack spacing="24px"> */}
+            <Box mt="39px" paddingTop="10px">
+              {children}
+            </Box>
+            {/* </Stack> */}
+          </DrawerBody>
+          {/* <Flex
+            mt="39px"
             height="100%"
             overflow="scroll"
             p="10px"
             flexDirection="column"
           >
-            <DrawerHeader>{heading}</DrawerHeader>
             <Box paddingTop="10px">{children}</Box>
-          </Flex>
+          </Flex> */}
         </>
         <DrawerCloseButton />
       </DrawerContent>

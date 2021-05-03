@@ -24,7 +24,6 @@ export const SideNav: React.FC<Props> = ({
     overflowY="scroll"
     display={{ base: 'none', md: 'flex' }}
     direction="column"
-    borderRightWidth="1px"
     css={{
       '&::-webkit-scrollbar': {
         width: '0px',
@@ -38,14 +37,7 @@ export const SideNav: React.FC<Props> = ({
       },
     }}
   >
-    <Box
-      rounded="lg"
-      bg={mode('#ffff', 'gray.800')}
-      border={['1px solid']}
-      borderColor={mode('gray.100', '#e4e4e4')}
-      position="relative"
-      height="100vh"
-    >
+    <Box rounded="lg" position="relative" height="100vh">
       {children}
     </Box>
   </Flex>
