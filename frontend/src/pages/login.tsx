@@ -4,7 +4,7 @@ import { RouteComponentProps } from 'react-router';
 import {
   loginRequest,
   // signUpRequest,
-} from '../lib/fetcher';
+} from '../services/auth.service';
 import { useUserContext } from '../context/user.context';
 
 interface Props extends RouteComponentProps<{ id: string }> {}
