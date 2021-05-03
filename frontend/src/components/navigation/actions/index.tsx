@@ -64,9 +64,9 @@ const Actions = () => {
         padding={['12px 0px 16px']}
         alignContent="start"
         height="100%"
-        bg={mode('#fff', '#000')}
+        bg={mode('#fff', '#141625')}
         borderRight={['1px solid']}
-        borderColor={mode('gray.100', '#fff')}
+        borderColor={mode('#ddd', '#7e88c3')}
       >
         {ACTIONS.map((action) => (
           <Tooltip
@@ -79,8 +79,6 @@ const Actions = () => {
               templateColumns={['minmax(0px, 1fr)']}
               top={0}
               alignContent="start"
-              color={mode('#1a1b1c', '#c1c2c3')}
-              bg={mode('#fff', '#000')}
               fontWeight={500}
             >
               <IconButton
@@ -118,14 +116,14 @@ const Actions = () => {
                 <MotionBox
                   layoutId="outline"
                   initial={true}
-                  animate={{ borderColor: '#000' }}
+                  animate={{ borderColor: mode('#ddd', '#7e88c3') }}
                   transition={{
                     type: 'spring',
                     stiffness: 500,
                     damping: 30,
                   }}
                   border={['1px solid']}
-                  borderColor="#fff"
+                  borderColor={mode('#ddd', '#7e88c3')}
                   borderRadius="0%"
                 />
               )}

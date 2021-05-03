@@ -4,8 +4,11 @@ import {
   Flex,
   Heading,
   useColorModeValue as mode,
+  useMediaQuery,
   Button,
   HStack,
+  IconButton,
+  Icon,
 } from '@chakra-ui/react';
 
 import { AnimateSharedLayout } from 'framer-motion';
@@ -13,123 +16,163 @@ import { AnimateSharedLayout } from 'framer-motion';
 import { Link as RouterLink, useHistory } from 'react-router-dom';
 import { MotionBox } from '../../shared/motion-box';
 import { ACTIONS } from '../../../constants/actions.constants';
+import { LogoutRequest } from '../../../lib/fetcher';
 import { useUserContext } from '../../../context/user.context';
-// import { navigation } from '../constants/colors.constants'
 
 interface Props {
   children?: React.ReactNode;
 }
 
 const SubNav: React.FC<Props> = ({ children }) => {
-  const { username } = useUserContext();
+  const {
+    username,
+    accessToken,
+    setLoggedIn,
+    setAccessToken,
+    setUsername,
+  } = useUserContext();
   const history = useHistory();
   const [buttonId, setButtonId] = React.useState('');
-
+  const [baseLg] = useMediaQuery('(min-width: 62em)');
   return (
     <>
-      <AnimateSharedLayout>
-        <Flex
+      <>
+        <HStack
+          as="nav"
           id="secondary-header"
           zIndex={13}
           top={0}
           position="sticky"
           display={{ base: 'flex', lg: 'none' }}
-          bg={mode('gray.50', 'gray.800')}
-          width="100%"
+          bg={mode('#fff', '#141625')}
+          // margin={['0px -10px']}
           maxWidth={{ base: '100vw' }}
           borderBottom="1px"
-          borderColor="gray.200"
-          // overflow={{ base: 'scroll hidden', lg: 'scroll hidden' }}
+          borderColor={mode('#ddd', '#7e88c3')}
+          flex={['1 1 auto']}
+          align="center"
+          justifyContent="space-between"
         >
-          <HStack
-            flex={['1 1 auto']}
-            align="center"
-            justifyContent="space-between"
-            bg={mode('white', 'gray.100')}
+          <
+            // flex={['1 1 auto']}
+            // align="center"
+            // justifyContent="space-between"
           >
             {ACTIONS.map((action, i) => (
               <>
-                <Button
-                  key={action.label}
-                  fontSize="14px"
-                  flex={['1 0 auto']}
-                  fontWeight="light"
-                  colorScheme="teal"
-                  rounded={0}
-                  borderRight="1px"
-                  borderColor="gray.200"
-                  variant="ghost"
-                  width="25%"
-                  margin={0}
-                  marginInline={0}
-                  marginBlock={0}
-                  style={{ marginInlineStart: '0' }}
-                  padding={0}
-                  color={mode(
-                    buttonId === action.label ? 'red.900' : '#1a1b1c',
-                    'teal'
-                  )}
-                  // bg={buttonId === action.label ? '#1a1b1c' : '#fff'}
-                  _hover={{
-                    borderBottom: '1px solid #1a1b1c',
-                  }}
-                  _pressed={{
-                    borderLeft: '1px solid #1a1b1c',
-                    borderRight: '1px solid #1a1b1c',
-                  }}
-                  _active={{
-                    transition: 'all .3s ease .1s',
-                    // boxShadow: 'inset 0px -60px 0px 0px #1a1b1c',
-
-                    color: '#fff',
-                  }}
-                  onClick={() => {
-                    setButtonId(action.label);
-                    action.label === 'Collections' && username
-                      ? history.push(`${action.path}/${username}`)
-                      : history.push(action.path);
-                  }}
-                  onMouseOver={() => {
-                    setButtonId(action.label);
-                  }}
-                  _focus={{
-                    boxShadow: 0,
-                  }}
-                  overflow="hidden"
-                  aria-label={action.label}
-                >
-                  {buttonId === action.label && (
-                    <MotionBox
-                      layoutId="border"
-                      position="absolute"
-                      display="flex"
-                      width="100%"
-                      height="2px"
-                      bottom={0}
-                      initial={true}
-                      animate={{
-                        borderColor: '#000',
-                        backgroundColor: '#000',
-                      }}
-                      transition={{
-                        type: 'spring',
-                        stiffness: 500,
-                        damping: 30,
-                      }}
-                      border={['1px solid']}
-                      borderColor="#fff"
-                      // bg="#000"
-                      borderRadius="0%"
-                    />
-                  )}
-                  {action.label}
-                </Button>
+                {baseLg ? (
+                  <Button
+                    key={action.label}
+                    fontSize="14px"
+                    flex={['1 0 auto']}
+                    fontWeight="light"
+                    rounded={0}
+                    borderRight={mode(
+                      '1px solid rgb(235, 236, 237)',
+                      '1px solid #252945'
+                    )}
+                    variant="ghost"
+                    width="25%"
+                    margin={0}
+                    marginInline={0}
+                    marginBlock={0}
+                    style={{ marginInlineStart: '0' }}
+                    padding={0}
+                    overflow="hidden"
+                    aria-label={action.label}
+                    _hover={{
+                      borderBottom: '1px solid #1a1b1c',
+                    }}
+                    _pressed={{
+                      borderLeft: '1px solid #1a1b1c',
+                      borderRight: '1px solid #1a1b1c',
+                    }}
+                    _active={{
+                      transition: 'all .3s ease .1s',
+                      color: '#fff',
+                    }}
+                    onClick={() => {
+                      setButtonId(action.label);
+                      action.label === 'Collections' && username
+                        ? history.push(`${action.path}/${username}`)
+                        : history.push(action.path);
+                    }}
+                    onMouseOver={() => {
+                      setButtonId(action.label);
+                    }}
+                    onPress={() => {
+                      setButtonId(action.label);
+                    }}
+                    _focus={{
+                      boxShadow: 0,
+                    }}
+                  >
+                    {buttonId === action.label && (
+                      <MotionBox
+                        layoutId="border"
+                        position="absolute"
+                        display="flex"
+                        width="100%"
+                        height="2px"
+                        bottom={0}
+                        initial={true}
+                        animate={{
+                          borderColor: mode('#ddd', '#7e88c3'),
+                          backgroundColor: mode('#ddd', '#7e88c3'),
+                        }}
+                        transition={{
+                          type: 'spring',
+                          stiffness: 500,
+                          damping: 30,
+                        }}
+                        border={['1px solid']}
+                        borderColor={mode('#ddd', '#7e88c3')}
+                        borderRadius="0%"
+                      />
+                    )}
+                    {action.label}
+                  </Button>
+                ) : (
+                  <IconButton
+                    variant="ghost"
+                    alignItems="center"
+                    padding={['8px 12px']}
+                    margin={0}
+                    marginInline={0}
+                    borderRadius={0}
+                    colorScheme="gray"
+                    display="flex"
+                    width="100%"
+                    borderRight={mode(
+                      '1px solid rgb(235, 236, 237)',
+                      '1px solid #252945'
+                    )}
+                    aria-label={action.label}
+                    key={action.label}
+                    icon={<Icon as={action.icon} />}
+                    // _before={{ content: `` }}
+                    onClick={() => {
+                      setButtonId(action.label);
+                      action.label === 'Collections' && username
+                        ? history.push(`${action.path}/${username}`)
+                        : action.label === 'Sign Out'
+                        ? LogoutRequest({
+                            setLoggedIn,
+                            setUsername,
+                            accessToken,
+                            setAccessToken,
+                            history,
+                            redirectTo: '/',
+                          })
+                        : history.push(action.path);
+                    }}
+                  />
+                )}
               </>
             ))}
-          </HStack>
-        </Flex>
-        {/* search bar goes here */}
-      </AnimateSharedLayout>
+          </>
+        </HStack>
+      </>
     </>
   );
 };

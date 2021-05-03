@@ -1,7 +1,8 @@
 import React from 'react';
-import { Content } from '../connectors/main';
+// import { Content } from '../connectors/main';
 
 import PrimaryArea from '../components/layout/main/areas/primary.area';
+import SubNav from '../components/navigation/subnav';
 
 interface ContainerProps {
   children?: React.ReactNode;
@@ -20,9 +21,8 @@ interface ContainerProps {
 export const Primary: React.FC<ContainerProps> = ({ children }) => (
   <>
     <PrimaryArea>
-      {/* <Content> */}
-      {children}
-      {/* </Content> */}
+      <SubNav />
+      <>{children}</>
     </PrimaryArea>
   </>
 );

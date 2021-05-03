@@ -39,11 +39,10 @@ const NavBar: React.FC<NavBarProps> = ({ IloggedIn, Iusername }) => {
   return (
     <>
       <Box
-        // position="fixed"
         width="100%"
         bg={mode('#fff', 'gray.900')}
         borderBottom="1px"
-        borderColor="gray.200"
+        borderColor={mode('#ddd', '#7e88c3')}
         px={4}
       >
         <Flex
@@ -51,20 +50,21 @@ const NavBar: React.FC<NavBarProps> = ({ IloggedIn, Iusername }) => {
           alignItems="center"
           justifyContent="space-between"
         >
-          <IconButton
+          {/* <IconButton
             size="md"
             icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
             aria-label="Open Menu"
             display={{ md: !isOpen ? 'none' : 'inherit' }}
             onClick={isOpen ? onClose : onOpen}
-          />
+          /> */}
           <HStack spacing={8} alignItems="center">
             <Flex align="center" mr={0}>
               <Heading as="h1" size="md" letterSpacing="-.1rem">
                 Cheat-Hub
               </Heading>
+              {!loggedIn && <p>You are not logged in.</p>}
             </Flex>
-            {loggedIn ? (
+            {/* {loggedIn ? (
               <HStack
                 as="nav"
                 spacing={4}
@@ -80,7 +80,7 @@ const NavBar: React.FC<NavBarProps> = ({ IloggedIn, Iusername }) => {
               </HStack>
             ) : (
               <p>You are not logged in.</p>
-            )}
+            )} */}
           </HStack>
 
           {loggedIn ? (
@@ -124,7 +124,7 @@ const NavBar: React.FC<NavBarProps> = ({ IloggedIn, Iusername }) => {
           )}
         </Flex>
 
-        {isOpen ? (
+        {/* {isOpen ? (
           <Box bg="#fff" position="absolute" pt={4} pb={4}>
             <Stack as="nav" spacing={4}>
               {PATHS.map((link, i) => (
@@ -137,7 +137,7 @@ const NavBar: React.FC<NavBarProps> = ({ IloggedIn, Iusername }) => {
               {loggedIn && <NavLink path="/" label="Sign Out" />}
             </Stack>
           </Box>
-        ) : null}
+        ) : null} */}
       </Box>
     </>
   );
