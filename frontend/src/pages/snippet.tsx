@@ -17,7 +17,7 @@ import {
   putReload,
   postReload,
   likeRequest,
-} from '../lib/fetcher';
+} from '../services/crud.service';
 
 import { useUserContext } from '../context/user.context';
 import { useDataHandler } from '../context/datahandler.context';
@@ -25,7 +25,7 @@ import { useDataHandler } from '../context/datahandler.context';
 import { Secondary } from '../containers/secondary.container';
 import { Content } from '../connectors/main';
 import { SideNav } from '../connectors/side';
-import { HeaderBox } from '../components/shared/header-box';
+import { HeaderBox } from '../connectors/header-box';
 
 import {
   MotionSection,
@@ -169,16 +169,8 @@ const Snippet: React.FC<SnippetPageProps> = ({ match, history }) => {
       </Secondary>
       <DeleteModal alert={alert} setAlert={setAlert} title={title} />
       <Content>
-        <HeaderBox heading={heading}>
-          {baseLg ? 'true' : 'false'}
-          <Button
-            onClick={() => {
-              // getSnippet();
-            }}
-          >
-            All
-          </Button>
-        </HeaderBox>
+        <HeaderBox heading={heading} />
+
         {!baseLg && (
           <SnippetCrud
             snippet={snippet}
