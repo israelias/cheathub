@@ -16,7 +16,7 @@ import { AnimateSharedLayout } from 'framer-motion';
 import { Link as RouterLink, useHistory } from 'react-router-dom';
 import { MotionBox } from '../../shared/motion-box';
 import { ACTIONS } from '../../../constants/actions.constants';
-import { LogoutRequest } from '../../../lib/fetcher';
+import { LogoutRequest } from '../../../services/auth.service';
 import { useUserContext } from '../../../context/user.context';
 
 interface Props {

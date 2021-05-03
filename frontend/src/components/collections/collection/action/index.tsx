@@ -22,7 +22,7 @@ import {
   putRequest,
   getRequest,
   postRequest,
-} from '../../../../lib/fetcher';
+} from '../../../../services/crud.service';
 
 import { MotionBox } from '../../../shared/motion-box';
 import { useUserContext } from '../../../../context/user.context';

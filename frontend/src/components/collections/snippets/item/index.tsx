@@ -32,7 +32,7 @@ import cn from 'classnames';
 import { TimeAgo } from '../../../shared/time';
 import { Viewer } from '../../../snippet/editor/viewer';
 import { MotionBox } from '../../../shared/motion-box';
-import { postRequest } from '../../../../lib/fetcher';
+import { postRequest } from '../../../../services/crud.service';
 import { useUserContext } from '../../../../context/user.context';
 import '../../styles.css';
 

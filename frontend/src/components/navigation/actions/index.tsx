@@ -25,7 +25,7 @@ import { ACTIONS } from '../../../constants/paths.constants';
 
 import { useUserContext } from '../../../context/user.context';
 
-import { LogoutRequest } from '../../../lib/fetcher';
+import { LogoutRequest } from '../../../services/auth.service';
 
 /**
  * This is an example of animating between different components in Framer Motion 2.

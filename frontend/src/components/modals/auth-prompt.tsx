@@ -14,7 +14,7 @@ import {
   Input,
   FormLabel,
 } from '@chakra-ui/react';
-import { loginReload } from '../../lib/fetcher';
+import { loginReload } from '../../services/crud.service';
 import { useUserContext } from '../../context/user.context';
 
 interface SignInPromptProps {

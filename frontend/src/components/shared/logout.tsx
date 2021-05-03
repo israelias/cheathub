@@ -1,6 +1,6 @@
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { Button } from '@chakra-ui/react';
-import { LogoutRequest } from '../../lib/fetcher';
+import { LogoutRequest } from '../../services/auth.service';
 import { useUserContext } from '../../context/user.context';
 
 interface Props extends RouteComponentProps {
