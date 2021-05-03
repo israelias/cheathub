@@ -2,7 +2,7 @@ import React from 'react';
 
 import Actions from '../components/navigation/actions';
 
-import NavigationArea from '../components/layout/setout/root/areas/navigation.area';
+import NavigationArea from '../components/layout/root/areas/navigation.area';
 
 interface ContainerProps {
   children?: React.ReactNode;

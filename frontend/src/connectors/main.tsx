@@ -2,7 +2,7 @@
 import React from 'react';
 import { Flex, useColorModeValue as mode } from '@chakra-ui/react';
 
-import PrimaryArea from '../components/layout/setout/main/areas/primary.area';
+import PrimaryArea from '../components/layout/main/areas/primary.area';
 import SubNav from '../components/navigation/subnav';
 
 interface Props {

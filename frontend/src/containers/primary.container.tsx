@@ -1,7 +1,7 @@
 import React from 'react';
 import { Content } from '../connectors/main';
 
-import PrimaryArea from '../components/layout/setout/main/areas/primary.area';
+import PrimaryArea from '../components/layout/main/areas/primary.area';
 
 interface ContainerProps {
   children?: React.ReactNode;

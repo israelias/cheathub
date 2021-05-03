@@ -1,8 +1,8 @@
 import React from 'react';
 
-import RootGrid from '../components/layout/setout/root/grid/root.grid';
-import MainGrid from '../components/layout/setout/main/grid/main.grid';
-import MainArea from '../components/layout/setout/root/areas/main.area';
+import RootGrid from '../components/layout/root/grid/root.grid';
+import MainGrid from '../components/layout/main/grid/main.grid';
+import MainArea from '../components/layout/root/areas/main.area';
 
 import { TitleBar } from './titlebar.container';
 import { Navigation } from './navigation.container';

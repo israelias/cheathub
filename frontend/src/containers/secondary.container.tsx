@@ -2,7 +2,7 @@ import React from 'react';
 
 import { SideNav } from '../connectors/side';
 
-import SecondaryArea from '../components/layout/setout/main/areas/secondary.area';
+import SecondaryArea from '../components/layout/main/areas/secondary.area';
 
 interface ContainerProps {
   children?: React.ReactNode;
