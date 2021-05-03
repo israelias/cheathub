@@ -20,7 +20,7 @@ export const ACTIONS = [
   },
   { label: 'Faves', path: '/faves', icon: GoBookmark },
   { label: 'Explore', path: '/explore', icon: GoTelescope },
-  { label: 'Add', path: '/add', icon: GoFileCode },
+  { label: 'Add', path: '/explore/add', icon: GoFileCode },
 ];
 
 export const ADDING = [
