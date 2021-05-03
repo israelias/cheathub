@@ -24,7 +24,10 @@ export const PrivateRoute: React.FC<RouteProps> = ({
           Component && <Component {...props} />
         ) : (
           <Redirect
-            to={{ pathname: '/', state: { from: props.location } }}
+            to={{
+              pathname: '/',
+              state: { from: props.location },
+            }}
           />
         )
       }
