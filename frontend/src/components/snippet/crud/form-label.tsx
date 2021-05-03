@@ -1,5 +1,8 @@
 import React from 'react';
-import { FormLabel } from '@chakra-ui/react';
+import {
+  FormLabel,
+  useColorModeValue as mode,
+} from '@chakra-ui/react';
 
 export const StyledLabel: React.FC<{ label: string }> = ({
   label,
@@ -7,9 +10,9 @@ export const StyledLabel: React.FC<{ label: string }> = ({
   <FormLabel
     p={['0 10px']}
     m={0}
-    bg="#f6f6f6"
+    bg={mode('#f6f6f6', '#252945')}
     borderRadius="md"
-    color="gray.700"
+    color={mode('"gray.700"', '#bbb')}
     fontWeight="light"
     fontSize="sm"
   >

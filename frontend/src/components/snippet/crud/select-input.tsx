@@ -23,11 +23,7 @@ export const SelectInput: React.FC<Props> = ({
   ...props
 }) => (
   <FormControl id={name}>
-    {label && (
-      <FormLabel color="gray.600" fontWeight="light" fontSize="sm">
-        {label}
-      </FormLabel>
-    )}
+    {label && <FormLabel>{label}</FormLabel>}
     <Select value={value} onChange={onChange} {...props}>
       {options.map((option) => (
         <option key={option.value} value={option.value}>
