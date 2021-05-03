@@ -1,15 +1,11 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-console */
 /* eslint-disable no-return-assign */
 /* eslint-disable react-hooks/rules-of-hooks */
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable no-nested-ternary */
-/* eslint-disable react/no-array-index-key */
+
 /* eslint-disable no-extra-boolean-cast */
 import * as React from 'react';
 import { RouteComponentProps, useHistory } from 'react-router';
 
-import axios from 'axios';
 import {
   Box,
   Heading,
@@ -20,29 +16,30 @@ import {
   IconButton,
   useMediaQuery,
   useDisclosure,
-  useOutsideClick,
-  Drawer,
-  DrawerBody,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerOverlay,
-  DrawerContent,
-  DrawerCloseButton,
+  Icon,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuOptionGroup,
+  MenuItemOption,
+  MenuDivider,
+  MenuGroup,
+  MenuItem,
 } from '@chakra-ui/react';
+import { CloseIcon, HamburgerIcon } from '@chakra-ui/icons';
+import { GoFileDirectory } from 'react-icons/go';
 
-import { getRequest } from '../lib/fetcher';
+import { getRequest } from '../services/crud.service';
 import { useUserContext } from '../context/user.context';
 import { useAppData } from '../context/appdata.context';
 import { useProfileData } from '../context/profiledata.context';
-
-import useIntersectionObserver from '../lib/useIntersect';
 
 import { Primary } from '../containers/primary.container';
 import { Secondary } from '../containers/secondary.container';
 import { Content } from '../connectors/main';
 import { SideNav } from '../connectors/side';
 import { SidePanel } from '../connectors/drawer';
-import { HeaderBox } from '../components/shared/header-box';
+import { HeaderBox } from '../connectors/header-box';
 
 import CollectionItem from '../components/collections/collection/item';
 import CollectionAction from '../components/collections/collection/action';
@@ -142,6 +139,11 @@ const Collections: React.FC<CollectionsProps> = ({ match }) => {
     setSelectedSnippet(res[0]);
     setSelectedSnippetId(id);
   };
+  const snippetRef = React.useRef<HTMLDivElement>(null);
+
+  // React.useEffect(() => {
+  //   snippetRef.current?.scrollIntoView();
+  // }, []);
 
   React.useEffect(() => {
     if (selectedSnippets) {
@@ -212,50 +214,62 @@ const Collections: React.FC<CollectionsProps> = ({ match }) => {
         </SideNav>
       </Secondary>
       {!baseLg && (
-        <SidePanel
-          isOpen={isOpen}
-          onOpen={onOpen}
-          onClose={onClose}
-          buttonRef={sidePanelRef}
-          heading="Collections"
-        >
-          {!baseLg &&
-            allCollectionsData?.map(
-              (collection: Collection, i: number) => (
-                <CollectionItem
-                  key={i}
-                  i={i}
-                  collection={collection}
-                  expandedCollection={expandedCollection}
-                  setExpandedCollection={setExpandedCollection}
-                  setSelectedSnippets={setSelectedSnippets}
-                  selectedSnippetId={selectedSnippetId}
-                  setHeading={setHeading}
-                  setExpandedSnippet={setExpandedSnippet}
-                />
-              )
-            )}
-        </SidePanel>
+        <>
+          <SidePanel
+            isOpen={isOpen}
+            onOpen={onOpen}
+            onClose={onClose}
+            buttonRef={sidePanelRef}
+            heading="Collections"
+          >
+            {!baseLg &&
+              allCollectionsData?.map(
+                (collection: Collection, i: number) => (
+                  <CollectionItem
+                    key={i}
+                    i={i}
+                    collection={collection}
+                    expandedCollection={expandedCollection}
+                    setExpandedCollection={setExpandedCollection}
+                    setSelectedSnippets={setSelectedSnippets}
+                    selectedSnippetId={selectedSnippetId}
+                    setHeading={setHeading}
+                    setExpandedSnippet={setExpandedSnippet}
+                  />
+                )
+              )}
+          </SidePanel>
+        </>
       )}
       <Content>
         <HeaderBox heading={heading}>
-          {!baseLg && (
+          <HStack>
+            {!baseLg && (
+              <IconButton
+                ref={sidePanelRef}
+                // onClick={onOpen}
+                size="md"
+                icon={
+                  isOpen ? (
+                    <CloseIcon />
+                  ) : (
+                    <Icon as={GoFileDirectory} />
+                  )
+                }
+                aria-label="Open Collections"
+                onClick={isOpen ? onClose : onOpen}
+              />
+            )}
+
             <Button
-              ref={sidePanelRef}
-              colorScheme="teal"
-              onClick={onOpen}
+              onClick={() => {
+                loadSnippetsData();
+                setHeading('All Snippets');
+              }}
             >
-              Open
+              All
             </Button>
-          )}
-          <Button
-            onClick={() => {
-              loadSnippetsData();
-              setHeading('All Snippets');
-            }}
-          >
-            All
-          </Button>
+          </HStack>
         </HeaderBox>
 
         {loadingSnippets ? (
@@ -270,7 +284,13 @@ const Collections: React.FC<CollectionsProps> = ({ match }) => {
                 setEditingSnippet={setEditingSnippet}
               />
             </Box>
-            <Box paddingTop="10px">
+            <Box
+              paddingTop="10px"
+              p={{
+                base: '10px 10px 0px 10px',
+                lg: '10px 0px 0px 0px',
+              }}
+            >
               {selectedSnippets?.map(
                 (snippet: Snippet, k: number) => (
                   <SnippetItem
@@ -282,6 +302,7 @@ const Collections: React.FC<CollectionsProps> = ({ match }) => {
                     setSelectedSnippetId={setSelectedSnippetId}
                     expandedSnippet={expandedSnippet}
                     setExpandedSnippet={setExpandedSnippet}
+                    snippetRef={snippetRef}
                   />
                 )
               )}
