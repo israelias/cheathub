@@ -10,14 +10,19 @@ import {
   Text,
   Box,
   VStack,
-  IconButton,
   Button,
   useDisclosure,
   ButtonProps,
   useToast,
   useBoolean,
   useMediaQuery,
+  HStack,
+  Icon,
+  IconButton,
 } from '@chakra-ui/react';
+import { CloseIcon, HamburgerIcon } from '@chakra-ui/icons';
+
+import { GoTelescope } from 'react-icons/go';
 
 import { Primary } from '../containers/primary.container';
 import { Secondary } from '../containers/secondary.container';
@@ -26,18 +31,20 @@ import { SideNav } from '../connectors/side';
 import { SidePanel } from '../connectors/drawer';
 
 import SearchBar from '../components/navigation/searchbar';
+import Pagination from '../components/navigation/pagination';
 
 import { useUserContext } from '../context/user.context';
 import { useAppData } from '../context/appdata.context';
 import { useDataHandler } from '../context/datahandler.context';
 
 import { TimeAgo } from '../components/shared/time';
-import useIntersectionObserver from '../lib/useIntersect';
 
+import SearchBox from '../components/snippet/search/searchbox';
 import { SnippetDataTable } from '../components/snippet/table/data.table';
 import { SnippetQueryTable } from '../components/snippet/table/query.table';
 import { SnippetPaginationTable } from '../components/snippet/table/pagination.table';
-import { HeaderBox } from '../components/shared/header-box';
+import { HeaderBox } from '../connectors/header-box';
+import { BrandButton } from '../components/shared/brand-button';
 
 import SnippetCard from '../components/snippet/card';
 
@@ -90,6 +97,7 @@ const Snippets: React.FC = () => {
   ) => {
     setLanguage('');
     setTags('');
+    setPage(1);
     const {
       target: { value },
     } = e;
@@ -107,6 +115,7 @@ const Snippets: React.FC = () => {
   ) => {
     setSearchText('');
     setTags('');
+    setPage(1);
     const {
       target: { value },
     } = event;
@@ -120,6 +129,7 @@ const Snippets: React.FC = () => {
   ) => {
     setSearchText('');
     setLanguage('');
+    setPage(1);
     const {
       target: { value },
     } = event;
@@ -128,17 +138,33 @@ const Snippets: React.FC = () => {
     }
     setTags(value);
   };
+
   const resetAll = () => {
     setSearchText('');
     setLanguage('');
     setTags('');
+    setHeading('All Snippets');
     loadInitialData();
   };
+
+  React.useEffect(() => {
+    if (searchText) {
+      setHeading(`Searched by text: ${searchText}`);
+    } else if (language) {
+      setHeading(`Searched by language: ${language}`);
+    } else if (tags) {
+      setHeading(`Searched by tag: ${tags}`);
+    } else {
+      setHeading('All Snippets');
+    }
+  }, [searchText, language, tags]);
+
   React.useEffect(() => {
     if (data) {
       setSnippets(data?.items);
     }
   }, [data]);
+
   React.useEffect(() => {
     if (!(username || accessToken)) {
       router.push('/login');
@@ -150,6 +176,16 @@ const Snippets: React.FC = () => {
       <Secondary>
         <HeaderBox left heading="Explore Snippets" />
         <SideNav>
+          <SearchBox
+            searchText={searchText}
+            language={language}
+            tags={tags}
+            onSearchTextChange={onSearchTextChange}
+            onLanguageChange={onLanguageChange}
+            onTagsChange={onTagChange}
+            allTags={allTags}
+            resetAll={resetAll}
+          />
           <SnippetQueryTable
             searchText={searchText}
             setSearchText={setSearchText}
@@ -209,27 +245,50 @@ const Snippets: React.FC = () => {
         </SidePanel>
       )}
       <Content>
-        <SearchBar
-          searchText={searchText}
-          language={language}
-          tags={tags}
-          onSearchTextChange={onSearchTextChange}
-          onLanguageChange={onLanguageChange}
-          onTagsChange={onTagChange}
-          allTags={allTags}
-          resetAll={resetAll}
-        />
-        {!baseLg && (
-          <Button ref={sidePanelRef} onClick={onOpen}>
-            {' '}
-            Open
-          </Button>
+        {!baseLg ? (
+          <SearchBar
+            searchText={searchText}
+            language={language}
+            tags={tags}
+            onSearchTextChange={onSearchTextChange}
+            onLanguageChange={onLanguageChange}
+            onTagsChange={onTagChange}
+            allTags={allTags}
+            resetAll={resetAll}
+            heading={heading}
+          >
+            {!baseLg && (
+              <IconButton
+                aria-label="Open Results Data"
+                ref={sidePanelRef}
+                icon={
+                  isOpen ? <CloseIcon /> : <Icon as={GoTelescope} />
+                }
+                onClick={onOpen}
+              >
+                Open
+              </IconButton>
+            )}
+          </SearchBar>
+        ) : (
+          <HeaderBox heading={heading}>
+            <HStack>
+              <BrandButton onClick={() => resetAll()}>
+                Clear
+              </BrandButton>
+            </HStack>
+          </HeaderBox>
         )}
 
         {loading ? (
           <p>Loading..</p>
         ) : (
-          <Box paddingTop="10px">
+          <Box
+            p={{
+              base: '10px 10px 0px 10px',
+              lg: '10px 0px 0px 0px',
+            }}
+          >
             {snippets.map((snippet: Snippet, i: number) => (
               <SnippetCard
                 key={snippet._id}
@@ -250,6 +309,14 @@ const Snippets: React.FC = () => {
               />
             ))}
           </Box>
+        )}
+        {!loading && (
+          <Pagination
+            hasPrev={data?.has_prev}
+            hasNext={data?.has_next}
+            page={page}
+            setPage={setPage}
+          />
         )}
       </Content>
     </>
