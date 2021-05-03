@@ -34,7 +34,7 @@ type AppDataType = {
   tags: string;
   setTags: React.Dispatch<React.SetStateAction<string>>;
   page: number;
-  setPage: (page: number) => void;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
   allTags: Options[];
   setAllTags: (allTags: Options[]) => void;
   loadResultsData: () => Promise<void>;

@@ -9,7 +9,7 @@ import {
   putReload,
   postReload,
   likeRequest,
-} from '../lib/fetcher';
+} from '../services/crud.service';
 
 import { Prompt } from '../components/modals/toast-feedback';
 
@@ -93,13 +93,12 @@ export function HandlerDataProvider({
   const clearValues = () => {
     setId('');
     setHeading('Add New');
-    setTitle('');
-    setDescription('');
-    setValue('');
-    setLanguage('');
-    setTags('');
+    setTitle('My new code snippet');
+    setDescription(`hello from ${username}`);
+    setValue('hello world');
+    setLanguage('javascript');
+    setTags('first post');
     setSource('');
-    setId('');
     setPrivatize('');
     setSource('');
     setHeading('Add New');
