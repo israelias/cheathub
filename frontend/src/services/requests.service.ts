@@ -1,4 +1,5 @@
-const API = 'http://localhost:5000';
+// const API = 'http://localhost:5000';
+const API = 'https://cheathub-backend.herokuapp.com';
 
 /**
  * A request manager that pre-packages HTTP requests for a request handler.

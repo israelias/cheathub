@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { RouterProps, RouteProps } from 'react-router';
 import fetch from 'isomorphic-unfetch';
 import { RequestTicket } from './requests.service';

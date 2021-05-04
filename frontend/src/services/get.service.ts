@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 const axiosConfig = {
-  baseURL: 'http://localhost:5000/api/',
+  // baseURL: 'http://localhost:5000/api/',
+  baseURL: 'https://cheathub-backend.herokuapp.com/api',
 };
 
 // http://localhost:5000/api/search?query=hello%20world&tags=javascript&tags=jquery
