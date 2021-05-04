@@ -32,13 +32,10 @@ import { useAppData } from '../context/appdata.context';
 import { useDataHandler } from '../context/datahandler.context';
 import { useProfileData } from '../context/profiledata.context';
 
-import { TimeAgo } from '../components/shared/time';
-import useIntersectionObserver from '../lib/useIntersect';
-
 import { SnippetDataTable } from '../components/snippet/table/data.table';
 import { SnippetQueryTable } from '../components/snippet/table/query.table';
 import { SnippetPaginationTable } from '../components/snippet/table/pagination.table';
-import { HeaderBox } from '../components/shared/header-box';
+import { HeaderBox } from '../connectors/header-box';
 
 import SnippetCard from '../components/snippet/card';
 
@@ -160,7 +157,7 @@ const Faves: React.FC = () => {
   return (
     <>
       <Secondary>
-        <HeaderBox left heading="Explore Snippets" />
+        <HeaderBox left heading="Your Faves" />
         <SideNav>
           <SnippetQueryTable
             searchText={searchText}
