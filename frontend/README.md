@@ -1,7 +1,14 @@
-# Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
+# MS3 Cheat-Hub Frontend
+## Frontend Deployment
+- `commit` and `push` the code from my local IDE to Github via Git and my MacBook Pro's iTerm terminal.
+- Log in to Vercel and click the [New Project](https://vercel.com/new) CTA.
+- Access "Import Git Repository" via the `select` input, located at the top-left of the immediate prompt.
+- Click "Import" on the repository named "cheathub"
+- Select the default "Personal Account"
+- Select the "frontend" sub-directory.
+- Click "Deploy"
+- Barring errors, await the prompt for:
+> ##### "Your project has been successfully deployed."
 ## Available Scripts
 
 In the project directory, you can run:

@@ -1,5 +1,6 @@
 # MS3 Cheat-Hub Backend
 
+<<<<<<< HEAD
 The restful API is deployed at [cheathub-backend.herokuapp.com/](https://cheathub-backend.herokuapp.com/)
 
 ## Heroku Deployment
@@ -29,6 +30,8 @@ cd -
 heroku git:remote -a cheathub-backend    
 git push heroku master
 
+=======
+>>>>>>> 6cf8381a8a940cc939688dd3cf6cb520a71483f3
 ## Development Server Configuration
 - Clone this repository.
 - Install/run a virtual environment: `pip install virtualenv`
@@ -137,7 +140,10 @@ You can add documents via Postman or Mongo Compass.
 - [Flask Admin](https://flask-admin.readthedocs.io/en/latest/)
 - [Flask Session](https://flask-session.readthedocs.io/en/latest/)
 - [Flask Restful](https://flask-restful.readthedocs.io/en/latest/)
+<<<<<<< HEAD
 
 ## Resources
 - [Heroku Deployment](https://stackoverflow.com/questions/7539382/how-can-i-deploy-push-only-a-subdirectory-of-my-git-repo-to-heroku)
 - [Deploying Flask Restful Backend](https://medium.com/analytics-vidhya/flask-restful-api-with-heroku-da1ecf3e04b)
+=======
+>>>>>>> 6cf8381a8a940cc939688dd3cf6cb520a71483f3
