@@ -12,7 +12,9 @@ import {
  * @since 4.21.21
  */
 
-const TitleBarArea: React.FC<LayoutProps> = ({ children }) => (
+const TitleBarArea: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => (
   <>
     <GridItem
       as="header"
@@ -28,6 +30,7 @@ const TitleBarArea: React.FC<LayoutProps> = ({ children }) => (
       maxHeight="62px"
       bg={mode('#fff', '#141625')}
       p={0}
+      cursor="default"
     >
       {children}
     </GridItem>

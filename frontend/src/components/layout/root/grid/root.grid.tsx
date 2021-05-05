@@ -35,7 +35,9 @@ import { Grid } from '@chakra-ui/react';
  * </MainArea>
  */
 
-const RootGrid: React.FC<LayoutProps> = ({ children }) => (
+const RootGrid: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => (
   <>
     <Grid
       display="grid"

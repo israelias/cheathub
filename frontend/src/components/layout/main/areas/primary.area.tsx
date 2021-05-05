@@ -16,7 +16,9 @@ import {
  *   <Content>{children}</Content>
  */
 
-const PrimaryArea: React.FC<LayoutProps> = ({ children }) => (
+const PrimaryArea: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => (
   <>
     <GridItem
       id="main-primary"

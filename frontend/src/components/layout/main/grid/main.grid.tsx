@@ -30,7 +30,9 @@ import { Grid } from '@chakra-ui/react';
  * />
  */
 
-const MainGrid: React.FC<LayoutProps> = ({ children }) => (
+const MainGrid: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => (
   <>
     <Grid
       templateAreas={[`'secondary primary'`]}

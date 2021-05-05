@@ -17,7 +17,9 @@ import {
       </SideNav>
  */
 
-const SecondaryArea: React.FC<LayoutProps> = ({ children }) => (
+const SecondaryArea: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => (
   <>
     <GridItem
       id="main-secondary"

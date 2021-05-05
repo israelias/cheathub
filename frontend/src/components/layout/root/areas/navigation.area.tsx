@@ -19,7 +19,9 @@ import {
  * </NavigationArea>
  */
 
-const NavigationArea: React.FC<LayoutProps> = ({ children }) => (
+const NavigationArea: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => (
   <>
     <GridItem
       as="nav"
