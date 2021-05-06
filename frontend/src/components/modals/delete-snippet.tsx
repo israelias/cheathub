@@ -1,8 +1,3 @@
-/* eslint-disable react/no-array-index-key */
-/* eslint-disable no-alert */
-/* eslint-disable no-console */
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable react-hooks/exhaustive-deps */
 import * as React from 'react';
 
 import {
@@ -48,31 +43,13 @@ import {
 
 import { AnimatePresence, motion } from 'framer-motion';
 
-interface Props {
+export const DeleteModal: React.FC<{
   title: string;
   alert: boolean;
   setAlert: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-/**
- * Frontend private endpoint that represents a single code snippet post.
- * Selected by `_id`.
- * CRUD operations begin from this component tree.
- * @file defines route for one unique Snippet.
- * @date 2021-04-21
- * @param {any} title
- * @param {any} alert
- * @param {any} setAlert
- * @return {=>}
- */
-export const DeleteModal: React.FC<Props> = ({
-  title,
-  alert,
-  setAlert,
-}) => {
+}> = ({ title, alert, setAlert }) => {
   const [baseLg] = useMediaQuery('(min-width: 62em)');
   const cancelRef = React.useRef<HTMLButtonElement>(null);
-
   const closeAlert = () => setAlert(false);
 
   return (
