@@ -1,31 +1,18 @@
-/* eslint-disable no-nested-ternary */
-/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-import React, { useState } from 'react';
 import {
   Grid,
   useColorModeValue as mode,
   IconButton,
   Icon,
   Tooltip,
+  useMediaQuery,
+  useColorMode,
 } from '@chakra-ui/react';
-
-import {
-  RouteComponentProps,
-  Link as RouterLink,
-  useHistory,
-} from 'react-router-dom';
-
+import { useHistory, useLocation } from 'react-router-dom';
 import { AnimateSharedLayout } from 'framer-motion';
-import { ModeSwitch } from '../../shared/mode';
 
 import { MotionBox } from '../../shared/motion-box';
-
-import { ACTIONS } from '../../../constants/paths.constants';
-
+import { ACTIONS, MODES } from '../../../constants/actions.constants';
 import { useUserContext } from '../../../context/user.context';
-
-import { LogoutRequest } from '../../../services/auth.service';
 
 /**
  * This is an example of animating between different components in Framer Motion 2.
@@ -38,47 +25,52 @@ import { LogoutRequest } from '../../../services/auth.service';
  * The outline being animated here is four different components, animated like one.
  */
 
-const colors = ['#d4825c', '#d67968', '#aa647c', '#786e89'];
-
 const Actions = () => {
-  const [selected, setSelected] = useState(colors[0]);
   const history = useHistory();
-  const {
-    username,
-    accessToken,
-    setLoggedIn,
-    setAccessToken,
-    setUsername,
-  } = useUserContext();
-
+  const location = useLocation();
+  const { toggleColorMode } = useColorMode();
+  const { username, handleSignOut } = useUserContext();
+  const [baseLg] = useMediaQuery('(min-width: 62em)');
   return (
     <AnimateSharedLayout>
       <Grid
-        templateColumns={['minmax(0px, 1fr)']}
-        templateRows={['auto']}
-        position="fixed"
+        templateColumns={{
+          base: 'repeat(4, 1fr)',
+          lg: 'minmax(0px, 1fr)',
+        }}
+        templateRows={{ base: 'unset', lg: 'auto' }}
+        position={{ base: 'sticky', lg: 'fixed' }}
         top={0}
-        width="100%"
-        maxWidth="72px"
+        width={{ base: 'unset', lg: '100%' }}
+        maxWidth={{ base: '100vw', lg: '72px' }}
         overflow={['hidden auto']}
-        padding={['12px 0px 16px']}
+        padding={{ base: 'unset', lg: '12px 0px 16px' }}
         alignContent="start"
-        height="100%"
+        height={{ base: 'unset', lg: '100%' }}
         bg={mode('#fff', '#141625')}
-        borderRight={['1px solid']}
-        borderColor={mode('#ddd', '#7e88c3')}
+        borderRight={{
+          base: 'none',
+          lg: mode('1px solid #ddd', '1px solid #7e88c3'),
+        }}
+        borderBottom={{
+          base: mode('1px solid #ddd', '1px solid #7e88c3'),
+          lg: 'none',
+        }}
       >
         {ACTIONS.map((action) => (
           <Tooltip
             key={action.label}
             label={action.label}
-            placement="right"
+            placement={baseLg ? 'right' : 'bottom'}
           >
             <Grid
               as="span"
-              templateColumns={['minmax(0px, 1fr)']}
-              top={0}
-              alignContent="start"
+              templateColumns={{
+                base: 'unset',
+                lg: 'minmax(0px, 1fr)',
+              }}
+              top={{ base: 'unset', lg: 0 }}
+              alignContent={{ base: 'unset', lg: 'start' }}
               fontWeight={500}
             >
               <IconButton
@@ -87,32 +79,30 @@ const Actions = () => {
                 display="flex"
                 flexDirection="column"
                 alignItems="center"
-                padding={['8px 12px']}
+                // padding={['12px 0px 16px']}
+                padding={{
+                  base: '12px 12px 12px',
+                  lg: '8px 12px ',
+                }}
                 position="relative"
                 size="lg"
-                aria-label={action.label}
                 _focus={{
                   boxShadow: 0,
                 }}
-                icon={<Icon as={action.icon} />}
+                aria-label={action.label}
+                icon={
+                  <Icon
+                    as={mode(action.icons.main, action.icons.dark)}
+                  />
+                }
                 onClick={() => {
-                  setSelected(action.label);
                   action.label === 'Collections' && username
                     ? history.push(`${action.path}/${username}`)
-                    : action.label === 'Sign Out'
-                    ? LogoutRequest({
-                        setLoggedIn,
-                        setUsername,
-                        accessToken,
-                        setAccessToken,
-                        history,
-                        redirectTo: '/',
-                      })
                     : history.push(action.path);
                 }}
               />
 
-              {selected === action.label && (
+              {location.pathname.includes(action.path) && (
                 <MotionBox
                   layoutId="outline"
                   initial={true}
@@ -130,22 +120,56 @@ const Actions = () => {
             </Grid>
           </Tooltip>
         ))}
-        <Tooltip label="Toggle Mode" placement="right">
-          <Grid as="span">
-            <ModeSwitch
-              variant="link"
-              colorScheme="gray"
-              display="flex"
-              flexDirection="column"
-              alignItems="center"
-              padding={['8px 12px']}
-              position="relative"
-              _focus={{
-                boxShadow: 0,
-              }}
-            />
+
+        {baseLg && (
+          <Grid
+            position="absolute"
+            width="100%"
+            bottom={0}
+            padding={['12px 0px 16px']}
+          >
+            {MODES.map((action) => (
+              <Tooltip
+                key={action.labels.main}
+                label={mode(action.labels.main, action.labels.dark)}
+                placement="right"
+              >
+                <Grid as="span">
+                  <IconButton
+                    variant="link"
+                    colorScheme="gray"
+                    display="flex"
+                    flexDirection="column"
+                    alignItems="center"
+                    padding={['8px 12px']}
+                    position="relative"
+                    size="lg"
+                    _focus={{
+                      boxShadow: 0,
+                    }}
+                    aria-label={mode(
+                      action.labels.main,
+                      action.labels.dark
+                    )}
+                    icon={
+                      <Icon
+                        as={mode(
+                          action.icons.main,
+                          action.icons.dark
+                        )}
+                      />
+                    }
+                    onClick={
+                      action.labels.main === 'Sign Out'
+                        ? handleSignOut
+                        : toggleColorMode
+                    }
+                  />
+                </Grid>
+              </Tooltip>
+            ))}
           </Grid>
-        </Tooltip>
+        )}
       </Grid>
     </AnimateSharedLayout>
   );
