@@ -1,9 +1,8 @@
 /* eslint-disable */
 import React from 'react';
-import { ThemeProvider, DefaultTheme } from 'styled-components';
 import { useColorModeValue as mode } from '@chakra-ui/react';
 
-const theme = {
+export const theme = {
   light: {
     primary: 'rgb(16, 22, 47)',
     background: '#eae9ed',
@@ -139,18 +138,3 @@ const theme = {
     },
   },
 };
-
-const Theme: React.FC = ({ children }) => {
-  const value = mode('dark', 'light');
-  return (
-    <ThemeProvider
-      theme={{
-        colors: { primary: value === 'light' ? '#3939' : '#093875' },
-      }}
-    >
-      {children}
-    </ThemeProvider>
-  );
-};
-
-export default Theme;
