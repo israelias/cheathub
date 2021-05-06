@@ -1,8 +1,5 @@
-// const API = 'http://localhost:5000';
-const API = 'https://cheathub-backend.herokuapp.com';
-
 /**
- * A request manager that pre-packages HTTP requests for a request handler.
+ * Functions that pre-packages HTTP requests for a fetcher/handler.
  *
  * Requests are sorted per method for requests like signupRequest and loginRequest to send to the backend efficiently.
  *
@@ -16,19 +13,33 @@ const API = 'https://cheathub-backend.herokuapp.com';
  * @since 3.15.21
  */
 
-interface IRequestTicket {
-  method: string;
-  token?: string;
-  url: string;
-  body?: object;
-}
+/**
+ * Api backend base URL.
+ * Change to debloyed backend in production.
+ */
+const API = 'http://localhost:5000';
+// const API = 'https://cheathub-backend.herokuapp.com';
 
+/**
+ * Describe your function
+ * @author jsanez @israelias
+ * @param {string} method
+ * @param {string} token
+ * @param {string} url
+ * @param {object} body
+ * @return {Request}
+ */
 export const RequestTicket = ({
   method,
   token,
   url,
   body,
-}: IRequestTicket) => {
+}: {
+  method: string;
+  token?: string;
+  url: string;
+  body?: object;
+}) => {
   if (method === 'post') {
     if (token) {
       return new Request(`${API}/${url}`, {

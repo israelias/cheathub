@@ -1,27 +1,37 @@
 import axios from 'axios';
+/**
+ * Get requests for snippets and collections endpoints.
+ * All `get` views are public. 
+ * All `post/put/delete` methods require token.
+ * See counterpart fetchers in @module crud.service.ts
+ *
+ * @file defines all get methods to retrieve data from backend
+ * @see ProfileDataProvider
+ * @see AppDataProvider
+ */
 
+/**
+ * Api backend base URL.
+ * Change to debloyed backend in production.
+ */
 const axiosConfig = {
-  // baseURL: 'http://localhost:5000/api/',
-  baseURL: 'https://cheathub-backend.herokuapp.com/api',
+  baseURL: 'http://localhost:5000/api/',
+  // baseURL: 'https://cheathub-backend.herokuapp.com/api',
 };
 
-// http://localhost:5000/api/search?query=hello%20world&tags=javascript&tags=jquery
-
-// # SEARCH endpoint
-// api.add_resource(SearchApi, "/api/search")
-function searchSnippets(
-  searchText: string,
-  language: string,
-  tags: string,
-  page = 1,
-  perPage = 10
-) {
-  return axios.get(
-    `search?query=${searchText}&language=${language}&tags=${tags}&page=${page}&per_page=${perPage}`,
-    axiosConfig
-  );
-}
-
+/**
+ * Get search results data.
+ *
+ * SearchApi, `/api/search`
+ * Queryies the Snippet cluster in the database with the following params.
+ * Flask Restful handles on param at a time; the ternary block is written to accommodate this.
+ * Sample querystring `search?query=hello%20world&tags=javascript&tags=jquery` will return data, but query
+ * takes precedence over the other params.
+ * @param {string} searchText
+ * @param {string} language
+ * @param {string} tags
+ * @param {number} page
+ */
 function getResultsData(
   searchText: string,
   language: string,
@@ -37,83 +47,97 @@ function getResultsData(
     : `search?query=`;
   return axios.get(`/${querystring}&page=${page}`, axiosConfig);
 }
-
+/**
+ * Get initial data.
+ *
+ * SnippetsApi, `/api/snippets`
+ */
 function getInitialData() {
   return axios.get(`snippets`, axiosConfig);
 }
-
+/**
+ * Get collections profile data.
+ *
+ * MyCollectionsApi, `/api/users/<user_id>/collections`
+ * Endpoint can be modified without username param to 
+ * fetch general list of public collections: CollectionsApi, "/api/collections"
+ * @param {string} username username stored in UserContext
+ */
 function getCollectionsProfile(username: string) {
   return axios.get(`users/${username}/collections`, axiosConfig);
 }
-
+/**
+ * Get Snippets profile data.
+ *
+ * MySnippetsApi, `/api/users/<id>/snippets`
+ * @param {string} username username stored in UserContext
+ */
 function getSnippetsProfile(username: string) {
   return axios.get(`users/${username}/snippets`, axiosConfig);
 }
-
+/**
+ * Get all tags stored in snippets database sub-document.
+ * 
+ * `Tag` is not a database cluster/class/model but a listfield of the Snippet model.
+ * The backend computes the retrieval from the database when we make this call.
+ */
 function getAllTags() {
   return axios.get(`tags`, axiosConfig);
 }
-
+/**
+ * Get a user's favorite snipppets.
+ * 
+ * MyFaveSnippetsApi, `/api/users/<id>/snippets/faves`
+ * @param {string} username username stored in UserContext
+ */
 function getFaveSnippets(username: string) {
   return axios.get(`users/${username}/snippets/faves`, axiosConfig);
 }
-
-// # Get, Post
-// api.add_resource(SnippetsApi, "/api/snippets")
-// # Get (Auth)
-// api.add_resource(MySnippetsApi, "/api/users/<id>/snippets")
-// # GET (Auth)
-// api.add_resource(MyFaveSnippetsApi, "/api/users/<id>/snippets/faves")
-function getSnippets(tags?: string, page = 1, perPage = 10) {
-  return axios.get(
-    `snippets?tags=${tags}&page=${page}&per_page=${perPage}`,
-    axiosConfig
-  );
-}
-
-// # Get, Put, Delete
-// api.add_resource(SnippetApi, "/api/snippets/<id>")
+/**
+ * Get one snippet from the database.
+ * 
+ * @param {string} id database document `_id` of snippet
+ */
 function getSnippet(id: string) {
-  return axios.get(`snippets/${id}`, axiosConfig);
+  return axios.get(`snippets/${id}`);
 }
-
-// api.add_resource(CollectionsApi, "/api/collections")
-// api.add_resource(MyCollectionsApi, "/api/users/<user_id>/collections")
-function getCollections(username: string) {
-  return axios.get(`users/${username}/collections`, axiosConfig);
+/**
+ * Get one collection from the database.
+ * 
+ * @param {string} id database document `_id` of collection
+ */
+function getCollection(id: string) {
+  return axios.get(`collections/${id}`);
 }
-
-// api.add_resource(CollectionApi, "/api/collections/<id>")
-// api.add_resource(MyCollectionApi, "/api/users/<user_id>/collections/<id>")
-function getCollection(username: string, id: string) {
-  return axios.get(
-    `users/${username}/collections/${id}`,
-    axiosConfig
-  );
-}
-
-// # Get, Post
-// api.add_resource(UsersApi, "/api/users")
+/**
+ * Get users from the database.
+ * 
+ * UsersApi, `/api/users`
+ * Currently unused fetcher.
+ * To be implemented with user profile feature along with account deletion scrope.
+ */
 function getUsers() {
   return axios.get(`users`, axiosConfig);
 }
-
-// # Get, Put, Delete
-// api.add_resource(UserApi, "/api/users/<id>")
+/**
+ * Get one user from the database.
+ * 
+ * UserApi, `/api/users/<id>`
+ * Currently unused fetcher.
+ * To be implemented with user profile feature along with account deletion scrope.
+ * @param {string} username username of user as the backend matches it with `_id` in databse
+ */
 function getUser(username: string) {
   return axios.get(`users/${username}`, axiosConfig);
 }
 
 export {
-  searchSnippets,
   getResultsData,
   getInitialData,
   getCollectionsProfile,
   getSnippetsProfile,
   getFaveSnippets,
   getSnippet,
-  getSnippets,
-  getCollections,
   getCollection,
   getAllTags,
   getUsers,
@@ -145,37 +169,3 @@ export {
 // api.add_resource(MyCollectionsApi, "/api/users/<user_id>/collections")
 // # My Profile Collection (Full with Snippets)
 // api.add_resource(MyCollectionApi, "/api/users/<user_id>/collections/<id>")
-
-// const onLanguageChange = (lang: string) => {
-//   setLanguage(lang);
-//   loadSnippets(searchText, lang, tags, page);
-// };
-
-// const onTagsChange = (tag: string) => {
-//   setTags(tag);
-//   loadSnippets(searchText, language, tag, page);
-// };
-
-// const onPageParamChange = (nextPage: number) => {
-//   setPage(nextPage);
-//   loadSnippets(searchText, language, tags, nextPage);
-// };
-
-// const loadSnippets = async (
-//   searchText: string,
-//   language: string,
-//   tags: string,
-//   page?: number
-// ) => {
-//   setLoading(true);
-//   const res = await searchSnippets({
-//     searchText,
-//     language,
-//     tags,
-//     page,
-//   });
-//   if (res && res.data) {
-//     setLoading(false);
-//     setSnippets(res.data.items);
-//   }
-// };
