@@ -1,14 +1,8 @@
 import * as React from 'react';
 
 import { Route, Redirect, RouteProps } from 'react-router-dom';
-
-import { useUserContext } from '../../context/user.context';
-
-import { checkAuth } from '../checkAuth';
-
-interface PrivateRouteProps {
-  // children?: React.ReactNode;
-}
+import { useUserContext } from '../context/user.context';
+import { checkAuth } from './checkAuth';
 
 export const PrivateRoute: React.FC<RouteProps> = ({
   component: Component,
