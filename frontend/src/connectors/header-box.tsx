@@ -44,11 +44,8 @@ export const HeaderBox: React.FC<{
       borderBottom="1px"
       borderColor={mode('rgb(235, 236, 237)', '#252945')}
       bg={mode('#fff', '#141625')}
-      // marginLeft="-10px"
-      // marginRight="-10px"
       top={{ base: '39px', lg: 0 }}
       zIndex={10}
-      // width="100%"
       maxWidth={{ base: '100vw' }}
     >
       <Flex
@@ -57,11 +54,7 @@ export const HeaderBox: React.FC<{
         width="100%"
         padding={['8px 16px']}
       >
-        <Heading
-          as={baseLg ? 'h2' : 'h1'}
-          // padding={['8px 16px']}
-          fontSize="lg"
-        >
+        <Heading as={baseLg ? 'h2' : 'h1'} fontSize="lg">
           {heading}
         </Heading>
         {children}

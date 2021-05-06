@@ -1,23 +1,7 @@
 import React from 'react';
-import {
-  Box,
-  Button,
-  Flex,
-  Heading,
-  useColorMode,
-  useColorModeValue as mode,
-} from '@chakra-ui/react';
-import { ToggleButtonBar } from '../reference/toggleDivider';
+import { Box, Flex } from '@chakra-ui/react';
 
-interface Props {
-  children: React.ReactNode;
-  isOpen?: boolean;
-  onToggle?: () => void;
-}
-
-export const SideNav: React.FC<Props> = ({
-  isOpen,
-  onToggle,
+export const SideNav: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => (
   <Flex

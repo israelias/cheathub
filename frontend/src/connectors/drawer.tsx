@@ -7,9 +7,7 @@ import {
   DrawerBody,
   DrawerHeader,
   DrawerCloseButton,
-  Flex,
   Box,
-  Stack,
 } from '@chakra-ui/react';
 
 export const SidePanel: React.FC<{
@@ -31,21 +29,10 @@ export const SidePanel: React.FC<{
         <>
           <DrawerHeader>{heading}</DrawerHeader>
           <DrawerBody bg="transparent">
-            {/* <Stack spacing="24px"> */}
             <Box mt="39px" paddingTop="10px">
               {children}
             </Box>
-            {/* </Stack> */}
           </DrawerBody>
-          {/* <Flex
-            mt="39px"
-            height="100%"
-            overflow="scroll"
-            p="10px"
-            flexDirection="column"
-          >
-            <Box paddingTop="10px">{children}</Box>
-          </Flex> */}
         </>
         <DrawerCloseButton />
       </DrawerContent>

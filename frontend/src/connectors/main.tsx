@@ -1,21 +1,20 @@
-/* eslint-disable no-console */
 import React from 'react';
-import { Flex, useColorModeValue as mode } from '@chakra-ui/react';
+import {
+  useMediaQuery,
+  useColorModeValue as mode,
+} from '@chakra-ui/react';
 
-import PrimaryArea from '../components/layout/main/areas/primary.area';
-import SubNav from '../components/navigation/subnav';
+import Actions from '../components/navigation/actions';
 import { Primary } from '../containers/primary.container';
 
-interface Props {
+export const Content: React.FC<{
   children: React.ReactNode;
-}
-
-export const Content: React.FC<Props> = ({ children }) => {
-  const wtf = 'wtf';
+}> = ({ children }) => {
+  const [baseLg] = useMediaQuery('(min-width: 62em)');
 
   return (
     <Primary>
-      {/* <SubNav /> */}
+      {!baseLg && <Actions />}
 
       <>{children}</>
     </Primary>
