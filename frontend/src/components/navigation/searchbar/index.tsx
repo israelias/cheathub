@@ -1,24 +1,15 @@
-/* eslint-disable jsx-a11y/control-has-associated-label */
-/* eslint-disable no-console */
 import React from 'react';
 import {
   Flex,
-  Button,
-  HStack,
   useColorModeValue as mode,
-  useBoolean,
   useMediaQuery,
   Heading,
 } from '@chakra-ui/react';
 
 import { MdArrowDropDown } from 'react-icons/md';
 
-import {
-  MotionBox,
-  MotionInput,
-  MotionSelect,
-  MotionButton,
-} from '../../shared/motion-box';
+import { MotionBox } from '../../shared/motion-box';
+
 import { SelectInput } from '../../snippet/crud/select-input';
 import { TextInput } from '../../snippet/crud/text-search-input';
 import { LANGUAGES } from '../../../constants/languages.constants';

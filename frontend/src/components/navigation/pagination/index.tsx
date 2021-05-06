@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   Flex,
-  Button,
   HStack,
   useColorModeValue as mode,
 } from '@chakra-ui/react';
