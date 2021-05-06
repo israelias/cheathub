@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box } from '@chakra-ui/react';
+import { Box, useColorModeValue as mode } from '@chakra-ui/react';
 import {
   CheckIcon,
   InfoIcon,
@@ -14,7 +14,7 @@ export const Prompt: React.FC<{
   info?: boolean;
 }> = ({ message, error, warning, info }) => (
   <Box
-    bg="#fff"
+    bg={mode('#fff', '#141625')}
     border={['1px solid #bbb']}
     p="10px"
     borderRadius="10px"
@@ -25,7 +25,7 @@ export const Prompt: React.FC<{
       justifyContent="space-between"
       height="50px"
       borderRadius="10px"
-      bg="#f6f6f6"
+      bg={mode('#f6f6f6', '#252945')}
       p="10px"
     >
       {message}

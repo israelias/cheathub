@@ -14,30 +14,18 @@ import {
   Input,
   FormLabel,
 } from '@chakra-ui/react';
-import { loginReload } from '../../services/crud.service';
 import { useUserContext } from '../../context/user.context';
 
-interface SignInPromptProps {
+export const SignInPrompt: React.FC<{
   isOpen: boolean;
   onOpen: () => void;
   onClose: () => void;
-}
-
-export const SignInPrompt: React.FC<SignInPromptProps> = ({
-  isOpen,
-  onOpen,
-  onClose,
-}) => {
-  // const { onOpen, onClose } = useDisclosure();
+}> = ({ isOpen, onOpen, onClose }) => {
   const history = useHistory();
-  const {
-    setAccessToken,
-    setLoggedIn,
-    setUsername,
-  } = useUserContext();
+  const { handleSignIn } = useUserContext();
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
-  const [message, setMessage] = React.useState('');
+
   const initialRef = React.useRef<HTMLInputElement>(null);
   const finalRef = React.useRef<HTMLButtonElement>(null);
 
@@ -59,25 +47,7 @@ export const SignInPrompt: React.FC<SignInPromptProps> = ({
           p="10px"
           borderRadius="10px"
         >
-          <form
-            onSubmit={async (e) => {
-              e.preventDefault();
-              try {
-                await loginReload({
-                  body: { email, password },
-                  setAccessToken,
-                  setLoggedIn,
-                  setUsername,
-                }).then((res) => {
-                  if (res) {
-                    onClose();
-                  }
-                });
-              } catch (err) {
-                setMessage(err.message);
-              }
-            }}
-          >
+          <form onSubmit={handleSignIn}>
             <Box
               bg="#fff"
               border={['1px solid #bbb']}
