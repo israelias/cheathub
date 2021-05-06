@@ -1,41 +1,27 @@
-/* eslint-disable no-console */
-/* eslint-disable react/no-array-index-key */
 import React, { ReactNode } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useHistory } from 'react-router-dom';
 import {
   Box,
   Flex,
   HStack,
   Heading,
-  IconButton,
-  Button,
-  useDisclosure,
   useColorModeValue as mode,
   Stack,
-  Text,
+  useMediaQuery,
 } from '@chakra-ui/react';
-import { HamburgerIcon, CloseIcon, AddIcon } from '@chakra-ui/icons';
-import { PATHS } from '../../../constants/paths.constants';
-import { NavLink } from '../../shared/link';
+
 import { LogoutButton } from '../../shared/logout';
 import { ModeSwitch } from '../../shared/mode';
-import { checkAuth } from '../../../lib/checkAuth';
+import { BrandButton } from '../../shared/brand-button';
 import { useUserContext } from '../../../context/user.context';
 
-interface NavBarProps {
-  IloggedIn?: Boolean;
-  Iusername?: String;
-}
-
-const NavBar: React.FC<NavBarProps> = ({ IloggedIn, Iusername }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const { username } = useUserContext();
-  const loggedIn = checkAuth({ username });
-
-  React.useEffect(() => {
-    checkAuth({ username });
-  }, [username]);
-
+const NavBar: React.FC = () => {
+  const [baseSm, baseMd] = useMediaQuery([
+    '(min-width: 30em)',
+    '(min-width: 48em)',
+  ]);
+  const { loggedIn } = useUserContext();
+  const history = useHistory();
   return (
     <>
       <Box
@@ -50,94 +36,42 @@ const NavBar: React.FC<NavBarProps> = ({ IloggedIn, Iusername }) => {
           alignItems="center"
           justifyContent="space-between"
         >
-          {/* <IconButton
-            size="md"
-            icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
-            aria-label="Open Menu"
-            display={{ md: !isOpen ? 'none' : 'inherit' }}
-            onClick={isOpen ? onClose : onOpen}
-          /> */}
           <HStack spacing={8} alignItems="center">
             <Flex align="center" mr={0}>
-              <Heading as="h1" size="md" letterSpacing="-.1rem">
-                Cheat-Hub
-              </Heading>
-              {!loggedIn && <p>You are not logged in.</p>}
+              <RouterLink to="/">
+                <Heading as="span" size="md" letterSpacing="-.1rem">
+                  Cheat-Hub
+                </Heading>
+              </RouterLink>
             </Flex>
-            {/* {loggedIn ? (
-              <HStack
-                as="nav"
-                spacing={4}
-                display={{ base: 'none', md: 'flex' }}
-              >
-                {PATHS.map((link, i) => (
-                  <NavLink
-                    key={i}
-                    path={link.path}
-                    label={link.label}
-                  />
-                ))}
-              </HStack>
-            ) : (
-              <p>You are not logged in.</p>
-            )} */}
           </HStack>
-
-          {loggedIn ? (
-            <>
-              <LogoutButton asLink />
-              <ModeSwitch variant="ghost" marginLeft="2" />
-            </>
-          ) : (
-            <Stack
-              flex={{ base: 1, md: 0 }}
-              justify="flex-end"
-              direction="row"
-              spacing={6}
-            >
-              <Button
-                as={RouterLink}
-                fontSize="sm"
-                fontWeight={400}
-                variant="link"
-                to="/login"
-              >
-                Sign In
-              </Button>
-              <Button
-                as={RouterLink}
-                display={{ base: 'none', md: 'inline-flex' }}
-                fontSize="sm"
-                fontWeight={600}
-                color="white"
-                bg="pink.400"
-                to="/registration/signup"
-                _hover={{
-                  bg: 'pink.300',
-                }}
-              >
-                Sign Up
-              </Button>
-
-              <ModeSwitch />
-            </Stack>
-          )}
+          <Stack
+            flex={{ base: 1, md: 0 }}
+            justify="flex-end"
+            direction="row"
+            spacing={6}
+          >
+            {loggedIn ? (
+              <>
+                <LogoutButton asLink />
+                <ModeSwitch variant="ghost" marginLeft="2" />
+              </>
+            ) : (
+              <>
+                <BrandButton onClick={() => history.push('/signin')}>
+                  Sign In
+                </BrandButton>
+                {baseMd && (
+                  <BrandButton
+                    onClick={() => history.push('/signup')}
+                  >
+                    Sign Up
+                  </BrandButton>
+                )}
+              </>
+            )}
+          </Stack>
         </Flex>
-
-        {/* {isOpen ? (
-          <Box bg="#fff" position="absolute" pt={4} pb={4}>
-            <Stack as="nav" spacing={4}>
-              {PATHS.map((link, i) => (
-                <NavLink
-                  key={i}
-                  path={link.path}
-                  label={link.label}
-                />
-              ))}
-              {loggedIn && <NavLink path="/" label="Sign Out" />}
-            </Stack>
-          </Box>
-        ) : null} */}
       </Box>
     </>
   );
