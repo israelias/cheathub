@@ -1,10 +1,4 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-/* eslint-disable no-param-reassign */
-/* eslint-disable @typescript-eslint/no-shadow */
-/* eslint-disable array-callback-return */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable no-console */
-
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 
@@ -19,6 +13,8 @@ import {
   useColorModeValue as mode,
 } from '@chakra-ui/react';
 
+import { useHistory } from 'react-router-dom';
+
 import {
   HamburgerIcon,
   CloseIcon,
@@ -29,7 +25,7 @@ import { AnimatePresence } from 'framer-motion';
 
 import cn from 'classnames';
 
-import { MotionBox } from '../../../shared/motion-box';
+import { MotionBox } from '../../shared/motion-box';
 
 import '../../styles.css';
 
@@ -41,35 +37,39 @@ import '../../styles.css';
  * @tutorial https://codesandbox.io/s/framer-motion-accordion-vmj0n?file=/src/Example.tsx:366-489
  */
 
-interface CollectionItemProps {
+const CollectionItem: React.FC<{
   collection: Collection;
-  i: number;
-
-  expandedCollection: number;
-  setExpandedCollection: React.Dispatch<React.SetStateAction<number>>;
-  setSelectedSnippets: React.Dispatch<
+  id: string;
+  index: number;
+  expanded: number;
+  setExpanded: React.Dispatch<React.SetStateAction<number>>;
+  setSelections: React.Dispatch<
     React.SetStateAction<Snippet[] | undefined>
   >;
   selectedSnippetId: string;
+  setSelectedSnippetId: React.Dispatch<React.SetStateAction<string>>;
   setHeading: React.Dispatch<React.SetStateAction<string>>;
-  setExpandedSnippet: React.Dispatch<React.SetStateAction<number>>;
-}
-
-const CollectionItem: React.FC<CollectionItemProps> = ({
+  setId: React.Dispatch<React.SetStateAction<string>>;
+  setExpandedSnippet?: React.Dispatch<React.SetStateAction<number>>;
+}> = ({
   collection,
-  i,
-  expandedCollection,
-  setExpandedCollection,
-  setSelectedSnippets,
+  id,
+  index,
+  setId,
+  expanded,
+  setExpanded,
+  setSelections,
   selectedSnippetId,
-  setHeading,
+  setSelectedSnippetId,
   setExpandedSnippet,
+  setHeading,
 }) => {
-  const isOpen = i === expandedCollection;
+  const isOpen = id === collection._id;
   const className = cn('accordion', {
     'accordion--open': isOpen,
-    'accordion--next-to-open': i === expandedCollection - 1,
+    'accordion--next-to-open': index === expanded - 1,
   });
+  const history = useHistory();
 
   return (
     <>
@@ -85,9 +85,10 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
               : mode('#fff', '#141625')
           }
           onClick={() => {
-            setExpandedCollection(isOpen ? 0 : i);
-            setExpandedSnippet(0);
-            setSelectedSnippets(collection.snippets);
+            setId(isOpen ? '' : collection._id);
+            setExpanded(isOpen ? 0 : index);
+            setSelections(collection.snippets);
+            setExpandedSnippet && setExpandedSnippet(0);
             setHeading(collection.name);
           }}
         >
@@ -102,7 +103,14 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
               fontSize="sm"
               mr="10px"
             >
-              {collection.snippets.length} snips
+              {collection.snippets.length > 0 ? (
+                <>
+                  {collection.snippets.length}{' '}
+                  {collection.snippets.length > 1 ? 'snips' : 'snip'}
+                </>
+              ) : (
+                'Empty'
+              )}
             </Text>
             {isOpen ? (
               <MinusIcon fontSize="12px" />
@@ -132,9 +140,13 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
               <Flex
                 padding="10px"
                 justifyContent="space-between"
-                onClick={() =>
-                  setExpandedCollection(isOpen ? -1 : i - 1)
-                }
+                cursor="pointer"
+                onClick={() => {
+                  setExpanded(isOpen ? -1 : index - 1);
+                  setTimeout(() => {
+                    history.push(`/collection/${collection._id}`);
+                  }, 750);
+                }}
               >
                 <Text as="span" color="gray.600" fontSize="sm">
                   Edit this collection
@@ -143,12 +155,12 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
               </Flex>
               <List>
                 {collection.snippets &&
-                  collection.snippets.map((snippet, index) => (
+                  collection.snippets.map((snippet, idx) => (
                     <ListItem
-                      key={`${index}-list-item-${collection._id}-snippet-${snippet._id}`}
+                      key={`${idx}-list-item-${collection._id}-snippet-${snippet._id}`}
                       cursor="pointer"
                       bg={
-                        selectedSnippetId === snippet.title
+                        selectedSnippetId === snippet._id
                           ? mode('#f6f6f6', '#252945')
                           : 'none'
                       }
@@ -157,7 +169,9 @@ const CollectionItem: React.FC<CollectionItemProps> = ({
                         borderRadius: '6px',
                       }}
                       onClick={() => {
-                        setSelectedSnippets([snippet]);
+                        setSelections([snippet]);
+                        setSelectedSnippetId(snippet._id);
+                        setExpandedSnippet && setExpandedSnippet(0);
                       }}
                     >
                       {snippet.title}
