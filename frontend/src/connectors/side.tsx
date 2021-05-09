@@ -5,7 +5,8 @@ export const SideNav: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => (
   <Flex
-    overflowY="scroll"
+    overflowX="hidden"
+    overflowY="auto"
     display={{ base: 'none', md: 'flex' }}
     direction="column"
     css={{

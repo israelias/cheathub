@@ -25,6 +25,7 @@ export const HeaderBox: React.FC<{
         alignItems="center"
         justifyContent="space-between"
         width="100%"
+        pr="8px"
       >
         <Heading
           as={baseLg ? 'h1' : 'h2'}
