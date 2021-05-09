@@ -85,6 +85,7 @@ const SearchBox: React.FC<{
         padding={['0 10px']}
         border={['1px solid #bbb']}
         mt="10px"
+        width="100%"
       >
         <AnimatePresence exitBeforeEnter>
           <MotionSection>

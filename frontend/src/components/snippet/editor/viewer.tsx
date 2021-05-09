@@ -8,7 +8,10 @@ import {
   prism,
   solarizedlight,
 } from 'react-syntax-highlighter/dist/cjs/styles/prism';
-import { useColorModeValue } from '@chakra-ui/react';
+import {
+  useColorModeValue as mode,
+  useMediaQuery,
+} from '@chakra-ui/react';
 
 interface ViewerProps extends SyntaxHighlighterProps {
   id: string;
@@ -29,21 +32,26 @@ export const Viewer: React.FC<ViewerProps> = ({
   value = 'code',
   language = 'python',
   ...props
-}) => (
-  <SyntaxHighlighter
-    id={id}
-    language={language}
-    style={tomorrow}
-    showLineNumbers
-    wrapLongLines
-    customStyle={{
-      backgroundColor: '#211E2F',
-      color: '#939598',
-      fontSize: '0.875em',
-      whitespace: 'pre-line',
-    }}
-    {...props}
-  >
-    {value}
-  </SyntaxHighlighter>
-);
+}) => {
+  const wtf = 'wtf';
+  const [baseLg] = useMediaQuery('(min-width: 62em)');
+  return (
+    <SyntaxHighlighter
+      id={id}
+      language={language}
+      style={tomorrow}
+      showLineNumbers
+      wrapLongLines
+      customStyle={{
+        backgroundColor: '#211E2F',
+        color: '#939598',
+        fontSize: baseLg ? '12px' : '13px',
+        whitespace: 'pre-line',
+        maxHeight: '400px',
+      }}
+      {...props}
+    >
+      {value}
+    </SyntaxHighlighter>
+  );
+};

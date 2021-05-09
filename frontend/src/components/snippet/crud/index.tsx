@@ -28,18 +28,6 @@ import {
   Select,
 } from '@chakra-ui/react';
 
-import {
-  CheckIcon,
-  InfoIcon,
-  WarningIcon,
-  CopyIcon,
-  AddIcon,
-  CloseIcon,
-  LinkIcon,
-  EditIcon,
-  MinusIcon,
-} from '@chakra-ui/icons';
-
 import { AnimatePresence, motion } from 'framer-motion';
 
 import { LANGUAGES } from '../../../constants/languages.constants';
@@ -82,7 +70,6 @@ const SnippetCrud: React.FC<{
   handleSubmit: React.FormEventHandler<HTMLFormElement>;
   handleDelete: React.FormEventHandler<HTMLFormElement>;
   handleCancel: React.MouseEventHandler<HTMLButtonElement>;
-  message: string;
 }> = ({
   editing,
   setAlert,
@@ -105,7 +92,6 @@ const SnippetCrud: React.FC<{
   handleSubmit,
   handleDelete,
   handleCancel,
-  message,
 }) => {
   const languages = [{ value: '', label: 'All' }, ...LANGUAGES];
   return (
@@ -139,7 +125,6 @@ const SnippetCrud: React.FC<{
                 mr="-10px"
                 minHeight="20vh"
                 fontSize="sm"
-                // variant="outline"
                 borderRadius={0}
                 placeHolder="hello world"
                 value={value}
@@ -213,12 +198,7 @@ const SnippetCrud: React.FC<{
               </FormHelperText>
             </FormControl>
 
-            <FormControl
-              // justifyContent="space-between"
-              pt="10px"
-              display="flex"
-              alignItems="center"
-            >
+            <FormControl pt="10px" display="flex" alignItems="center">
               <FormLabel
                 p={['0 10px']}
                 m={0}
@@ -310,8 +290,6 @@ const SnippetCrud: React.FC<{
                     setValue('');
                     setLanguage('');
                     setTags('');
-                    // setExpandedSnippet(0);
-                    // setEditingSnippet(false);
                   }}
                 >
                   Cancel
@@ -327,11 +305,6 @@ const SnippetCrud: React.FC<{
                 </Button>
               </ButtonGroup>
             </HStack>
-          )}
-          {message && (
-            <div style={{ color: 'tomato' }}>
-              {JSON.stringify(message, null, 2)}
-            </div>
           )}
         </AnimatePresence>
       </Box>

@@ -1,34 +1,15 @@
-/* eslint-disable no-console */
-
 import * as React from 'react';
 
 import { useHistory } from 'react-router';
 
 import {
   Flex,
-  IconButton,
-  Button,
-  ButtonGroup,
-  Text,
   Box,
-  HStack,
   useMediaQuery,
   useBoolean,
-  Tooltip,
   useClipboard,
-  VStack,
   useColorModeValue as mode,
 } from '@chakra-ui/react';
-
-import {
-  CheckIcon,
-  CopyIcon,
-  AddIcon,
-  CloseIcon,
-  LinkIcon,
-  EditIcon,
-  MinusIcon,
-} from '@chakra-ui/icons';
 
 import { AnimatePresence, motion } from 'framer-motion';
 
@@ -36,18 +17,24 @@ import { useUserContext } from '../../../context/user.context';
 
 import { Viewer } from '../editor/viewer';
 
-import { TimeAgo } from '../../shared/time';
-
 import {
   MotionSection,
-  MotionHeader,
   MotionBox,
   MotionFooter,
-  MotionAside,
-  MotionUl,
-  MotionLi,
-  MotionP,
 } from '../../shared/motion-box';
+
+import {
+  Description,
+  TagList,
+  TagMenu,
+  PostUserData,
+  PostFaveData,
+  SourceButton,
+  EditButton,
+  FaveButton,
+  ViewerControls,
+  CopyButton,
+} from '../body/elements';
 
 import { collection } from '../../../constants/colors.constants';
 
@@ -66,11 +53,6 @@ const MotionArticle = motion(Box);
 const SnippetCard: React.FC<{
   setTags: React.Dispatch<React.SetStateAction<string>>;
   handleFave: (snipId: string) => Promise<void>;
-  setFaveSnippet: {
-    readonly on: () => void;
-    readonly off: () => void;
-    readonly toggle: () => void;
-  };
   faveSnippet: boolean;
   snippet: Snippet | undefined;
   editing: boolean;
@@ -85,7 +67,6 @@ const SnippetCard: React.FC<{
 }> = ({
   setTags,
   handleFave,
-  setFaveSnippet,
   faveSnippet,
   snippet,
   editing,
@@ -166,275 +147,81 @@ const SnippetCard: React.FC<{
               >
                 <MotionBox ml="-10px" mr="-10px">
                   {editing && (
-                    <HStack>
-                      <ButtonGroup
-                        size="xs"
-                        isAttached
-                        variant="outline"
-                      >
-                        <Button
-                          onClick={setLineNumbers.toggle}
-                          mr="-px"
-                          fontWeight="light"
-                          rightIcon={
-                            lineNumbers ? (
-                              <CheckIcon fontSize="10px" />
-                            ) : (
-                              <CloseIcon fontSize="10px" />
-                            )
-                          }
-                        >
-                          {lineNumbers
-                            ? 'Hide line numbers'
-                            : 'Show line numbers'}
-                        </Button>
-
-                        <Button
-                          onClick={setWrapLines.toggle}
-                          mr="-px"
-                          fontWeight="light"
-                          rightIcon={
-                            wrapLines ? (
-                              <CheckIcon fontSize="10px" />
-                            ) : (
-                              <CloseIcon fontSize="10px" />
-                            )
-                          }
-                        >
-                          {wrapLines
-                            ? 'Keep long lines'
-                            : 'Wrap long lines'}
-                        </Button>
-
-                        <Button
-                          fontWeight="light"
-                          mr="-px"
-                          rightIcon={
-                            hasCopied ? (
-                              <CheckIcon fontSize="10px" />
-                            ) : (
-                              <CopyIcon fontSize="10px" />
-                            )
-                          }
-                        >
-                          Copy
-                        </Button>
-                      </ButtonGroup>
-                    </HStack>
+                    <ViewerControls
+                      value={value}
+                      lineNumbers={lineNumbers}
+                      wrapLines={wrapLines}
+                      setWrapLines={setWrapLines}
+                      setLineNumbers={setLineNumbers}
+                    />
                   )}
-                  <IconButton
-                    variant="outline"
-                    color="gray.400"
-                    bg="rgb(255,255,255, .3)"
-                    size="xs"
-                    aria-label="Copy snippet"
-                    onClick={onCopy}
-                    icon={hasCopied ? <CheckIcon /> : <CopyIcon />}
-                    position="absolute"
-                    right="36px"
-                    mt="10px"
-                  />
+                  <CopyButton value={value} />
+
                   <Viewer
                     id={id}
                     value={value}
                     language={language}
-                    wrapLongLines={wrapLines}
+                    wrapLongLines={!baseLg ? true : wrapLines}
                     showLineNumbers={lineNumbers}
                   />
                 </MotionBox>
 
-                <MotionP
-                  p="10px"
-                  fontSize="14px"
-                  fontWeight="medium"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{
-                    duration: 0.3,
-                    ease: [0.04, 0.62, 0.23, 0.98],
-                  }}
-                  d="flex"
-                  alignItems="baseline"
-                >
-                  {description}
-                </MotionP>
+                <Description description={description} />
               </MotionSection>
               <MotionFooter p={2}>
-                <HStack
-                  display="flex"
-                  alignItems="center"
-                  spacing={4}
-                >
-                  <MotionUl listStyleType="none" display="flex">
-                    {editing
-                      ? tags &&
-                        tags
-                          .split(', ')
-
-                          .map((tag) => (
-                            <MotionLi
-                              key={`form-${tag}`}
-                              color="gray.600"
-                              fontSize="sm"
-                              cursor="default"
-                              pr="12px"
-                              _before={{
-                                content: `'+ '`,
-                                fontWeight: 'bold',
-                              }}
-                            >
-                              {tag}
-                            </MotionLi>
-                          ))
-                      : tags &&
-                        tags
-                          .split(', ')
-                          .slice(0, 3)
-                          .map((tag) => (
-                            <MotionLi
-                              key={`form-${tag}`}
-                              color="gray.600"
-                              fontSize="sm"
-                              cursor="pointer"
-                              pr="12px"
-                              _before={{
-                                content: `'+ '`,
-                                fontWeight: 'bold',
-                              }}
-                              _hover={{ textDecoration: 'underline' }}
-                              onClick={() => setTags(tag)}
-                            >
-                              {tag}
-                            </MotionLi>
-                          ))}
+                <Flex spacing={4}>
+                  <Box flex="1" display="flex">
+                    <TagList
+                      tags={tags.split(', ')}
+                      editing={editing}
+                      setTags={setTags}
+                    />
                     {!editing && tags.split(', ').length > 3 && (
-                      <IconButton
-                        variant="outline"
-                        color="gray.400"
-                        bg="rgb(255,255,255, .3)"
-                        size="xs"
-                        p={0}
-                        aria-label="See more tags"
-                        icon={<AddIcon fontSize="10px" />}
+                      <TagMenu
+                        collections
+                        tags={tags.split(', ')}
+                        editing={editing}
+                        setTags={setTags}
                       />
                     )}
-                  </MotionUl>
+                  </Box>
 
-                  {!editing && snippet && (
-                    <Box
-                      as="span"
-                      _before={{
-                        content: `': '`,
-                        fontSize: 'sm',
-                        fontWeight: 'bold',
-                      }}
-                    >
-                      {snippet.addedBy}
-                      <Box
-                        as="span"
-                        ml="2"
-                        color="gray.600"
-                        fontSize="sm"
-                        _after={{ content: `'.'` }}
-                      >
-                        <TimeAgo date={snippet.addedOn} />
-                      </Box>
-                    </Box>
-                  )}
-                  {!editing && snippet && snippet.likedBy.length > 0 && (
-                    <Tooltip
-                      hasArrow
-                      arrowSize={6}
-                      closeDelay={500}
-                      size="sm"
-                      variant="outline"
-                      placement="right-end"
-                      gutter={20}
-                      colorScheme="whatsapp"
-                      label={
-                        <VStack as="ul">
-                          {snippet.likedBy.map((like, i) => (
-                            <Box
-                              as="li"
-                              fontSize="12px"
-                              key={`${i}-${id}-${like}`}
-                            >
-                              {like}
-                            </Box>
-                          ))}
-                        </VStack>
-                      }
-                      bg="red.600"
-                    >
-                      <Box
-                        as="span"
-                        ml="2"
-                        color="gray.600"
-                        fontSize="sm"
-                        _before={{
-                          content: `'/ '`,
-                          color: 'blue.400',
-                          fontWeight: 'bold',
-                        }}
-                      >
-                        {snippet.likedBy.length} likes
-                      </Box>
-                    </Tooltip>
-                  )}
-                  {source && (
-                    <IconButton
-                      variant="link"
-                      as="a"
-                      aria-label="Source"
-                      href={source}
-                      target="_blank"
-                      rel="noreferrer"
-                      icon={<LinkIcon fontSize="10px" />}
-                    />
-                  )}
-                  {!editing &&
-                  snippet &&
-                  snippet.addedBy === username ? (
-                    <Button
-                      variant="outline"
-                      size="xs"
-                      mr="-px"
-                      fontWeight="light"
-                      rightIcon={<EditIcon fontSize="10px" />}
-                      onClick={() =>
-                        history.push(`/explore/${snippet._id}`)
-                      }
-                    >
-                      Edit
-                    </Button>
-                  ) : (
-                    !editing &&
+                  <Box display="flex">
+                    {!editing && snippet && (
+                      <PostUserData
+                        username={username}
+                        addedBy={snippet.addedBy}
+                        addedOn={snippet.addedOn}
+                      />
+                    )}
+                    {!editing &&
+                      snippet &&
+                      snippet.likedBy.length > 0 && (
+                        <PostFaveData likedBy={snippet.likedBy} />
+                      )}
+                  </Box>
+
+                  <Box display="flex" spacing={1} ml="8px">
+                    {source && <SourceButton source={source} />}
+                    {!editing &&
                     snippet &&
-                    username && (
-                      <Button
-                        type="submit"
-                        variant="outline"
-                        size="xs"
-                        mr="-px"
-                        fontWeight="light"
-                        rightIcon={
-                          faveSnippet ? (
-                            <MinusIcon fontSize="10px" />
-                          ) : (
-                            <AddIcon fontSize="10px" />
-                          )
-                        }
-                        onClick={() => handleFave(snippet._id)}
-                      >
-                        {!faveSnippet &&
-                        snippet.likedBy.includes(username)
-                          ? 'Unfave'
-                          : 'Fave'}
-                      </Button>
-                    )
-                  )}
-                </HStack>
+                    snippet.addedBy === username ? (
+                      <EditButton snipId={snippet._id} />
+                    ) : (
+                      !editing &&
+                      snippet &&
+                      username && (
+                        <FaveButton
+                          username={username}
+                          snipId={snippet._id}
+                          likedBy={snippet.likedBy}
+                          faveSnippet={faveSnippet}
+                          handleFave={handleFave}
+                        />
+                      )
+                    )}
+                  </Box>
+                </Flex>
               </MotionFooter>
             </>
           </MotionArticle>
