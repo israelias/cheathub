@@ -1,7 +1,7 @@
 import axios from 'axios';
 /**
  * Get requests for snippets and collections endpoints.
- * All `get` views are public. 
+ * All `get` views are public.
  * All `post/put/delete` methods require token.
  * See counterpart fetchers in @module crud.service.ts
  *
@@ -59,7 +59,7 @@ function getInitialData() {
  * Get collections profile data.
  *
  * MyCollectionsApi, `/api/users/<user_id>/collections`
- * Endpoint can be modified without username param to 
+ * Endpoint can be modified without username param to
  * fetch general list of public collections: CollectionsApi, "/api/collections"
  * @param {string} username username stored in UserContext
  */
@@ -77,7 +77,7 @@ function getSnippetsProfile(username: string) {
 }
 /**
  * Get all tags stored in snippets database sub-document.
- * 
+ *
  * `Tag` is not a database cluster/class/model but a listfield of the Snippet model.
  * The backend computes the retrieval from the database when we make this call.
  */
@@ -86,7 +86,7 @@ function getAllTags() {
 }
 /**
  * Get a user's favorite snipppets.
- * 
+ *
  * MyFaveSnippetsApi, `/api/users/<id>/snippets/faves`
  * @param {string} username username stored in UserContext
  */
@@ -95,7 +95,7 @@ function getFaveSnippets(username: string) {
 }
 /**
  * Get one snippet from the database.
- * 
+ *
  * @param {string} id database document `_id` of snippet
  */
 function getSnippet(id: string) {
@@ -103,15 +103,40 @@ function getSnippet(id: string) {
 }
 /**
  * Get one collection from the database.
- * 
+ *
  * @param {string} id database document `_id` of collection
  */
 function getCollection(id: string) {
   return axios.get(`collections/${id}`);
 }
 /**
+ * Get all user snippets as options.
+ *
+ * Retrieves array in `{ label: <snippet.title>, value: <snippet.id> }` format for select input.
+ *
+ * MySnippetsOptionsApi, `/api/users/<user_id>/snippets/options`
+ * @param {string} username username stored in UserContext
+ */
+function getSnippetsOptions(username: string) {
+  return axios.get(`users/${username}/snippets/options`, axiosConfig);
+}
+/**
+ * Get all user collections as options.
+ *
+ * Retrieves array in `{ label: <collection.name>, value: <collection.id> }` format for select input.
+ *
+ * MySnippetsOptionsApi, `/api/users/<user_id>/collections/options`
+ * @param {string} username username stored in UserContext
+ */
+function getCollectionsOptions(username: string) {
+  return axios.get(
+    `users/${username}/collections/options`,
+    axiosConfig
+  );
+}
+/**
  * Get users from the database.
- * 
+ *
  * UsersApi, `/api/users`
  * Currently unused fetcher.
  * To be implemented with user profile feature along with account deletion scrope.
@@ -121,7 +146,7 @@ function getUsers() {
 }
 /**
  * Get one user from the database.
- * 
+ *
  * UserApi, `/api/users/<id>`
  * Currently unused fetcher.
  * To be implemented with user profile feature along with account deletion scrope.
@@ -137,6 +162,8 @@ export {
   getCollectionsProfile,
   getSnippetsProfile,
   getFaveSnippets,
+  getCollectionsOptions,
+  getSnippetsOptions,
   getSnippet,
   getCollection,
   getAllTags,

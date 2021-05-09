@@ -115,3 +115,27 @@ export function postReload({
   });
   return fetch(request);
 }
+
+/**
+ * Get request handler (General).
+ *
+ * @see RequestTicket
+ * @see useUserContext
+ * @param  {} url url string of backend resource (/api/snippets or /api/collections)
+ * @param  {} accessToken access token stored in context memory for request Authorization header
+ * @return {Promise}
+ */
+export function getRequest({
+  url,
+  accessToken,
+}: {
+  url: string;
+  accessToken: string;
+}) {
+  const request = RequestTicket({
+    method: 'get',
+    url,
+    token: accessToken || '',
+  });
+  return fetch(request).then((res) => res.json());
+}
