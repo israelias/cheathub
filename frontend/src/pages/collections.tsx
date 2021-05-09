@@ -4,8 +4,7 @@
 
 /* eslint-disable no-extra-boolean-cast */
 import * as React from 'react';
-import { RouteComponentProps, useHistory } from 'react-router';
-
+import { RouteComponentProps } from 'react-router';
 import {
   Box,
   Heading,
@@ -17,34 +16,32 @@ import {
   useMediaQuery,
   useDisclosure,
   Icon,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuOptionGroup,
-  MenuItemOption,
-  MenuDivider,
-  MenuGroup,
-  MenuItem,
+  useColorModeValue as mode,
 } from '@chakra-ui/react';
-import { CloseIcon, HamburgerIcon } from '@chakra-ui/icons';
+import {
+  CloseIcon,
+  HamburgerIcon,
+  AddIcon,
+  MinusIcon,
+} from '@chakra-ui/icons';
 import { GoFileDirectory } from 'react-icons/go';
 
-import { getRequest } from '../services/crud.service';
-import { useUserContext } from '../context/user.context';
-import { useAppData } from '../context/appdata.context';
 import { useProfileData } from '../context/profiledata.context';
+import { useCollectionHandler } from '../context/collectionhandler';
 
-import { Primary } from '../containers/primary.container';
 import { Secondary } from '../containers/secondary.container';
 import { Content } from '../connectors/main';
 import { SideNav } from '../connectors/side';
 import { SidePanel } from '../connectors/drawer';
 import { HeaderBox } from '../connectors/header-box';
+import {
+  AddSnippetButton,
+  AddCollectionButton,
+  BrandButton,
+} from '../components/shared/brand-button';
 
-import CollectionItem from '../components/collections/collection/item';
-import CollectionAction from '../components/collections/collection/action';
-import SnippetItem from '../components/collections/snippets/item';
-import SnippetAction from '../components/collections/snippets/action';
+import CollectionItem from '../components/collections/collection';
+import SnippetItem from '../components/collections/snippets';
 
 interface CollectionsProps
   extends RouteComponentProps<{ id: string }> {}
@@ -63,148 +60,90 @@ interface CollectionsProps
 const Collections: React.FC<CollectionsProps> = ({ match }) => {
   const {
     loadSnippetsData,
-    loadCollectionsData,
     collectionsProfile,
     loadingCollections,
-    setLoadingCollections,
     snippetsProfile,
     loadingSnippets,
-    setLoadingSnippets,
+    loadFaveSnippets,
+    faveSnippets,
   } = useProfileData();
+
+  const {
+    selected,
+    setSelected,
+    selections,
+    setSelections,
+    selectedId,
+    setSelectedId,
+  } = useCollectionHandler();
 
   const [baseLg] = useMediaQuery('(min-width: 62em)');
   const { isOpen, onOpen, onClose } = useDisclosure();
   const sidePanelRef = React.useRef<HTMLButtonElement>(null);
-
-  const [allSnippetsData, setAllSnippetsData] = React.useState<
-    Snippet[] | []
-  >([]);
-  const [allCollectionsData, setAllCollectionsData] = React.useState<
-    Collection[] | []
-  >([]);
-
-  const [
-    expandedCollection,
-    setExpandedCollection,
-  ] = React.useState<number>(0);
 
   const [
     expandedSnippet,
     setExpandedSnippet,
   ] = React.useState<number>(0);
 
-  const [selectedSnippets, setSelectedSnippets] = React.useState<
-    Snippet[] | undefined
-  >(snippetsProfile?.data);
-
-  const [selectedSnippet, setSelectedSnippet] = React.useState<
-    Snippet | undefined
-  >();
-
-  const [selectedSnippetId, setSelectedSnippetId] = React.useState<
-    string | ''
-  >('');
-  const [addCollection, setAddCollection] = React.useState<boolean>(
-    false
-  );
-
   const [heading, setHeading] = React.useState<string>(
     'All Snippets'
   );
 
-  const [editing, setEditing] = React.useState<boolean>(false);
-  const [editingSnippet, setEditingSnippet] = React.useState<boolean>(
-    false
-  );
-  const snippetActionRef = React.useRef<HTMLInputElement>(null);
-
-  const onActivate = () => {
-    const scrollToTop = window.setInterval(() => {
-      const pos = window.pageYOffset;
-      if (pos > 0) {
-        window.scrollTo(0, pos - 20); // how far to scroll on each step
-      } else {
-        window.clearInterval(scrollToTop);
-      }
-    }, 16);
-  };
-
-  const user = useUserContext();
-  const editSnippet = async (id: string) => {
-    setEditing(true);
-    const res = await getRequest({
-      url: `api/users/${id}`,
-      accessToken: user?.accessToken,
-    });
-    setSelectedSnippet(res[0]);
-    setSelectedSnippetId(id);
-  };
-  const snippetRef = React.useRef<HTMLDivElement>(null);
-
-  // React.useEffect(() => {
-  //   snippetRef.current?.scrollIntoView();
-  // }, []);
-
-  React.useEffect(() => {
-    if (selectedSnippets) {
-      setAllSnippetsData(selectedSnippets);
-    }
-  }, [selectedSnippets]);
+  const [expanded, setExpanded] = React.useState<number>(0);
+  const [id, setId] = React.useState<string>('');
 
   React.useEffect(() => {
     if (snippetsProfile) {
-      setSelectedSnippets(snippetsProfile.data);
+      setSelections(snippetsProfile.data);
     }
   }, [snippetsProfile]);
-
-  React.useEffect(() => {
-    if (collectionsProfile) {
-      setAllCollectionsData(collectionsProfile.data);
-    }
-  }, [collectionsProfile]);
-
-  React.useEffect(() => {
-    if (editingSnippet) {
-      onActivate();
-      snippetActionRef?.current?.focus();
-    }
-  }, [editingSnippet, snippetActionRef]);
-
-  React.useEffect(() => {
-    if (!editingSnippet) {
-      setExpandedSnippet(0);
-    }
-  }, [editingSnippet]);
 
   return (
     <>
       <Secondary>
-        <HeaderBox left heading="Collections" />
+        <HeaderBox left heading="Collections">
+          <AddCollectionButton> New Collection</AddCollectionButton>
+        </HeaderBox>
         <SideNav>
           {loadingCollections ? (
             <p>Loading Collections...</p>
           ) : (
             <>
               <Box paddingTop="10px">
-                <CollectionAction
-                  allSnippetsData={allSnippetsData}
-                  expandedCollection={expandedCollection}
-                  setExpandedCollection={setExpandedCollection}
-                />
-              </Box>
-              <Box paddingTop="10px">
-                {allCollectionsData?.map(
-                  (collection: Collection, i: number) => (
+                {faveSnippets?.data?.map(
+                  (collection: Collection, index: number) => (
                     <CollectionItem
-                      key={i}
-                      i={i}
+                      key={`col-fave-${collection._id}-${index}`}
+                      id={id}
+                      index={index - 1}
                       collection={collection}
-                      expandedCollection={expandedCollection}
-                      setExpandedCollection={setExpandedCollection}
-                      setSelectedSnippets={setSelectedSnippets}
-                      selectedSnippetId={selectedSnippetId}
-                      setHeading={setHeading}
+                      setExpanded={setExpanded}
+                      expanded={expanded - 1}
+                      setSelections={setSelections}
+                      selectedSnippetId={selectedId}
+                      setSelectedSnippetId={setSelectedId}
                       setExpandedSnippet={setExpandedSnippet}
+                      setHeading={setHeading}
+                      setId={setId}
+                    />
+                  )
+                )}
+                {collectionsProfile?.data?.map(
+                  (collection: Collection, index: number) => (
+                    <CollectionItem
+                      key={`col-${collection._id}-${index}`}
+                      id={id}
+                      index={index + 1}
+                      collection={collection}
+                      setExpanded={setExpanded}
+                      expanded={expanded}
+                      setSelections={setSelections}
+                      selectedSnippetId={selectedId}
+                      setSelectedSnippetId={setSelectedId}
+                      setExpandedSnippet={setExpandedSnippet}
+                      setHeading={setHeading}
+                      setId={setId}
                     />
                   )
                 )}
@@ -222,19 +161,39 @@ const Collections: React.FC<CollectionsProps> = ({ match }) => {
             buttonRef={sidePanelRef}
             heading="Collections"
           >
+            {faveSnippets?.data?.map(
+              (collection: Collection, index: number) => (
+                <CollectionItem
+                  key={`col-fave-${collection._id}-${index}`}
+                  id={id}
+                  index={index - 1}
+                  collection={collection}
+                  setExpanded={setExpanded}
+                  expanded={expanded - 1}
+                  setSelections={setSelections}
+                  selectedSnippetId={selectedId}
+                  setSelectedSnippetId={setSelectedId}
+                  setExpandedSnippet={setExpandedSnippet}
+                  setHeading={setHeading}
+                  setId={setId}
+                />
+              )
+            )}
             {!baseLg &&
-              allCollectionsData?.map(
-                (collection: Collection, i: number) => (
+              collectionsProfile?.data?.map(
+                (collection: Collection, index: number) => (
                   <CollectionItem
-                    key={i}
-                    i={i}
+                    key={`col-${collection._id}-${index}`}
+                    id={id}
+                    index={index + 1}
                     collection={collection}
-                    expandedCollection={expandedCollection}
-                    setExpandedCollection={setExpandedCollection}
-                    setSelectedSnippets={setSelectedSnippets}
-                    selectedSnippetId={selectedSnippetId}
+                    setExpanded={setExpanded}
+                    expanded={expanded}
+                    setSelections={setSelections}
+                    selectedSnippetId={selectedId}
+                    setSelectedSnippetId={setSelectedId}
                     setHeading={setHeading}
-                    setExpandedSnippet={setExpandedSnippet}
+                    setId={setId}
                   />
                 )
               )}
@@ -260,15 +219,34 @@ const Collections: React.FC<CollectionsProps> = ({ match }) => {
                 onClick={isOpen ? onClose : onOpen}
               />
             )}
+            <Box>
+              <Text
+                justifySelf="end"
+                as="span"
+                color="gray.600"
+                fontSize="sm"
+                mr="10px"
+              >
+                {selections && selections?.length > 0 ? (
+                  <>
+                    {selections.length}{' '}
+                    {selections.length > 1 ? 'snips' : 'snip'}
+                  </>
+                ) : (
+                  'Empty'
+                )}
+              </Text>
+            </Box>
 
-            <Button
+            <BrandButton
               onClick={() => {
                 loadSnippetsData();
                 setHeading('All Snippets');
               }}
             >
-              All
-            </Button>
+              Show all
+            </BrandButton>
+            <AddSnippetButton>Add New</AddSnippetButton>
           </HStack>
         </HeaderBox>
 
@@ -276,14 +254,6 @@ const Collections: React.FC<CollectionsProps> = ({ match }) => {
           <p> Loading Snippets...</p>
         ) : (
           <>
-            <Box paddingTop="10px">
-              <SnippetAction
-                selectedSnippet={selectedSnippet}
-                expandedSnippet={expandedSnippet}
-                setExpandedSnippet={setExpandedSnippet}
-                setEditingSnippet={setEditingSnippet}
-              />
-            </Box>
             <Box
               paddingTop="10px"
               p={{
@@ -291,21 +261,17 @@ const Collections: React.FC<CollectionsProps> = ({ match }) => {
                 lg: '10px 0px 0px 0px',
               }}
             >
-              {selectedSnippets?.map(
-                (snippet: Snippet, k: number) => (
-                  <SnippetItem
-                    key={k}
-                    k={k}
-                    snippet={snippet}
-                    setEditingSnippet={setEditingSnippet}
-                    setSelectedSnippet={setSelectedSnippet}
-                    setSelectedSnippetId={setSelectedSnippetId}
-                    expandedSnippet={expandedSnippet}
-                    setExpandedSnippet={setExpandedSnippet}
-                    snippetRef={snippetRef}
-                  />
-                )
-              )}
+              {selections?.map((snippet: Snippet, index: number) => (
+                <SnippetItem
+                  key={`col-snip-${snippet._id}-${index}`}
+                  index={index}
+                  snippet={snippet}
+                  selectedSnippetId={selectedId}
+                  setSelectedSnippetId={setSelectedId}
+                  expandedSnippet={expandedSnippet}
+                  setExpandedSnippet={setExpandedSnippet}
+                />
+              ))}
             </Box>
           </>
         )}
