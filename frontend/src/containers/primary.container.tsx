@@ -1,12 +1,5 @@
 import React from 'react';
-// import { Content } from '../connectors/main';
-
 import PrimaryArea from '../components/layout/main/areas/primary.area';
-import SubNav from '../components/navigation/subnav';
-
-interface ContainerProps {
-  children?: React.ReactNode;
-}
 
 /**
  * Must be a child of SecondaryArea.
@@ -18,10 +11,11 @@ interface ContainerProps {
  *        {PrimaryArea}
  */
 
-export const Primary: React.FC<ContainerProps> = ({ children }) => (
+export const Primary: React.FC<{
+  children: React.ReactNode;
+}> = ({ children }) => (
   <>
     <PrimaryArea>
-      <SubNav />
       <>{children}</>
     </PrimaryArea>
   </>

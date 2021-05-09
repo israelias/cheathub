@@ -4,14 +4,13 @@ import Navbar from '../components/navigation/navbar';
 
 import TitleBarArea from '../components/layout/root/areas/titlebar.area';
 
-interface ContainerProps {
+export const TitleBar: React.FC<{
   children?: React.ReactNode;
-}
-
-export const TitleBar: React.FC<ContainerProps> = ({ children }) => (
+}> = ({ children }) => (
   <>
     <TitleBarArea>
       <Navbar />
+      {children}
     </TitleBarArea>
   </>
 );

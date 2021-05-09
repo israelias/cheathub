@@ -4,10 +4,6 @@ import { SideNav } from '../connectors/side';
 
 import SecondaryArea from '../components/layout/main/areas/secondary.area';
 
-interface ContainerProps {
-  children?: React.ReactNode;
-}
-
 /**
  * Must be a child of SecondaryArea.
  * Component tree must follow:
@@ -18,7 +14,9 @@ interface ContainerProps {
  *        {PrimaryArea}
  */
 
-export const Secondary: React.FC<ContainerProps> = ({ children }) => (
+export const Secondary: React.FC<{
+  children?: React.ReactNode;
+}> = ({ children }) => (
   <>
     <SecondaryArea>
       {/* <SideNav> */}
