@@ -1,12 +1,18 @@
 import React from 'react';
 import { AxiosResponse } from 'axios';
-import { SelectProps } from '@chakra-ui/react';
+
 import {
   getInitialData,
   getResultsData,
   getAllTags,
 } from '../services/get.service';
 
+/**
+ * Second-level Context provider for all initial snippets and collections data.
+ * Responsible for reloading the cache after any local mutations.
+ *
+ * @since 2021-04-04
+ */
 interface Response extends AxiosResponse {
   links: {
     self: string;
@@ -29,10 +35,17 @@ type AppDataType = {
   setLoading: (loading: boolean) => void;
   searchText: string;
   setSearchText: React.Dispatch<React.SetStateAction<string>>;
+  onSearchTextChange: (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => void;
   language: string;
   setLanguage: React.Dispatch<React.SetStateAction<string>>;
+  onLanguageChange: (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => void;
   tags: string;
   setTags: React.Dispatch<React.SetStateAction<string>>;
+  onTagChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   page: number;
   setPage: React.Dispatch<React.SetStateAction<number>>;
   allTags: Options[];
@@ -41,6 +54,7 @@ type AppDataType = {
   loadInitialData: () => Promise<void>;
   loadAllTags: () => Promise<void>;
 };
+
 const AppData = React.createContext<AppDataType>(undefined!);
 
 export function AppDataProvider({
@@ -60,6 +74,51 @@ export function AppDataProvider({
   const [allTags, setAllTags] = React.useState<Options[]>([
     { label: '', value: '' },
   ]);
+
+  const onSearchTextChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setLanguage('');
+    setTags('');
+    setPage(1);
+    const {
+      target: { value },
+    } = e;
+    if (value === '') {
+      setSearchText('');
+    }
+    setSearchText(value);
+  };
+
+  const onLanguageChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setSearchText('');
+    setTags('');
+    setPage(1);
+    const {
+      target: { value },
+    } = event;
+    if (value === '') {
+      setLanguage('');
+    }
+    setLanguage(value);
+  };
+
+  const onTagChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setSearchText('');
+    setLanguage('');
+    setPage(1);
+    const {
+      target: { value },
+    } = event;
+    if (value === '') {
+      setTags('');
+    }
+    setTags(value);
+  };
 
   const loadResultsData = async () => {
     setLoading(true);
@@ -114,10 +173,13 @@ export function AppDataProvider({
         setData,
         searchText,
         setSearchText,
+        onSearchTextChange,
         language,
         setLanguage,
+        onLanguageChange,
         tags,
         setTags,
+        onTagChange,
         page,
         setPage,
         loading,
