@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
-
 import * as React from 'react';
+
+import { AxiosResponse } from 'axios';
 
 import { RouteComponentProps } from 'react-router';
 import { Button, useMediaQuery } from '@chakra-ui/react';
@@ -9,34 +10,17 @@ import SnippetCard from '../components/snippet/card';
 import SnippetCrud from '../components/snippet/crud';
 import { DeleteModal } from '../components/modals/delete-snippet';
 
-import {
-  putRequest,
-  getRequest,
-  postRequest,
-  deleteRequest,
-  putReload,
-  postReload,
-  likeRequest,
-} from '../services/crud.service';
+import { getSnippet } from '../services/get.service';
+import { getRequest } from '../services/crud.service';
 
-import { useUserContext } from '../context/user.context';
 import { useDataHandler } from '../context/datahandler.context';
+import { useUserContext } from '../context/user.context';
 
 import { Secondary } from '../containers/secondary.container';
 import { Content } from '../connectors/main';
 import { SideNav } from '../connectors/side';
 import { HeaderBox } from '../connectors/header-box';
-
-import {
-  MotionSection,
-  MotionHeader,
-  MotionBox,
-  MotionFooter,
-  MotionAside,
-  MotionUl,
-  MotionLi,
-  MotionP,
-} from '../components/shared/motion-box';
+import { GoBackButton } from '../components/shared/brand-button';
 
 interface SnippetPageProps
   extends RouteComponentProps<{ id: string }> {}
@@ -51,7 +35,7 @@ interface SnippetPageProps
  * @param {any} history
  * @return {=>}
  */
-const Snippet: React.FC<SnippetPageProps> = ({ match, history }) => {
+const Snippet: React.FC<SnippetPageProps> = ({ match }) => {
   const {
     title,
     setTitle,
@@ -90,16 +74,14 @@ const Snippet: React.FC<SnippetPageProps> = ({ match, history }) => {
   const { accessToken, username } = useUserContext();
   const [baseLg] = useMediaQuery('(min-width: 62em)');
 
-  const cancelRef = React.useRef<HTMLButtonElement>(null);
+  // const cancelRef = React.useRef<HTMLButtonElement>(null);
 
-  const closeAlert = () => setAlert(false);
+  // const closeAlert = () => setAlert(false);
 
   const [snippet, setSnippet] = React.useState<Snippet | undefined>();
   const [loading, setLoading] = React.useState(false);
 
-  const [message, setMessage] = React.useState('');
-
-  const getSnippet = async (snippetId: string) => {
+  const loadSnippet = async (snippetId: string) => {
     setLoading(true);
     const data = await getRequest({
       url: `api/snippets/${snippetId}`,
@@ -114,7 +96,7 @@ const Snippet: React.FC<SnippetPageProps> = ({ match, history }) => {
   React.useEffect(() => {
     if (match.params.id !== 'add') {
       setEditing(true);
-      getSnippet(match.params.id);
+      loadSnippet(match.params.id);
     } else {
       setEditing(false);
       clearValues();
@@ -163,13 +145,14 @@ const Snippet: React.FC<SnippetPageProps> = ({ match, history }) => {
             handleSubmit={handleSubmit}
             handleDelete={handleDelete}
             handleCancel={handleCancel}
-            message={message}
           />
         </SideNav>
       </Secondary>
       <DeleteModal alert={alert} setAlert={setAlert} title={title} />
       <Content>
-        <HeaderBox heading={heading} />
+        <HeaderBox heading={heading}>
+          <GoBackButton>Go Back</GoBackButton>
+        </HeaderBox>
 
         {!baseLg && (
           <SnippetCrud
@@ -195,7 +178,6 @@ const Snippet: React.FC<SnippetPageProps> = ({ match, history }) => {
             handleSubmit={handleSubmit}
             handleDelete={handleDelete}
             handleCancel={handleCancel}
-            message={message}
           />
         )}
         {loading ? (
@@ -215,7 +197,6 @@ const Snippet: React.FC<SnippetPageProps> = ({ match, history }) => {
             setTags={setTags}
             handleFave={handleFave}
             faveSnippet={faveSnippet}
-            setFaveSnippet={setFaveSnippet}
           />
         )}
       </Content>
