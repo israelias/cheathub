@@ -4,8 +4,17 @@ import {
   getCollectionsProfile,
   getSnippetsProfile,
   getFaveSnippets,
+  getCollectionsOptions,
+  getSnippetsOptions,
 } from '../services/get.service';
 import { useUserContext } from './user.context';
+
+/**
+ * Third-level Context provider for all user-specific snipetts and collections data.
+ * Relies on UserContext's username upon login to fetch user's data.
+ *
+ * @since 2021-04-08
+ */
 
 interface CollectionsResponse extends AxiosResponse<Collection[]> {}
 interface SnippetsResponse extends AxiosResponse<Snippet[]> {}
@@ -17,12 +26,22 @@ type ProfileDataType = {
   ) => void;
   snippetsProfile: SnippetsResponse | undefined;
   setSnippetsProfile: (snippetsProfile: SnippetsResponse) => void;
+  faveSnippets: CollectionsResponse | undefined;
+  setFaveSnippets: (faveSnippets: CollectionsResponse) => void;
   loadingCollections: boolean;
   setLoadingCollections: React.Dispatch<
     React.SetStateAction<boolean>
   >;
   loadingSnippets: boolean;
   setLoadingSnippets: React.Dispatch<React.SetStateAction<boolean>>;
+  loadingFaves: boolean;
+  setLoadingFaves: React.Dispatch<React.SetStateAction<boolean>>;
+  snippetsOptions: Options[];
+  setSnippetsOptions: (snippetsOptions: Options[]) => void;
+  loadSnippetsOptions: () => Promise<void>;
+  collectionsOptions: Options[];
+  setCollectionsOptions: (collectionsOptions: Options[]) => void;
+  loadCollectionsOptions: () => Promise<void>;
   loadSnippetsData: () => Promise<void>;
   loadCollectionsData: () => Promise<void>;
   loadFaveSnippets: () => Promise<void>;
@@ -45,14 +64,30 @@ export function ProfileDataProvider({
     CollectionsResponse | undefined
   >(undefined);
 
+  const [faveSnippets, setFaveSnippets] = React.useState<
+    CollectionsResponse | undefined
+  >(undefined);
+
+  const [snippetsOptions, setSnippetsOptions] = React.useState<
+    Options[]
+  >([{ label: '', value: '' }]);
+
+  const [collectionsOptions, setCollectionsOptions] = React.useState<
+    Options[]
+  >([{ label: '', value: '' }]);
+
   const [
     loadingCollections,
     setLoadingCollections,
   ] = React.useState<boolean>(false);
+
   const [
     loadingSnippets,
     setLoadingSnippets,
   ] = React.useState<boolean>(false);
+  const [loadingFaves, setLoadingFaves] = React.useState<boolean>(
+    false
+  );
 
   const loadCollectionsData = async () => {
     setLoadingCollections(true);
@@ -73,11 +108,25 @@ export function ProfileDataProvider({
   };
 
   const loadFaveSnippets = async () => {
-    setLoadingSnippets(true);
+    setLoadingFaves(true);
     const response = await getFaveSnippets(username);
     if (response) {
-      setSnippetsProfile(response);
-      setLoadingSnippets(false);
+      setFaveSnippets(response);
+      setLoadingFaves(false);
+    }
+  };
+
+  const loadSnippetsOptions = async () => {
+    const response = await getSnippetsOptions(username);
+    if (response && response.data) {
+      setSnippetsOptions(response.data);
+    }
+  };
+
+  const loadCollectionsOptions = async () => {
+    const response = await getCollectionsOptions(username);
+    if (response && response.data) {
+      setCollectionsOptions(response.data);
     }
   };
 
@@ -85,6 +134,9 @@ export function ProfileDataProvider({
     if (username) {
       loadCollectionsData();
       loadSnippetsData();
+      loadFaveSnippets();
+      loadSnippetsOptions();
+      loadCollectionsOptions();
     }
   }, [username]);
 
@@ -102,6 +154,16 @@ export function ProfileDataProvider({
         loadingSnippets,
         setLoadingSnippets,
         loadFaveSnippets,
+        setFaveSnippets,
+        faveSnippets,
+        loadingFaves,
+        setLoadingFaves,
+        snippetsOptions,
+        setSnippetsOptions,
+        loadSnippetsOptions,
+        collectionsOptions,
+        setCollectionsOptions,
+        loadCollectionsOptions,
       }}
     >
       {children}
