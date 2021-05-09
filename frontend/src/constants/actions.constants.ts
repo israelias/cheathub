@@ -128,7 +128,7 @@ const PATHS = {
   },
   add: {
     label: 'Add',
-    path: '/explore/add',
+    path: '/snippets/add',
   },
   mode: {
     label: 'Switch modes',
