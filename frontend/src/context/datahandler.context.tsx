@@ -1,17 +1,25 @@
 import React from 'react';
-import { useToast, useBoolean } from '@chakra-ui/react';
 import { useHistory } from 'react-router-dom';
+import { useToast, useBoolean } from '@chakra-ui/react';
+import { Prompt } from '../components/modals/toast-feedback';
+
 import { useUserContext } from './user.context';
+import { useAppData } from './appdata.context';
+import { useProfileData } from './profiledata.context';
 
 import {
-  getRequest,
   deleteRequest,
   putReload,
   postReload,
   likeRequest,
 } from '../services/crud.service';
 
-import { Prompt } from '../components/modals/toast-feedback';
+/**
+ * Fourth-level Context provider for all CRUD operations.
+ * Creating, Editing, Deleting user's own collections and snippets.
+ *
+ * @since 2021-04-08
+ */
 
 type HandlerType = {
   title: string;
@@ -56,14 +64,17 @@ type HandlerType = {
   handleCancel: () => void;
   clearValues: () => void;
 };
-const HandlerData = React.createContext<HandlerType>(undefined!);
 
-export function HandlerDataProvider({
+const DataHandler = React.createContext<HandlerType>(undefined!);
+
+export function DataHandlerProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const { username, accessToken } = useUserContext();
+  const { loadInitialData } = useAppData();
+  const { loadSnippetsData } = useProfileData();
   const toast = useToast();
   const history = useHistory();
   const [faveSnippet, setFaveSnippet] = useBoolean();
@@ -88,6 +99,7 @@ export function HandlerDataProvider({
 
   const handleCancel = () => {
     history.goBack();
+    clearValues();
   };
 
   const clearValues = () => {
@@ -132,18 +144,33 @@ export function HandlerDataProvider({
             }, 750);
             setTimeout(() => {
               setSubmitting(false);
-              history.push(`/collection/${username}`);
+              clearValues();
+              loadInitialData();
+              loadSnippetsData();
+              history.push(`/collections/${username}`);
             }, 1500);
           } else {
-            setSubmitting(false);
-            toast({
-              duration: 3000,
-              isClosable: true,
-              render: () => <Prompt error message="Add Failed" />,
+            response.json().then((data) => {
+              if (data.message) {
+                setSubmitting(false);
+                toast({
+                  duration: 3000,
+                  isClosable: true,
+                  render: () => (
+                    <Prompt warning message={data.message} />
+                  ),
+                });
+              }
             });
           }
         });
       } catch (err) {
+        setSubmitting(false);
+        toast({
+          duration: 3000,
+          isClosable: true,
+          render: () => <Prompt error message={err.message} />,
+        });
         setHeading(err.message);
       }
     } else {
@@ -169,18 +196,33 @@ export function HandlerDataProvider({
             }, 750);
             setTimeout(() => {
               setSubmitting(false);
+              clearValues();
+              loadInitialData();
+              loadSnippetsData();
               history.push('/explore');
             }, 1500);
           } else {
-            setSubmitting(false);
-            toast({
-              duration: 3000,
-              isClosable: true,
-              render: () => <Prompt error message="Update Failed" />,
+            response.json().then((data) => {
+              if (data.message) {
+                setSubmitting(false);
+                toast({
+                  duration: 3000,
+                  isClosable: true,
+                  render: () => (
+                    <Prompt warning message={data.message} />
+                  ),
+                });
+              }
             });
           }
         });
       } catch (err) {
+        setSubmitting(false);
+        toast({
+          duration: 3000,
+          isClosable: true,
+          render: () => <Prompt error message={err.message} />,
+        });
         setHeading(err.message);
       }
     }
@@ -206,6 +248,8 @@ export function HandlerDataProvider({
           }, 750);
           setTimeout(() => {
             setDeleting(false);
+            loadInitialData();
+            loadSnippetsData();
             history.push('/explore');
           }, 1500);
         }
@@ -241,7 +285,7 @@ export function HandlerDataProvider({
   };
 
   return (
-    <HandlerData.Provider
+    <DataHandler.Provider
       value={{
         title,
         setTitle,
@@ -279,8 +323,8 @@ export function HandlerDataProvider({
       }}
     >
       {children}
-    </HandlerData.Provider>
+    </DataHandler.Provider>
   );
 }
 
-export const useDataHandler = () => React.useContext(HandlerData);
+export const useDataHandler = () => React.useContext(DataHandler);
