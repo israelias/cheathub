@@ -19,12 +19,12 @@ import {
   HStack,
   Icon,
   IconButton,
+  Grid,
 } from '@chakra-ui/react';
 import { CloseIcon, HamburgerIcon } from '@chakra-ui/icons';
 
 import { GoTelescope } from 'react-icons/go';
 
-import { Primary } from '../containers/primary.container';
 import { Secondary } from '../containers/secondary.container';
 import { Content } from '../connectors/main';
 import { SideNav } from '../connectors/side';
@@ -36,8 +36,6 @@ import Pagination from '../components/navigation/pagination';
 import { useUserContext } from '../context/user.context';
 import { useAppData } from '../context/appdata.context';
 import { useDataHandler } from '../context/datahandler.context';
-
-import { TimeAgo } from '../components/shared/time';
 
 import SearchBox from '../components/snippet/search/searchbox';
 import { SnippetDataTable } from '../components/snippet/table/data.table';
@@ -53,26 +51,23 @@ const Snippets: React.FC = () => {
     data,
     setData,
     loading,
-    setLoading,
     searchText,
     setSearchText,
+    onSearchTextChange,
     language,
     setLanguage,
+    onLanguageChange,
     tags,
     setTags,
+    onTagChange,
     page,
     setPage,
     allTags,
-    setAllTags,
     loadResultsData,
     loadInitialData,
     loadAllTags,
   } = useAppData();
-  const {
-    faveSnippet,
-    setFaveSnippet,
-    handleFave,
-  } = useDataHandler();
+  const { faveSnippet, handleFave } = useDataHandler();
   const { username, accessToken } = useUserContext();
   const router = useHistory();
   const [baseLg] = useMediaQuery('(min-width: 62em)');
@@ -91,53 +86,6 @@ const Snippets: React.FC = () => {
   const [filename, setFilename] = React.useState<string>('');
 
   const [editing, setEditing] = React.useState(false);
-
-  const onSearchTextChange = async (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setLanguage('');
-    setTags('');
-    setPage(1);
-    const {
-      target: { value },
-    } = e;
-    try {
-      if (value === '') {
-        setSearchText('');
-      }
-      setSearchText(value);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  const onLanguageChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    setSearchText('');
-    setTags('');
-    setPage(1);
-    const {
-      target: { value },
-    } = event;
-    if (value === '') {
-      setLanguage('');
-    }
-    setLanguage(value);
-  };
-  const onTagChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    setSearchText('');
-    setLanguage('');
-    setPage(1);
-    const {
-      target: { value },
-    } = event;
-    if (value === '') {
-      setTags('');
-    }
-    setTags(value);
-  };
 
   const resetAll = () => {
     setSearchText('');
@@ -176,37 +124,42 @@ const Snippets: React.FC = () => {
       <Secondary>
         <HeaderBox left heading="Explore Snippets" />
         <SideNav>
-          <SearchBox
-            searchText={searchText}
-            language={language}
-            tags={tags}
-            onSearchTextChange={onSearchTextChange}
-            onLanguageChange={onLanguageChange}
-            onTagsChange={onTagChange}
-            allTags={allTags}
-            resetAll={resetAll}
-          />
-          <SnippetQueryTable
-            searchText={searchText}
-            setSearchText={setSearchText}
-            language={language}
-            setLanguage={setLanguage}
-            tags={tags}
-            setTags={setTags}
-          />
-          <SnippetPaginationTable
-            totalItems={data?.total_items}
-            perPage={snippets.length}
-            currentPage={data?.page}
-          />
-          <SnippetDataTable
-            title={title}
-            language={language}
-            updatedOn={updatedOn}
-            source={source}
-            likedBy={likedBy}
-            filename={filename}
-          />
+          <Grid minH="100vh" p={3}>
+            <div> </div>
+            <VStack spacing={8}>
+              <SearchBox
+                searchText={searchText}
+                language={language}
+                tags={tags}
+                onSearchTextChange={onSearchTextChange}
+                onLanguageChange={onLanguageChange}
+                onTagsChange={onTagChange}
+                allTags={allTags}
+                resetAll={resetAll}
+              />
+              <SnippetQueryTable
+                searchText={searchText}
+                setSearchText={setSearchText}
+                language={language}
+                setLanguage={setLanguage}
+                tags={tags}
+                setTags={setTags}
+              />
+              {/* <SnippetPaginationTable
+                totalItems={data?.total_items}
+                perPage={snippets.length}
+                currentPage={data?.page}
+              /> */}
+              {/* <SnippetDataTable
+                title={title}
+                language={language}
+                updatedOn={updatedOn}
+                source={source}
+                likedBy={likedBy}
+                filename={filename}
+              /> */}
+            </VStack>
+          </Grid>
         </SideNav>
       </Secondary>
       {!baseLg && (
@@ -305,7 +258,6 @@ const Snippets: React.FC = () => {
                 setTags={setTags}
                 handleFave={handleFave}
                 faveSnippet={faveSnippet}
-                setFaveSnippet={setFaveSnippet}
               />
             ))}
           </Box>
