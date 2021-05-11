@@ -1,7 +1,7 @@
 from flask_admin import Admin
 
 
-admin = Admin(name='Flask-React Todos', template_mode='bootstrap4')
+admin = Admin(name="Cheat-Hub Backend", template_mode="bootstrap4")
 
 
 def initialize_admin(app):
