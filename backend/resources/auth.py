@@ -75,10 +75,7 @@ class SignupApi(Resource):
             snippet_js.reload()
             snippet_sh.save()
             snippet_sh.reload()
-            # snippet.update(set__addedBy=user)
 
-            # snippet.save()
-            # snippet.reload()
             user.update(push_all__snippets_created=[snippet_py, snippet_js, snippet_sh])
             user.save()
             user.reload()
