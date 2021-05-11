@@ -33,17 +33,26 @@ Additionally, the restful backend API can be viwed at [cheathub-backend.herokuap
 ## UX
 ### User Stories
 #### New Visitor Goals
-- As a new vistor, I want to have a good understanding of what the website does within a few seconds.
+- As a new vistor, I want to have a good understanding of what the website does.
 - As a new visitor, I want to be able to register for an account.
 #### Returning Visitor Goals
 - As a Returning Visitor, I want to be able to log in securely.
-- As a Returning Visitor, I want to be able to create and save a code snippet.
-- As a Returning Visitor, I want to be able to create collections of code snippets I have created.
+- As a Returning Visitor, I want to be able to create a code snippet.
+- As a Returning Visitor, I want to be able to see my code snippet.
+- As a Returning Visitor, I want to be able to edit my code snippet.
+- As a Returning Visitor, I want to be able to delete my code snippet(s).
+- As a Returning Visitor, I want to be able to create a collection of my code snippets.
+- As a Returning Visitor, I want to be able to see collections of my code snippets.
+- As a Returning Visitor, I want to be able to edit collections of my code snippets.
+- As a Returning Visitor, I want to be able to delete a collection of my code snippets.
 #### Frequent Visitor Goals
-- As a Frequent Visitor, I want to be able to delete code snippets and collections I have created.
-- As a Frequent Visitor, I want to be able to search and like code snippets created by others.
+- As a Frequent Visitor, I want to be able to search code snippets I have created.
+- As a Frequent Visitor, I want to be able to search code snippets created by others.
+- As a Frequent Visitor, I want to be able to like/fave code snippets created by others.
+- As a Frequent Visitor, I want to be able to see my favorite code snippets created by others.
+- As a Frequent Visitor, I want to be able to unlike/unfave code snippets created by others I have previously liked.
 - As a Frequent Visitor, I want to be able to reference and copy code snippets to the the clipboard.
-
+- As a Frequent Visitor, I want to  able to delete my account.
 ### Wireframes
 #### Concept
 
@@ -163,17 +172,206 @@ The project can be understood as a library of user-created <em><b>Albums</b></em
 
 ## Testing
 ### User Testing
-- A user expects...
-  - Describe:
-  - Review:
+-  As a new vistor, I want to have a good understanding of what the website does
+    - User arrives at home page.
+      - The screen for `Cheathub` appears with a description of its functionality.
+      - User reads description.
+    - User continues.
+    - Review:
+    - ... 
+- As a new visitor, I want to be able to register for an account.
+    - User is clicks `Switch to sign up `
+        - The sign up form appears
+            - The username field is in focus
+            - User types types a username, email and password.
+              - The username is taken.
+              - An error toast alert appears.
+            - User modifies username
+        - User is redirected to his/her `collections` profile.
+    - User continues
+    - Review:
+    - A user is able to securely create an account.
+- As a Returning Visitor, I want to be able to log in securely.
+    - User clicks `Switch to sign in`
+      - The sign in form appears
+            - The email field is in focus
+            - User types types email and password.
+            - User hits enter.
+            - A success toast alert appears.
+        - User is redirected to his/her `collections` profile.
+    - User continues
+    - Review:
+    - ... 
+- As a Returning Visitor, I want to be able to create a code snippet.
+    - User clicks `Add new snippet`
+      - A form appears.
+        - The title field is in focus.
+          - User inputs `title`, `description`, `language`
+          - User pastes a code snippet.
+        - User clicks submit.
+          - A success toast alert appears.
+      - User is redirected to his/her `collections` profile.
+    - User continues
+    - Review:
+    - ... 
+- As a Returning Visitor, I want to be able to see my code snippet.
+    - User arrives at `Collections` profile.
+      - A snippet card appears.
+        - User sees code snippet interface with his/her 
+    - User continues
+    - Review:
+    - ... 
+- As a Returning Visitor, I want to be able to edit my code snippet.
+    - User clicks `Edit this snippet`
+      - A form appears.
+        - The title field is in focus.
+          - User modifies `description`
+          - User updates code snippet.
+          - User adds optional `source` url.
+          - User adds optional `tags`
+        - User clicks submit.
+          - A success toast alert appears.
+      - User is redirected to his/her `collections` profile.
+    - User continues
+    - Review:
+    - ... 
+- As a Returning Visitor, I want to be able to delete my code snippet(s).
+    - User clicks `Edit this snippet`
+      - A form appears.
+        - The title field is in focus.
+          - User clicks `Delete`
+            - Modal appears
+            - The cancel button is in focus
+            - User confirms
+          - The modal is closed
+          - A success toast alert appears.
+      - User is redirected to his/her `collections` profile.
+    - User continues
+    - Review:
+    - ... 
+- As a Returning Visitor, I want to be able to create a collection of my code snippets.
+    - User clicks `Add New Collection`
+      - A form appears.
+        - The `name` field is in focus.
+          - User inputs names collection
+          - User selects existing code snippets to add.
+        - User clicks submit.
+          - A success toast alert appears.
+      - User is redirected to his/her `collections` profile.
+    - User continues
+    - Review:
+    - ... 
+- As a Returning Visitor, I want to be able to see collections of my code snippets.
+    - User arrives at `Collections` profile.
+      - A `collections` card appears.
+        - User sees `collection` interface that includes snippets added.
+    - User continues
+    - Review:
+    - ... 
+- As a Returning Visitor, I want to be able to edit collections of my code snippets.
+    - User clicks `Edit this Collection`
+      - A form appears.
+        - The `name` field is in focus.
+          - User renames collection.
+          - User uses `select` input add more snippets.
+          - User uses `select` input to remove previous snippets.
+        - User clicks submit.
+          - A success toast alert appears.
+      - User is redirected to his/her `collections` profile.
+      - An updated `collection` appears.
+    - User continues
+    - Review:
+    - ... 
+- As a Returning Visitor, I want to be able to delete a collection of my code snippet(s).
+    - User clicks `Edit this Collection`
+      - A form appears.
+        - The name field is in focus.
+          - User clicks `Delete`
+            - Modal appears
+            - The cancel button is in focus
+            - User confirms
+          - The modal is closed
+          - A success toast alert appears.
+      - User is redirected to his/her `collections` profile.
+    - User continues
+    - Review:
+    - ... 
+- As a Frequent Visitor, I want to be able to search code snippets I have created.
+    - User clicks `Snippets`
+      - User is rerouted to `Snippets` page.
+      - A feed of all public snippet cards appear.
+      - The `Snippets Search` input appears.   
+      - The `search` field is in focus.
+        - User types a `search text`
+          - The snippet cards return snippets that match `search text`
+        - User uses `select` input to query by `language`
+          - The snippet cards return snippets written in `language`
+        - User uses `select` input to query by `tags`
+          - The snippet cards return snippets that include input `tag`
+        - User clickes `Show All`
+          - The snippet cards return most recent snippets posted.
+        - User scrolls to end of page 
+          - The `pagination` buttons appear
+          - User clicks `Next`
+            - Snippet cards for next page appear.
+      - User continues
+      - Review:
+      - ... 
+- As a Frequent Visitor,  I want to be able to like/fave code snippets created by others.
+    - User is in `Snippets` page.
+      - A feed of all public snippet cards appear.
+        - User finds a snippet card.
+        - User clicks `Fave`  
+          - A success toast appears 
+    - User continues
+    - Review:
+    - ... 
+- I want to be able to see my favorite code snippets created by others.
+    - User is in `Collections` page.
+      - A collection named `Faves` appears.
+        - User finds all favorite snippts as a collection.
+    - User continues
+    - Review:
+    - ... 
+- As a Frequent Visitor, I want to be able to unlike/unfave code snippets created by others.
+    - User is in `Snippets` page.
+      - A feed of all public snippet cards appear.
+        - User finds a snippet card.
+        - User clicks `Unfave`  
+          - A success toast appears 
+        - User clicks `Collections`
+        - The faves collection appears.
+        - User sees updated Faves.
+    - User continues
+    - Review:
+    - ... 
+- I want to be able to reference and copy code snippets to the clipboard.
+    - User is in `Search` page.
+      - A feed of all public snippet cards appear.
+        - User finds a snippet card.
+        - User clicks `Copy` button
+          - The copy button changes to a success icon.
+          - The code snippet is copied to the clipboard.
+    - User continues
+    - Review:
+    - ... 
+- As a Frequent Visitor, I want to be able to delete my account.
+    - User is clicks `Delete my account`
+      - Modal appears
+          - The cancel button is in focus
+            - User confirms
+          - The modal is closed
+        - Page is redirected to `/`
+        - User is no longer able to log in with credentials
+    - User continues
+    - Review:
+    - A user is able to securely remove his/her history from the database.
 
 ### Code Testing
 #### Frontend
 ##### Performance, Accessibility, Best Practices, SEO, PWA
 [View Latest Results](https://lighthouse-vercel-lighthouse-integration.vercel.app/reports/cheathub-1rxs3u78h-israelias.vercel.app)
 - Lighthouse via Vercel is used to test performace, which produces unique results on every `git push`. [lighthouse-badges](https://github.com/emazzotta/lighthouse-badges) is used to generate new badges for every deployment by installing ```npm i -g lighthouse-badges``` and pushing the new hashed url to the array of urls:
-
-
     ```
     lighthouse-badges 
     -o docs/badges -r 
@@ -185,7 +383,6 @@ The project can be understood as a library of user-created <em><b>Albums</b></em
       supplied, combined
     ```
 - Lighthouse's metrics, namely Accessibility and Performance generate specific flags on each audit. Adjustments are made on each push that specifically address any issues. 
-
 ##### Accessibility Testing
 - [ChromeVox Extension](https://chrome.google.com/webstore/detail/chromevox-classic-extensi/kgejglhpjiefppelpmljglcjbhoiplfn?hl=en) was used to ensure that screen-reader accessibility standards are met. This was done by walking through the entire project with the screen-reader plugin enabled. Various adjustments were made following these tests. Notably, the tab-index order of nav elements, and changing refining HTML5 semantic elements for `role` clarity.
 
