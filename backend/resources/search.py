@@ -93,7 +93,6 @@ class SearchApi(Resource):
             all_tags_arr = all_tags()
 
             if len(search) == 0:
-                # print("NO QUERY", search)
                 query = (
                     Snippet.objects(
                         language__in=[language] if language else all_langs_arr,
@@ -140,12 +139,9 @@ class SearchApi(Resource):
                 return jsonify(resp)
 
             else:
-                # print("HAS QUERY", search, type(search), len(search))
+
                 query = (
-                    Snippet.objects(
-                        # language__in=[language] if language else all_langs_arr,
-                        # tags__in=tags if tags else all_tags_arr,
-                    )
+                    Snippet.objects()
                     .search_text(search, language="en")
                     .order_by("-addedOn")
                     .paginate(
