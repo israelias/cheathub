@@ -50,48 +50,39 @@ class BadTokenError(Exception):
 
 
 errors = {
-    "InternalServerError": {
-        "message": "Something went wrong.",
-        "status": 500
-    },
+    "InternalServerError": {"message": "Something went wrong.", "status": 500},
     "SchemaValidationError": {
         "message": "Request is missing required fields.",
-        "status": 400
+        "status": 400,
     },
     "SnippetAlreadyExistsError": {
         "message": "Code Snippet with given name already exists.",
-        "status": 409
+        "status": 409,
     },
     "UpdatingSnippetError": {
         "message": "Updating Code Snippet added by someone else is forbidden.",
-        "status": 403
+        "status": 403,
     },
     "DeletingSnippetError": {
         "message": "Deleting Code Snippet added by someone else is forbidden.",
-        "status": 403
+        "status": 403,
     },
     "SnippetNotExistsError": {
         "message": "Code Snippet with given id doesn't exist.",
-        "status": 410
+        "status": 410,
     },
     "UsernameAlreadyExistsError": {
         "message": "A user with that username already exists.",
-        "status": 409
+        "status": 409,
     },
     "EmailAlreadyExistsError": {
         "message": "User with given email address already exists.",
-        "status": 401
+        "status": 401,
     },
-    "UnauthorizedError": {
-        "message": "Invalid username or password.",
-        "status": 401
-    },
+    "UnauthorizedError": {"message": "Invalid username or password.", "status": 401},
     "EmailDoesNotExistError": {
         "message": "Couldn't find the user with given email address.",
-        "status": 400
+        "status": 400,
     },
-    "BadTokenError": {
-        "message": "Invalid token.",
-        "status": 407
-    }
+    "BadTokenError": {"message": "Invalid token.", "status": 407},
 }
