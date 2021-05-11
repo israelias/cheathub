@@ -1,4 +1,21 @@
+[Back to root](https://github.com/israelias/cheathub#contents)\
+[Go to backend](https://github.com/israelias/cheathub/tree/master/backend)
+
 # MS3 Cheat-Hub Frontend
+
+## Frameworks and Libraries
+- [Node.js:](https://nodejs.org/en/) The runtime environment that allows the app to run asynchronous server-side scripts and events.(Bootstrapped with Nextjs)
+- [Webpack:](https://webpack.js.org/) The static module bundler that builds a dependency graph mapping every module the project requires. (Bootstrapped with Nextjs)
+- [Typescript]()
+- [React 17.0:](https://reactjs.org/) JavaScript Library for building user interfaces.
+- [React Router]()
+- [Framer Motion]()
+- [React Syntax Highligher]()
+- [Chakra-ui](https://chakra-ui.com/) React component for faster and easier web development. Includes [Chakra UI Icons]()
+- [React-Icons:]() 
+- [Axios:](https://github.com/axios/axios) The promise-based HTTP client for the browser and node.js that handles calls to Thesaurus API.
+- [isomorphic-unfetch]()
+- [classnames:](https://developer.aliyun.com/mirror/npm/package/clsx):Tiny utility for constructing classnames conditionally
 ## Frontend Deployment
 - `commit` and `push` the code from my local IDE to Github via Git and my MacBook Pro's iTerm terminal.
 - Log in to Vercel and click the [New Project](https://vercel.com/new) CTA.
