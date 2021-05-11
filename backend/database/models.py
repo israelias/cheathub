@@ -8,19 +8,9 @@ from flask_restful import url_for
 class Snippet(db.Document):
     meta = {
         "collection": "snippet",
-        # "indexes": [
-        #     {
-        #         "name": "search_by",
-        #         "unique": True,
-        #         "fields": ["$title", "$description"],
-        #         "default_language": "en",
-        #         "language_override": "en",
-        #         "weights": {"title": 10, "description": 2},
-        #     }
-        # ],
     }
 
-    title = db.StringField(required=True)
+    title = db.StringField(required=True, unique=False)
     filename = db.StringField(unique=False)
     tags = db.ListField(db.StringField())
     description = db.StringField()
@@ -46,9 +36,9 @@ class Snippet(db.Document):
 
 
 class Collection(db.Document):
-    meta = {"collection": "collection", "cascade": True}
+    meta = {"collection": "collection"}
 
-    name = db.StringField(required=True, unique=True)
+    name = db.StringField(required=True, unique=False)
     owner = db.ReferenceField("User", required=True)
     snippets = db.ListField(db.ReferenceField("Snippet", reverse_delete_rule=db.PULL))
     private = db.BooleanField(default=False)
@@ -91,12 +81,6 @@ class User(db.Document):
 User.register_delete_rule(Snippet, "addedBy", db.CASCADE)
 User.register_delete_rule(Snippet, "likedBy", db.CASCADE)
 User.register_delete_rule(Collection, "owner", db.CASCADE)
-# Collection.register_delete_rule(Snippet, "owner", db.CASCADE)
-
-# class Favorite(db.Document):
-#     meta = {"collection": "favorite"}
-#     user_id = db.ReferenceField('User')
-#     snippet_id = db.ReferenceField('Snippet')
 
 
 class TokenBlocklist(db.Document):
@@ -106,3 +90,6 @@ class TokenBlocklist(db.Document):
     expires_on = db.DateTimeField(null=False)
     revoked_on = db.DateTimeField(null=False)
     revoked_by = db.ReferenceField("User")
+
+
+User.register_delete_rule(TokenBlocklist, "revoked_by", db.CASCADE)
