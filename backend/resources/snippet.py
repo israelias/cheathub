@@ -4,10 +4,8 @@ from database.models import Snippet, User, Collection
 from flask_restful import Resource, marshal_with, url_for
 from bson import ObjectId
 import datetime
-from flask_mongoengine.wtf import model_form
 from flask_mongoengine import Pagination
 
-from flask_restful.fields import Boolean, Nested, Integer, List, String, DateTime, Url
 from flask_restful.reqparse import RequestParser
 from flask_restful.inputs import positive, url
 
@@ -17,14 +15,6 @@ from mongoengine.errors import (
     DoesNotExist,
     ValidationError,
     InvalidQueryError,
-)
-from resources.errors import (
-    SchemaValidationError,
-    SnippetAlreadyExistsError,
-    InternalServerError,
-    UpdatingSnippetError,
-    DeletingSnippetError,
-    SnippetNotExistsError,
 )
 
 from database.parsers import (
@@ -39,15 +29,12 @@ from services.pagination_service import pagination_meta, pagination_links
 from database.constants import (
     all_languages,
     all_tags,
-    # all_fans,
-    # all_usernames
 )
 
 
 class SnippetsApi(Resource):
     """Handles HTTP requests to URL: api/snippets."""
 
-    # @jwt_required()
     def get(self):
         """Retrieve a list of public snippets."""
 
@@ -120,11 +107,11 @@ class SnippetsApi(Resource):
             return {"id": str(id)}, 200
 
         except (FieldDoesNotExist, ValidationError):
-            raise SchemaValidationError
+            return {"message": "Request is missing required fields."}, 400
         except NotUniqueError:
-            raise SnippetAlreadyExistsError
+            return {"message": "Code Snippet with given name already exists."}, 409
         except Exception as e:
-            raise InternalServerError
+            return {"message": "Something went wrong."}, 500
 
 
 class SnippetApi(Resource):
@@ -153,9 +140,11 @@ class SnippetApi(Resource):
 
             return jsonify(response)
         except DoesNotExist:
-            raise SnippetNotExistsError
+
+            return {"message": "Code Snippet with given id doesn't exist."}, 410
         except Exception:
-            raise InternalServerError
+
+            return {"message": "Something went wrong."}, 500
 
     @jwt_required()
     def put(self, id):
@@ -169,11 +158,14 @@ class SnippetApi(Resource):
             return {"message": "Snippet updated"}, 200
 
         except InvalidQueryError:
-            raise SchemaValidationError
+            return {"message": "Request is missing required fields."}, 400
         except DoesNotExist:
-            raise UpdatingSnippetError
+            return {
+                "message": "Updating Code Snippet added by someone else is forbidden."
+            }, 403
+
         except Exception:
-            raise InternalServerError
+            return {"message": "Something went wrong."}, 500
 
     @jwt_required()
     def delete(self, id):
@@ -184,9 +176,12 @@ class SnippetApi(Resource):
             snippet.delete()
             return {"message": "Snippet deleted"}, 200
         except DoesNotExist:
-            raise DeletingSnippetError
+            return {
+                "message": "Deleting Code Snippet added by someone else is forbidden."
+            }, 403
+
         except Exception:
-            raise InternalServerError
+            return {"message": "Something went wrong."}, 500
 
 
 class LikeSnippetApi(Resource):
