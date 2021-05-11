@@ -22,28 +22,26 @@ from bson import ObjectId
 
 
 class CollectionsApi(Resource):
-    @jwt_required()
     def get(self):
-        user_id = get_jwt_identity()
-        collections = []
-        for doc in Collection.objects(private=False, owner=user_id):
-            collections.append(
-                {
-                    "_id": str(ObjectId(doc["id"])),
-                    "name": doc["name"],
-                    "owner": doc["owner"]["username"],
-                    "snippets": [
-                        {
-                            "snippet_title": k["title"],
-                            "snippet_id": str(ObjectId(k["id"])),
-                        }
-                        for k in doc["snippets"]
-                    ],
-                    "private": doc["private"],
-                }
-            )
+        collections = Collection.objects(private=False)
+        response = [
+            {
+                "_id": str(ObjectId(doc["id"])),
+                "name": doc["name"],
+                "owner": doc["owner"]["username"],
+                "snippets": [
+                    {
+                        "snippet_title": k["title"],
+                        "snippet_id": str(ObjectId(k["id"])),
+                    }
+                    for k in doc["snippets"]
+                ],
+                "private": doc["private"],
+            }
+            for doc in collections
+        ]
 
-        return jsonify(collections)
+        return jsonify(response)
 
     @jwt_required()
     def post(self):
@@ -61,11 +59,11 @@ class CollectionsApi(Resource):
             return {"id": str(id)}, 200
 
         except (FieldDoesNotExist, ValidationError):
-            raise SchemaValidationError
+            return {"message": "Request is missing required fields."}, 400
         except NotUniqueError:
-            raise SnippetAlreadyExistsError
+            return {"message": "Collection with given name already exists."}, 409
         except Exception as e:
-            raise InternalServerError
+            return {"message": "Something went wrong."}, 500
 
 
 class CollectionApi(Resource):
@@ -79,9 +77,14 @@ class CollectionApi(Resource):
                         "name": doc["name"],
                         "owner": doc["owner"]["username"],
                         "private": doc["private"],
+                        "snippets_id": [
+                            {"label": i["title"], "value": str(ObjectId(i["id"]))}
+                            for i in doc["snippets"]
+                        ],
+                 
                         "snippets": [
                             {
-                                "_id": str(ObjectId(doc["id"])),
+                                "_id": str(ObjectId(k["id"])),
                                 "title": k["title"],
                                 "filename": k["filename"],
                                 "description": k["description"],
@@ -103,34 +106,51 @@ class CollectionApi(Resource):
             return jsonify(collection)
 
         except DoesNotExist:
-            raise SnippetNotExistsError
+            return {"message": "Collection with given id doesn't exist."}, 410
         except Exception:
-            raise InternalServerError
+            return {"message": "Something went wrong."}, 500
 
     @jwt_required()
     def put(self, id):
         try:
             user_id = get_jwt_identity()
-            collection = Collection.objects.get(id=id, owner=user_id)
+            user = User.objects.get(username=user_id)
+            collection = Collection.objects.get(id=id, owner=user)
             body = request.get_json()
-            collection.update(**body)
+            name = body["name"]
+            snippets = body["snippets"]
+            now = datetime.datetime.now(datetime.timezone.utc)
+
+            snippet_array = []
+            for snippet in snippets:
+                snip = Snippet.objects.get(id=snippet)
+                snippet_array.append(snip)
+
+            collection.update(name=name, date=now, set__snippets=snippet_array)
+            collection.save()
+
             return {"message": "Collection updated"}, 200
 
         except InvalidQueryError:
-            raise SchemaValidationError
+            return {"message": "Request is missing required fields."}, 400
         except DoesNotExist:
-            raise UpdatingSnippetError
+            return {
+                "message": "Updating Collection added by someone else is forbidden."
+            }, 403
         except Exception:
-            raise InternalServerError
+            return {"message": "Something went wrong."}, 500
 
     @jwt_required()
     def delete(self, id):
         try:
             user_id = get_jwt_identity()
-            snippet = Snippet.objects.get(id=id, added_by=user_id)
-            snippet.delete()
-            return {"message": "Snippet deleted"}, 200
+            user = User.objects.get(username=user_id)
+            collection = Collection.objects.get(id=id, owner=user)
+            collection.delete()
+            return {"message": "Collection deleted"}, 200
         except DoesNotExist:
-            raise DeletingSnippetError
+            return {
+                "message": "Deleting Collection added by someone else is forbidden."
+            }, 403
         except Exception:
-            raise InternalServerError
+            return {"message": "Something went wrong."}, 500
