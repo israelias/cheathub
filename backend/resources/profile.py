@@ -31,9 +31,7 @@ class MySnippetsApi(Resource):
         """Get method at endpoint `/api/users/<id>/snippets` where `id` is the authorized user."""
 
         user = User.objects.get(username=id)
-
         snippets = Snippet.objects(addedBy=user).order_by("-addedOn")
-
         resp = [
             {
                 "_id": str(ObjectId(doc["id"])),
@@ -65,29 +63,38 @@ class MyFaveSnippetsApi(Resource):
         """Get method at endpoint `/api/users/<id>/snippets` where `id` is the authorized user."""
 
         user = User.objects.get(username=id)
-        snippets = []
-        for doc in Snippet.objects(likedBy=user):
-            snippets.append(
-                {
-                    "_id": str(ObjectId(doc["id"])),
-                    "title": doc["title"],
-                    "filename": doc["filename"],
-                    "description": doc["description"],
-                    "language": doc["language"],
-                    "value": doc["value"],
-                    "addedBy": doc["addedBy"]["username"],
-                    "likedBy": [elem["username"] for elem in doc["likedBy"]],
-                    "tags": doc["tags"],
-                    "addedOn": doc["addedOn"],
-                    "updatedOn": doc["updatedOn"],
-                    "private": doc["private"],
-                    "source": doc["source"],
-                    "score": doc["score"],
-                    "url": url_for("snippetapi", id=str(ObjectId(doc["id"]))),
-                }
-            )
+        snips = Snippet.objects(likedBy=user)
+        response = [
+            {
+                "_id": "faves",
+                "name": "Faves",
+                "owner": id,
+                "private": False,
+                "url": url_for("myfavesnippetsapi", id=id),
+                "snippets": [
+                    {
+                        "_id": str(ObjectId(k["id"])),
+                        "title": k["title"],
+                        "filename": k["filename"],
+                        "description": k["description"],
+                        "language": k["language"],
+                        "value": k["value"],
+                        "addedBy": k["addedBy"]["username"],
+                        "likedBy": [elem["username"] for elem in k["likedBy"]],
+                        "tags": k["tags"],
+                        "addedOn": k["addedOn"],
+                        "updatedOn": k["updatedOn"],
+                        "private": k["private"],
+                        "source": k["source"],
+                        # "score": doc["score"],
+                        "url": url_for("myfavesnippetsapi", id=user),
+                    }
+                    for k in snips
+                ],
+            }
+        ]
 
-        return jsonify(snippets)
+        return jsonify(response)
 
 
 class MyCollectionsApi(Resource):
@@ -110,7 +117,7 @@ class MyCollectionsApi(Resource):
                 ),
                 "snippets": [
                     {
-                        "_id": str(ObjectId(doc["id"])),
+                        "_id": str(ObjectId(k["id"])),
                         "title": k["title"],
                         "filename": k["filename"],
                         "description": k["description"],
@@ -157,7 +164,7 @@ class MyCollectionApi(Resource):
                         ),
                         "snippets": [
                             {
-                                "_id": str(ObjectId(doc["id"])),
+                                "_id": str(ObjectId(k["id"])),
                                 "title": k["title"],
                                 "filename": k["filename"],
                                 "description": k["description"],
@@ -185,3 +192,32 @@ class MyCollectionApi(Resource):
             raise SnippetNotExistsError
         except Exception:
             raise InternalServerError
+
+
+class MyCollectionsOptionsApi(Resource):
+    """Prepares all selectable collections: api/snippets."""
+
+    def get(self, user_id):
+        """Retrieve a all current collections as selectable options."""
+        user = User.objects.get(username=user_id)
+        collections = Collection.objects(owner=user)
+        response = [
+            {"label": doc["name"], "value": str(ObjectId(doc["id"]))}
+            for doc in collections
+        ]
+        return jsonify(response)
+
+
+class MySnippetsOptionsApi(Resource):
+    """Prepares all selectable snippets: api/snippets."""
+
+    def get(self, user_id):
+        """Retrieve a all current snippets as selectable options."""
+        user = User.objects.get(username=user_id)
+        snippets = Snippet.objects(addedBy=user)
+        response = [
+            {"label": doc["title"], "value": str(ObjectId(doc["id"]))}
+            for doc in snippets
+        ]
+
+        return jsonify(response)
