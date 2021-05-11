@@ -1,16 +1,6 @@
 from flask_restful import Resource
-from flask_restful.fields import (
-    Boolean,
-    Nested,
-    Integer,
-    List,
-    String,
-    DateTime,
-    Url,
-    Raw,
-)
 from flask_restful.reqparse import RequestParser
-from flask_restful.inputs import positive, url, regex
+from flask_restful.inputs import positive
 
 pagination_parser = RequestParser(bundle_errors=True)
 pagination_parser.add_argument(
@@ -28,9 +18,7 @@ search_parser.add_argument(
     "query",
     type=str,
     required=False,
-    # nullable=True,
     store_missing=True,
-    # default="hello world",
 )
 
 tag_parser = RequestParser(bundle_errors=True)
@@ -41,7 +29,6 @@ tag_parser.add_argument(
     trim=True,
     required=False,
     store_missing=True,
-    # nullable=True,
 )
 
 language_parser = RequestParser(bundle_errors=True)
@@ -49,14 +36,9 @@ language_parser.add_argument(
     "language",
     type=str,
     required=False,
-    # nullable=True,
-    # default="javascript",
     store_missing=True,
 )
 
 user_parser = RequestParser(bundle_errors=True)
 user_parser.add_argument("author", type=str, required=False)
 user_parser.add_argument("liked_by", type=str, required=False)
-
-
-

@@ -1,5 +1,6 @@
 from .models import Snippet, User, Collection
 
+
 def all_tags():
     all_tags = []
     all_snippets = Snippet.objects()
@@ -17,4 +18,3 @@ def all_languages():
         if doc["language"] not in all_languages:
             all_languages.append(doc["language"])
     return all_languages
-
