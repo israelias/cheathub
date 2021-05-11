@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import {
   Flex,
   useColorModeValue as mode,
@@ -10,8 +11,8 @@ import { MdArrowDropDown } from 'react-icons/md';
 
 import { MotionBox } from '../../shared/motion-box';
 
-import { SelectInput } from '../../snippet/crud/select-input';
-import { TextInput } from '../../snippet/crud/text-search-input';
+import { SelectInput, TextInput } from './inputs';
+
 import { LANGUAGES } from '../../../constants/languages.constants';
 
 import { BrandButton } from '../../shared/brand-button';
@@ -49,6 +50,8 @@ const SearchBar: React.FC<{
     '(min-width: 30em)',
     '(max-width: 58em)',
   ]);
+  const location = useLocation();
+  const touring = location.pathname === '/registration';
 
   const InputArray = [
     <TextInput
@@ -57,9 +60,11 @@ const SearchBar: React.FC<{
       onMouseOver={() => setOpen(0)}
       size="sm"
       fontWeight={600}
-      fontSize="15px"
+      fontSize="12px"
       borderRadius="32px"
-      border={['1px solid rgb(235, 236, 237)']}
+      color={mode('#0b0914', '#ebeced')}
+      border={['1px solid #d8d9da']}
+      bg={mode('#fff', '#0b0914')}
       transition={['all 0.2s ease-in-out 0s']}
       placeholder="Search"
       value={searchText}
@@ -74,8 +79,9 @@ const SearchBar: React.FC<{
       variant="outline"
       borderRadius="32px"
       fontWeight={600}
-      fontSize="15px"
+      fontSize="12px"
       name="filter"
+      bg={mode('#fff', '#0b0914')}
       placeholder="Language"
       icon={<MdArrowDropDown />}
       options={languages}
@@ -91,8 +97,9 @@ const SearchBar: React.FC<{
       variant="outline"
       borderRadius="32px"
       fontWeight={600}
-      fontSize="15px"
-      name="filter"
+      fontSize="12px"
+      bg={mode('#fff', '#0b0914')}
+      name="tag"
       placeholder="Tag"
       icon={<MdArrowDropDown />}
       options={allTags}
@@ -108,8 +115,8 @@ const SearchBar: React.FC<{
         top={{ base: '39px', lg: 0 }}
         zIndex={10}
         position="sticky"
-        borderBottom="1px"
-        borderColor={mode('rgb(235, 236, 237)', '#252945')}
+        borderBottom={['1px solid']}
+        borderColor={mode('#d8d9da', '#252945')}
         bg={mode('#fff', '#141625')}
         maxWidth={{ base: '100vw' }}
       >
@@ -122,7 +129,10 @@ const SearchBar: React.FC<{
         >
           <>
             {baseSm && baseMd && (
-              <Heading padding={['8px 16px']} fontSize="lg">
+              <Heading
+                padding={['8px 16px']}
+                fontSize={{ base: 'sm', lg: 'lg' }}
+              >
                 {heading}
               </Heading>
             )}
@@ -150,7 +160,10 @@ const SearchBar: React.FC<{
           </>
           {children}
 
-          <BrandButton onClick={() => resetAll()}> Clear</BrandButton>
+          <BrandButton hidden={touring} onClick={() => resetAll()}>
+            {' '}
+            Clear
+          </BrandButton>
         </Flex>
       </Flex>
     </>
