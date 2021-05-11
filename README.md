@@ -35,42 +35,92 @@ Additionally, the restful backend API can be viwed at [cheathub-backend.herokuap
 #### New Visitor Goals
 - As a new vistor, I want to have a good understanding of what the website does within a few seconds.
 - As a new visitor, I want to be able to register for an account.
-- As a new visitor, I want to...
 #### Returning Visitor Goals
 - As a Returning Visitor, I want to be able to log in securely.
 - As a Returning Visitor, I want to be able to create and save a code snippet.
 - As a Returning Visitor, I want to be able to create collections of code snippets I have created.
-- As a Returning Vistior, I want to be able to view and like code snippets created by others.
-- As a Returning Visitor,
 #### Frequent Visitor Goals
-- As a Frequent Visitor, I want to be able to
-- As a Frequent Visitor, I want to
-- As a Frequent Visitor, I want to
+- As a Frequent Visitor, I want to be able to delete code snippets and collections I have created.
+- As a Frequent Visitor, I want to be able to search and like code snippets created by others.
+- As a Frequent Visitor, I want to be able to reference and copy code snippets to the the clipboard.
 
 ### Wireframes
-#### Marrying Flask with React
-- The project cant be understood as a library of albums for a library of records.
-- Endpoints.
-- Backend design.
-- Frontend design.
+#### Concept
 
-#### Component Breakdown
-##### Snippet Card
-##### Collections
-#### Page Breakdown
-##### Collections: Profile
-##### Snippets: Search
-##### Snippet: Editing
-##### Faves: Profile
+The project can be understood as a library of user-created <em><b>Albums</b></em> or <em><b>Playlists</b></em> with the ability to organize, query and add <em><b>items</b></em> or <em><b>tracks</b></em> to those collections
+
+<hr>
+
+<details><summary><em><b>Code Snippet </b></em> (item)    </summary>
+<br>
+
+[<div style="text-align:center"><img src="https://github.com/israelias/cheathub/blob/master/public/MS3_Wireframes_01.jpg?raw=true" width="600px"></div>](https://github.com/israelias/cheathub/blob/master/public/MS3_Wireframes_01.jpg?raw=true)
+<br>
+</details>
+<hr>
+
+
+<details><summary><em><b>Collection</b></em> (playlist)   </summary>
+<br>
+
+[<div style="text-align:center"><img src="https://github.com/israelias/cheathub/blob/master/public/MS3_Wireframes_02.jpg?raw=true" width="600px"></div>](https://github.com/israelias/cheathub/blob/master/public/MS3_Wireframes_02.jpg?raw=true)
+
+<br>
+</details>
+<hr>
+
+
+<details><summary><em><b>Search</b></em> (filter)    </summary>
+<br>
+
+[<div style="text-align:center"><img src="https://github.com/israelias/cheathub/blob/master/public/MS3_Wireframes_03.jpg?raw=true" width="600px"></div>](https://github.com/israelias/cheathub/blob/master/public/MS3_Wireframes_03.jpg?raw=true)
+
+<br>
+</details>
+<hr>
 
 ### Design
 #### Accordion Cards
+
+- A consistent border is applied to all nodes with dynamic content. These discrete borders are designed to convey the scale of snippet item relative to a collection. These containers only vary in spacing and height and are responsible for visually conveying open and closed states of ***snippets in collections of snippets***.
+#### Theme
+
+- Chakra-UI's `ThemeProvider` wraps the app in order to pass styles down the component tree. See [Chakra-UI](https://chakra-ui.com/docs/theming/theme).
+
+#### Colors
+- The app features two sets of neutral tones for light mode and dark mode. Tones are applied to backgrounds while borders are rendered to highlight items and convey feedback. Tones are minimally set to three values within `#fafafa` and `#010f08` in order to reserve state-changes to border sizes and scales.
 ## Features
 ### Existing Features
-#### Collections Profile
-#### Search Snippets
-#### Fave Snippets
+
+#### User Registration
+- The website features the ability to `sign up`, `sign in` and `sign out` in order to conditionally access existing features. A user is based on the `user` model, which requires `username`, `email` and `password` for new users and only the latter two for existing users. For security, only usernames are stored in `local storage` while `tokens` are stored in memory. To ensure `sign out` across multiple open windows, a logout event triggers a `storage event listener` which clears tokens and usernames in the memory of the current window. 
+- ##### Actions:
+-  Ability to create an account. *(any User)*
+-  Ability to sign in to an account. *(Registered Owner)*
+-  Ability to sign out of an account. *(Registed Owner)*
+#### Code Snippets
+- The website features the ability to create, update and delete a code snippet. A snippet is based on the `snippet` model and each field is represented as either a `form` field or a `section` in an `article` depending on whether a code snippet is being edited or being featured. 
+- ##### Actions:
+-  Ability to create, edit and delete a code snippet. *(Registered Owner)*
+- Ability to `fave` and `unfave` a code snippet. *(Registered User)*
+
+#### Collections
+- The website features the ability to group any and all existing code snippets into named collections aka `cheat sheets`. A collection is based on the `collection` model, which is a name and a list of snippets. Each field is represented as either a `form` field or a `header` followed by a `ul` depending on whether a collection is in edit or display mode. 
+- ##### Actions:
+-  Ability to create, edit and delete a named collection. *(Registered Owner)*
+-  Ability to add and remove snippets to/from a collection. *(Registered Owner)*
+
+#### Search
+- `search_text` indices are attached to the title and description fields of the `snippets` cluster. The frontend UI of the search feature is designed to return snippet cards that match a query. Additionally, the ability to query by `tags` and `language` is enabled by filtering these existing fields in the database.
+- ##### Actions:
+ -  Ability to search code snippets created by others. *(any User)*
+ - Ability to filter snippets by language. *(any User)*
+ - Ability to filter snippets by tags. *(any User)*
+  - Ability to copy snippets to the clipboard. *(any User)*
+ -  Ability to `fave` or `unfave` snippet results from search. *(Registered User)*
+ -  Ability to perform `crud` operations on snippet results from search. *(Registered Owner)*
 ### Features Left to Implement
+- Ability to delete an account. 
 - Add query params to all resources
 - Extend query parser to parse more than one query at a time
 - Optimize performance by dereferencing database records
