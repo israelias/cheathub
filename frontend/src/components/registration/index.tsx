@@ -7,12 +7,17 @@ import {
   FormHelperText,
   Box,
   HStack,
+  useColorModeValue as mode,
 } from '@chakra-ui/react';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 
 import { BrandButton } from '../shared/brand-button';
-import { StyledLabel } from '../snippet/crud/form-label';
-import { MotionForm } from '../shared/motion-box';
+
+import { MotionBox } from '../shared/motion-box';
+
+import { InputUsername, InputEmail, InputPassword } from './inputs';
+
+const MotionBar = motion(Box);
 
 /**
  * The general signin/signup form.
@@ -21,7 +26,6 @@ import { MotionForm } from '../shared/motion-box';
  * CRUD operations begin from this component tree.
  * @file defines the frontend ui for user authentication.
  * @date 2021-05-03
- * @param {any} match
  */
 const RegistrationForm: React.FC<{
   username: string;
@@ -47,81 +51,143 @@ const RegistrationForm: React.FC<{
   setPassword,
   returning,
   setReturning,
-}) => (
-  <>
-    <Box
-      borderRadius="10px"
-      padding={['0 10px']}
-      border={['1px solid #bbb']}
-      mt="10px"
-    >
-      <AnimatePresence exitBeforeEnter>
-        <MotionForm id="registration" onSubmit={handleSignIn}>
-          {!returning && (
-            <FormControl pt="10px" isRequired id="tusernameitle">
-              <StyledLabel label="Username" />
-              <Input
-                mt="10px"
-                type="text"
-                borderColor="#f6f6f6"
-                fontSize="sm"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-              />
-              <FormHelperText hidden>Username.</FormHelperText>
-            </FormControl>
-          )}
+}) => {
+  const inputs = {
+    username: (
+      <InputUsername username={username} setUsername={setUsername} />
+    ),
+    email: <InputEmail email={email} setEmail={setEmail} />,
+    password: (
+      <InputPassword password={password} setPassword={setPassword} />
+    ),
+  };
+  const signin = [inputs.email, inputs.password];
+  const signup = [inputs.username, inputs.email, inputs.password];
 
-          <FormControl pt="10px" isRequired id="email">
-            <StyledLabel label="Email" />
-            <Input
-              mt="10px"
-              fontSize="sm"
-              type="email"
-              name="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <FormHelperText hidden>Email.</FormHelperText>
-          </FormControl>
+  return (
+    <AnimatePresence exitBeforeEnter>
+      <MotionBar
+        bg={mode('#fff', '#141625')}
+        as="form"
+        id="registration"
+        onSubmit={handleSignIn}
+        borderWidth="1px"
+        borderRadius="lg"
+        border={['1px solid']}
+        borderColor={mode('#d8d9da', '#7e88c3')}
+        mx="auto"
+        my={6}
+        width="100%"
+        p={['10px']}
+        initial="collapsed"
+        animate="open"
+        exit="collapsed"
+        variants={{
+          open: { opacity: 1, height: 'auto' },
+          collapsed: { opacity: 0, height: '0' },
+        }}
+        transition={{
+          duration: 0.5,
+          ease: [0.04, 0.62, 0.23, 0.98],
+        }}
+        positionTransition
+        position="relative"
+        overflow="visible"
+        _before={{
+          content: `''`,
+          borderBottom: '1px solid',
+          borderTop: '1px solid',
+          borderColor: mode('rgb(235, 236, 237)', '#252945'),
+          width: '100%',
+          height: '20px',
+          display: 'flex',
+          position: 'absolute',
+          left: 0,
 
-          <FormControl pt="10px" isRequired id="password">
-            <StyledLabel label="Password" />
-            <Input
-              mt="10px"
-              fontSize="sm"
-              type="password"
-              name="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <FormHelperText hidden>Password.</FormHelperText>
-          </FormControl>
-        </MotionForm>
-        <HStack>
-          <ButtonGroup
-          // variant="outline"
-          // spacing="8"
-          // alignSelf="center"
-          // padding={['20px 10px']}
-          >
-            <BrandButton onClick={() => setReturning(!returning)}>
-              {returning ? 'Switch to Sign up' : 'Switch to Sign in'}
-            </BrandButton>
+          top: -10,
+        }}
+        _after={{
+          content: `''`,
+          borderBottom: '1px solid',
+          borderTop: '1px solid',
+          borderColor: mode('rgb(235, 236, 237)', '#252945'),
+          width: '100%',
+          height: '20px',
+          display: 'flex',
+          position: 'absolute',
+          left: 0,
 
-            <BrandButton
-              type="submit"
-              form="registration"
-              isLoading={loading}
-              loadingText="Submitting"
-            >
-              {returning ? 'Sign in' : 'Sign up'}
-            </BrandButton>
-          </ButtonGroup>
-        </HStack>
-      </AnimatePresence>
-    </Box>
-  </>
-);
+          bottom: -10,
+        }}
+      >
+        <>
+          <AnimatePresence>
+            {returning
+              ? signin.map((sign) => (
+                  <AnimatePresence
+                    exitBeforeEnter
+                    initial={false}
+                    key={sign.key}
+                  >
+                    <MotionBox
+                      key={sign.key}
+                      initial="collapsed"
+                      animate="open"
+                      exit="collapsed"
+                      variants={{
+                        open: { opacity: 1, height: 'auto' },
+                        collapsed: { opacity: 0, height: '0' },
+                      }}
+                      transition={{
+                        duration: 0.5,
+                        ease: [0.04, 0.62, 0.23, 0.98],
+                      }}
+                    >
+                      {sign}
+                    </MotionBox>
+                  </AnimatePresence>
+                ))
+              : signup.map((sign) => (
+                  <MotionBox
+                    key={sign.key}
+                    initial="collapsed"
+                    animate="open"
+                    exit="collapsed"
+                    variants={{
+                      open: { opacity: 1, height: 'auto' },
+                      collapsed: { opacity: 0, height: '0' },
+                    }}
+                    transition={{
+                      duration: 0.5,
+                      ease: [0.04, 0.62, 0.23, 0.98],
+                    }}
+                  >
+                    {sign}
+                  </MotionBox>
+                ))}
+          </AnimatePresence>
+        </>
+      </MotionBar>
+      <HStack p={['20px 10px']}>
+        <BrandButton
+          onClick={() => {
+            setReturning(!returning);
+          }}
+        >
+          {returning ? 'Switch to Sign up' : 'Switch to Sign in'}
+        </BrandButton>
+
+        <BrandButton
+          type="submit"
+          form="registration"
+          isLoading={loading}
+          loadingText="Submitting"
+        >
+          {returning ? 'Sign in' : 'Sign up'}
+        </BrandButton>
+      </HStack>
+    </AnimatePresence>
+  );
+};
 
 export default RegistrationForm;
