@@ -7,22 +7,9 @@ from .profile import (
     MyFaveSnippetsApi,
     MyCollectionsApi,
     MyCollectionApi,
+    MySnippetsOptionsApi,
+    MyCollectionsOptionsApi,
 )
-from .reset_password import ForgotPassword, ResetPassword
-from .search import SearchApi
-from .status import Status
-
-from .auth import SignupApi, LoginApi, LogoutApi
-from .user import UsersApi, UserApi
-from .snippet import SnippetsApi, SnippetApi, LikeSnippetApi
-from .collection import CollectionApi, CollectionsApi
-from .profile import (
-    MySnippetsApi,
-    MyFaveSnippetsApi,
-    MyCollectionsApi,
-    MyCollectionApi,
-)
-from .reset_password import ForgotPassword, ResetPassword
 from .search import SearchApi
 from .status import Status
 
@@ -30,55 +17,60 @@ from .tags import TagsApi
 
 
 def initialize_routes(api):
-
-    # Root
+    """Backend root shows the status of the Api."""
     api.add_resource(Status, "/")
-    # Sign Up
-    # Post, username, email and password (Token returned)
-    api.add_resource(SignupApi, "/api/auth/signup")
-    # Sign In
-    # Post, email and password (Token returned)
-    api.add_resource(LoginApi, "/api/auth/login")
-    # Log Out
-    # Post, (Token required, Token revoked)
-    api.add_resource(LogoutApi, "/api/auth/logout")
-    api.add_resource(ForgotPassword, "/api/auth/forgot")
-    api.add_resource(ResetPassword, "/api/auth/reset")
 
-    # Friends Profile
-    # Get, Post
+    """Sign up Api: Post. username, email and password. Token returned. """
+    api.add_resource(SignupApi, "/api/auth/signup")
+
+    """Sign in Api: Post. username, email and password. Token returned. """
+    api.add_resource(LoginApi, "/api/auth/login")
+
+    """Sign out Api: Post. username, email and password. Token returned. """
+    api.add_resource(LogoutApi, "/api/auth/logout")
+
+    """Users Api: Get, Post."""
     api.add_resource(UsersApi, "/api/users")
-    # Get, Put, Delete
+
+    """User Api: Get, Put, Delete."""
     api.add_resource(UserApi, "/api/users/<id>")
 
-    # ALL SNIPPETS
-    # Get, Post
+    """Snippets Api: Get, Post."""
     api.add_resource(SnippetsApi, "/api/snippets")
-    # Get, Put, Delete
+    """Snippets Api: Get, Put, Delete."""
     api.add_resource(SnippetApi, "/api/snippets/<id>")
 
-    # LIKE SNIPPET
-    # Post (Token required)
+    """Like/Fave Snippet Api: Post. Token required."""
     api.add_resource(LikeSnippetApi, "/api/likesnippet/<id>")
 
-    # ALL COLLECTIONS
-    # Get, Post
+    """Collections Api: Get, Post."""
     api.add_resource(CollectionsApi, "/api/collections")
-    # Get, Put, Delete
+
+    """Collection Api: Get, Put, Delete."""
     api.add_resource(CollectionApi, "/api/collections/<id>")
 
-    # USER PROFILE GET VIEWS
-    # My Profile Snippets (Full)
+    """User Profile Snippets Api: username id required"""
     api.add_resource(MySnippetsApi, "/api/users/<id>/snippets")
-    # My Profile Saved/Faved Snippets (Full)
+
+    """User Profile Fave Snippets Api: username id required"""
     api.add_resource(MyFaveSnippetsApi, "/api/users/<id>/snippets/faves")
-    # My Profile Collections (Preview)
+
+    """User Profile Collections Api: username id required"""
     api.add_resource(MyCollectionsApi, "/api/users/<user_id>/collections")
-    # My Profile Collection (Full with Snippets)
+
+    """User Profile Collection Api: collection id, username id required"""
     api.add_resource(MyCollectionApi, "/api/users/<user_id>/collections/<id>")
 
-    # SEARCH endpoint
+    """User Profile Snippet Options Api: username id required"""
+    api.add_resource(MySnippetsOptionsApi, "/api/users/<user_id>/snippets/options")
+
+    """User Profile Collections Options Api: username id required"""
+    api.add_resource(
+        MyCollectionsOptionsApi, "/api/users/<user_id>/collections/options"
+    )
+
+    """Search Snippets Api: search text, tag and language arg parsers enabled."""
     api.add_resource(SearchApi, "/api/search")
 
-    # TAGS list endpoint (reference)
+    """Tag list endpoint: List of all current tags returned. """
     api.add_resource(TagsApi, "/api/tags")
