@@ -1,4 +1,4 @@
-from flask import Response, request, jsonify
+from flask import request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from database.models import Snippet, Collection, User
 from flask_restful import Resource
