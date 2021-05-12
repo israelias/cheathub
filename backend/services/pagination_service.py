@@ -1,6 +1,12 @@
-from flask import Response, request, jsonify
-from flask_restful import Resource, abort, marshal, url_for
-from database.models import Snippet, User, Collection
+from flask import Response
+from flask_restful import Resource, url_for
+
+# ===========================================================================
+# *                Pagination
+# ?  Wraps response objects of the Search API with pagination controls.
+# Utilizes existing methods and page properties in MongoEngine's Pagination class.
+# Responsible for managing the size of a response by limiting items per page.
+# ===========================================================================
 
 
 def pagination_links(pagination, resource, **args):
@@ -23,20 +29,6 @@ def pagination_links(pagination, resource, **args):
     nav_links["last"] = url_for(resource, **args, page=last_page, per_page=per_page)
 
     return nav_links
-
-
-def _pagination_nav_header_links(pagination):
-    url_dict = pagination_links(pagination)
-    link_header = ""
-    for rel, url in url_dict.items():
-        link_header += f'<{url}>; rel="{rel}", '
-    return link_header.strip().strip(",")
-
-
-def retrieve_widget(name):
-    return Snippet.objects.filter(name=name.lower()).first_or_404(
-        message=f"{name} not found in database."
-    )
 
 
 def pagination_meta(pagination):
