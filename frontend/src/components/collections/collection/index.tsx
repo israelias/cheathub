@@ -25,13 +25,16 @@ import { AnimatePresence } from 'framer-motion';
 
 import cn from 'classnames';
 
-import { MotionBox } from '../../shared/motion-box';
+import { MotionBox } from '../../shared/motion';
 
-import '../../styles.css';
+import '../styles.css';
 
 /**
  * Frontend user dashboard endpoint that represents an array of collections from an HTTP get request.
  *
+ * A card/accordion counterpart of CollectionItem
+ * Relies on State and setState props passed by Collection page.
+ * @see CollectionCrud
  * @file defines Collections page route
  * @since 2021-04-08
  * @tutorial https://codesandbox.io/s/framer-motion-accordion-vmj0n?file=/src/Example.tsx:366-489
