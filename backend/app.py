@@ -20,6 +20,13 @@ if not os.path.exists("env.py"):
 else:
     import env
 
+# ===========================================================================
+# *               `Flask App and Configs`
+# ? Executes Flask app deployment 
+# Initializes app and packages by order of dependency requirements
+# ===========================================================================
+
+
 app = Flask(__name__)
 
 
@@ -46,7 +53,7 @@ initialize_views()
 initialize_debugtoolbar(app)
 
 
-# For Heroku Deployment
+# Production Mode
 
 if __name__ == "__main__":
     app.run()

@@ -1,4 +1,4 @@
-from .models import Snippet, User, Collection
+from .models import Snippet
 
 #===========================================================================
 # *           Undefined Dynamic Database Constants
