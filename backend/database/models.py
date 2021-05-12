@@ -2,7 +2,6 @@ from .db import db
 from flask_bcrypt import generate_password_hash, check_password_hash
 import datetime
 
-from flask_restful import url_for
 
 #===========================================================================
 # *                       All Database Models  
