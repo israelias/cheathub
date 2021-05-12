@@ -1,6 +1,3 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-
 import React from 'react';
 import {
   Box,
@@ -15,12 +12,10 @@ import { AnimatePresence } from 'framer-motion';
 import cn from 'classnames';
 
 import { Viewer } from '../../snippet/editor/viewer';
-import {
-  MotionSection,
-  MotionBox,
-  MotionFooter,
-} from '../../shared/motion-box';
+import { MotionSection, MotionFooter } from '../../shared/motion';
 import { useUserContext } from '../../../context/user.context';
+import { useAppData } from '../../../context/appdata.context';
+import { useDataHandler } from '../../../context/datahandler.context';
 
 import {
   Description,
@@ -32,13 +27,16 @@ import {
   EditButton,
   FaveButton,
 } from '../../snippet/body/elements';
-import '../../styles.css';
-import { useAppData } from '../../../context/appdata.context';
+import '../styles.css';
 
 /**
- * Frontend user dashboard endpoint that represents an array of collections from an HTTP get request.
+ * Frontend snippets accordion controled by collections dashboard.
+ * Represents an array of snippets from an HTTP get request to a user's snippets in a user's collections.
  *
- * @file defines Collections page route
+ * Shares base card body UI with Snippet Card
+ * Accordion styles are credited to tutorial.
+ * @see SnippetCard
+ * @file defines Snippets in collections page route
  * @since 2021-04-08
  * @tutorial https://codesandbox.io/s/framer-motion-accordion-vmj0n?file=/src/Example.tsx:366-489
  */
@@ -50,8 +48,6 @@ const SnippetItem: React.FC<{
   setSelectedSnippetId: React.Dispatch<React.SetStateAction<string>>;
   expandedSnippet: number;
   setExpandedSnippet: React.Dispatch<React.SetStateAction<number>>;
-  handleFave?: (snipId: string) => Promise<void>;
-  faveSnippet?: boolean;
   editing?: boolean;
 }> = ({
   snippet,
@@ -60,8 +56,6 @@ const SnippetItem: React.FC<{
   setSelectedSnippetId,
   expandedSnippet,
   setExpandedSnippet,
-  handleFave,
-  faveSnippet,
   editing = false,
 }) => {
   const isOpen =
@@ -72,12 +66,13 @@ const SnippetItem: React.FC<{
   });
   const { username } = useUserContext();
   const { setTags } = useAppData();
+  const { faveSnippet, handleFave, faving } = useDataHandler();
 
   return (
     <Box
       as="article"
       className={className}
-      bg={mode('#f6f1ef', '#141625')}
+      bg={mode('#fff', '#141625')}
     >
       <Box
         as="header"
@@ -149,6 +144,7 @@ const SnippetItem: React.FC<{
                 likedBy={snippet.likedBy}
                 faveSnippet={faveSnippet}
                 handleFave={handleFave}
+                faving={faving}
               />
             )}
           </MotionSection>
@@ -203,6 +199,7 @@ const SnippetItem: React.FC<{
                   likedBy={snippet.likedBy}
                   faveSnippet={faveSnippet}
                   handleFave={handleFave}
+                  faving={faving}
                 />
               )
             )}
