@@ -29,6 +29,8 @@ const TitleBarArea: React.FC<{ children: React.ReactNode }> = ({
       height="62px"
       maxHeight="62px"
       bg={mode('#fff', '#141625')}
+      borderBottom={['1px solid']}
+      borderColor={mode('#d8d9da', '#252945')}
       p={0}
       cursor="default"
     >

@@ -27,14 +27,14 @@ const PrimaryArea: React.FC<{ children: React.ReactNode }> = ({
       gridTemplateRows={['1fr']}
       maxWidth={{ base: '100vw', lg: '968px' }}
       height={{ base: 'calc(100vh - 62px)', lg: '100%' }}
-      borderColor={mode('rgb(235, 236, 237)', '#252945')}
+      borderColor={mode('#d8d9da', '#252945')}
       borderLeft={{
         base: '0px',
-        lg: mode('1px solid rgb(235, 236, 237)', '1px solid #252945'),
+        lg: mode('1px solid #d8d9da', '1px solid #252945'),
       }}
       borderRight={{
         base: '0px',
-        lg: mode('1px solid rgb(235, 236, 237)', '1px solid #252945'),
+        lg: mode('1px solid #d8d9da', '1px solid #252945'),
       }}
       borderBottom={{ base: '0px', lg: '1px solid' }}
       borderRadius={['0px 0px 4px 4px']}

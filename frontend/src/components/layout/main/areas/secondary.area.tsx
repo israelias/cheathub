@@ -29,15 +29,9 @@ const SecondaryArea: React.FC<{ children: React.ReactNode }> = ({
       overflow={['hidden auto']}
       position="sticky"
       top="0px"
-      borderLeft={mode(
-        '1px solid rgb(235, 236, 237)',
-        '1px solid #252945'
-      )}
-      borderRight={mode(
-        '1px solid rgb(235, 236, 237)',
-        '1px solid #252945'
-      )}
-      borderColor={mode('rgb(235, 236, 237)', '#252945')}
+      borderLeft={mode('1px solid #ff5470', '1px solid #252945')}
+      borderRight={mode('1px solid #ff5470', '1px solid #252945')}
+      borderColor={mode('#d8d9da', '#252945')}
       pr={0}
       pl={0}
       // pb="48px"
