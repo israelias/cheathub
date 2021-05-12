@@ -1,20 +1,11 @@
 {
   "root": true,
   "plugins": ["prettier", "@typescript-eslint", "react"],
-  "extends": [
-    "airbnb-typescript",
-    "react-app",
-    "prettier"
-    // "eslint:recommended",
-    // "plugin:react/recommended",
-    // "plugin:@typescript-eslint/recommended"
-    // "plugin:prettier/recommended"
-  ],
+  "extends": ["airbnb-typescript", "react-app", "prettier"],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "project": "./tsconfig.json",
     "sourceType": "module",
-    // "tsconfigRootDir": "./",
 
     "ecmaFeatures": {
       "jsx": true,
@@ -27,10 +18,6 @@
         "alwaysTryTypes": true
       }
     }
-    // "react": {
-    //   "pragma": "React",
-    //   "version": "detect"
-    // }
   },
   "rules": {
     "object-curly-spacing": ["warn", "always"],
@@ -45,24 +32,7 @@
     "react/no-array-index-key": "off",
     "no-underscore-dangle": "off",
     "react-hooks/exhaustive-deps": "off",
-
-    // "object-property-newline": ["warn", { "allowMultiplePropertiesPerLine": 1 }],
-    // "object-curly-spacing": "off",
-    // "no-unused-vars": [
-    //   "warn",
-    //   {
-    //     "vars": "all",
-    //     "args": "none"
-    //   }
-    // ],
     "@typescript-eslint/semi": ["off"],
-    // "@typescript-eslint/no-unused-vars": [
-    //   "warn",
-    //   {
-    //     "vars": "all",
-    //     "args": "none"
-    //   }
-    // ],
     "@typescript-eslint/no-explicit-any": [
       "error",
       {
@@ -98,8 +68,6 @@
       }
     ],
     "no-object-literal-type-assertion": [0, { "allow-arguments": 0 }],
-
-    // React
     "react/jsx-props-no-spreading": "off",
     "import/prefer-default-export": "off",
     "react/jsx-boolean-value": "off",
@@ -108,42 +76,10 @@
     "react/jsx-one-expression-per-line": "off",
     "react/jsx-wrap-multilines": "off",
     "react/destructuring-assignment": "off",
-    // suppress errors for missing 'import React' in files
     "react/react-in-jsx-scope": "off",
-    // allow jsx syntax in js files (for next.js project)
     "react/jsx-filename-extension": [
       1,
       { "extensions": [".js", ".jsx", ".tsx", ".ts"] }
-    ] //should add ".ts" if typescript project
-    // "react/jsx-curly-newline": "multiline",
-    // "react/jsx-newline": { "prevent": 1 },
-    // "react/jsx-indent-props": [2, 2],
-    // "react/jsx-props-no-multi-spaces": "on",
-    // "react/jsx-space-before-closing": "always",
-    // "react/jsx-props-multiline": [
-    //   "error",
-    //   {
-    //     "maximum": {
-    //       "single": 1,
-    //       "multi": 1
-    //     },
-    //     "when": "always"
-    //   }
-    // ],
-    // "react/jsx-max-props-per-line": [1, { "maximum": "1", "when": "always" }],
-    // "react/jsx-max-props-per-line": [
-    //   "always",
-    //   { "maximum": 2, "when": "multiline" }
-    // ],
-    // "react/jsx-wrap-multilines": {
-    //   "declaration": "parens",
-    //   "assignment": "parens",
-    //   "return": "parens",
-    //   "arrow": "parens",
-    //   "condition": "parens-new-line",
-    //   "logical": "parens-new-line",
-    //   "prop": "parens-new-line"
-    // },
-    // "react/sort-comp": "on"
+    ]
   }
 }
