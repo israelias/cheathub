@@ -2,6 +2,13 @@ from flask_restful import Resource
 from flask_restful.reqparse import RequestParser
 from flask_restful.inputs import positive
 
+#===========================================================================
+# *                       Parsers 
+# ?  Helps search API to read arguments in the url query string.
+# 
+# Responsible for pagination, tags, language, and search_text queries.
+#===========================================================================
+
 pagination_parser = RequestParser(bundle_errors=True)
 pagination_parser.add_argument(
     "page",

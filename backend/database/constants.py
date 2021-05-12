@@ -1,5 +1,11 @@
 from .models import Snippet, User, Collection
 
+#===========================================================================
+# *           Undefined Dynamic Database Constants
+# ?  Functions that retrieve values from nested fields
+# 
+# Allows dynamic values to operate as collections via local computation.
+#===========================================================================
 
 def all_tags():
     all_tags = []

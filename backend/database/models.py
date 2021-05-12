@@ -4,7 +4,13 @@ import datetime
 
 from flask_restful import url_for
 
-
+#===========================================================================
+# *                       All Database Models  
+# ?  Defines Snippet, Collection, User, and TokenBlockList 
+# Models defined here override definitions in MongoDB Atlas
+# Responsible for all rules; notably delete-rules for reference fields.
+# ! Changes to this document may result in db errors in live deployments
+#===========================================================================
 class Snippet(db.Document):
     meta = {
         "collection": "snippet",
