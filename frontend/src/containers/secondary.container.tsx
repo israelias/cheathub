@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { SideNav } from '../connectors/side';
-
 import SecondaryArea from '../components/layout/main/areas/secondary.area';
 
 /**
@@ -18,10 +16,6 @@ export const Secondary: React.FC<{
   children?: React.ReactNode;
 }> = ({ children }) => (
   <>
-    <SecondaryArea>
-      {/* <SideNav> */}
-      {children}
-      {/* </SideNav> */}
-    </SecondaryArea>
+    <SecondaryArea>{children}</SecondaryArea>
   </>
 );
