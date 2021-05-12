@@ -1,5 +1,5 @@
 import React from 'react';
-import { HTMLChakraProps, chakra } from '@chakra-ui/react';
+import { HTMLChakraProps, chakra, Box } from '@chakra-ui/react';
 
 import { motion, HTMLMotionProps } from 'framer-motion';
 
@@ -109,3 +109,5 @@ type MotionLiProps = Merge<
 >;
 
 export const MotionLi: React.FC<MotionLiProps> = motion(chakra.li);
+
+export const MotionBar = motion(Box);
