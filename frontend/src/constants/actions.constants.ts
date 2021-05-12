@@ -19,7 +19,6 @@ import {
   GoSearch,
   GoTag,
   GoPlus,
-  GoVersions,
   GoMention,
   GoDiffRemoved,
   GoDiffModified,
@@ -32,6 +31,8 @@ import {
   GoHome,
   GoGear,
   GoLightBulb,
+  GoVersions,
+  GoPerson,
 } from 'react-icons/go';
 import { FaMoon, FaSun } from 'react-icons/fa';
 
@@ -41,18 +42,18 @@ const ICONS = {
     sub: GoFileSubmodule,
     dark: GoFileDirectory,
   },
-  faves: {
-    main: GoBookmark,
-    sub: GoStar,
-    dark: GoBookmark,
-  },
   explore: {
     main: GoTelescope,
     sub: GoSearch,
     dark: GoTelescope,
   },
+  faves: {
+    main: GoGist,
+    sub: GoStar,
+    dark: GoBookmark,
+  },
   add: {
-    main: GoDiffAdded,
+    main: GoPlus,
     sub: GoPlus,
     dark: GoDiffAdded,
   },
@@ -75,6 +76,16 @@ const ICONS = {
     main: GoSignIn,
     sub: GoPlus,
     dark: GoSignIn,
+  },
+  account: {
+    main: GoPerson,
+    sub: GoPerson,
+    dark: GoPerson,
+  },
+  deleteAccount: {
+    main: GoDiffRemoved,
+    sub: GoDiffRemoved,
+    dark: GoDiffRemoved,
   },
   create: {
     main: GoDiffAdded,
@@ -117,18 +128,22 @@ const PATHS = {
   collections: {
     label: 'Collections',
     path: '/collections',
-  },
-  faves: {
-    label: 'Faves',
-    path: '/faves',
+    auth: 'see your collections',
   },
   explore: {
     label: 'Explore',
     path: '/explore',
+    auth: 'explore code snippets',
+  },
+  collection: {
+    label: 'New Collection',
+    path: '/collection/add',
+    auth: 'add to your collections',
   },
   add: {
-    label: 'Add',
+    label: 'New Snippet',
     path: '/snippets/add',
+    auth: 'create new code snippets',
   },
   mode: {
     label: 'Switch modes',
@@ -140,7 +155,7 @@ const PATHS = {
   },
   signin: {
     label: 'Sign In',
-    path: '/registration/signin',
+    path: '/signin',
   },
   signout: {
     label: 'Sign Out',
@@ -148,7 +163,15 @@ const PATHS = {
   },
   signup: {
     label: 'Sign Up',
-    path: '/registration/signup',
+    path: '/signup',
+  },
+  account: {
+    label: 'Your Account',
+    path: '/',
+  },
+  deleteAccount: {
+    label: 'Delete Account',
+    path: '/',
   },
   create: {
     label: 'Add',
@@ -184,6 +207,7 @@ export const ACTIONS = [
   {
     label: PATHS.collections.label,
     path: PATHS.collections.path,
+    auth: PATHS.collections.auth,
     icon: GoFileDirectory,
     icons: {
       main: ICONS.collections.main,
@@ -192,18 +216,9 @@ export const ACTIONS = [
     },
   },
   {
-    label: PATHS.faves.label,
-    path: PATHS.faves.path,
-    icon: GoBookmark,
-    icons: {
-      main: ICONS.faves.main,
-      sub: ICONS.faves.sub,
-      dark: ICONS.faves.dark,
-    },
-  },
-  {
     label: PATHS.explore.label,
     path: PATHS.explore.path,
+    auth: PATHS.explore.auth,
     icon: GoTelescope,
     icons: {
       main: ICONS.explore.main,
@@ -212,9 +227,21 @@ export const ACTIONS = [
     },
   },
   {
+    label: PATHS.collection.label,
+    path: PATHS.collection.path,
+    auth: PATHS.collection.auth,
+    icon: GoTelescope,
+    icons: {
+      main: ICONS.create.main,
+      sub: ICONS.create.sub,
+      dark: ICONS.create.dark,
+    },
+  },
+  {
     label: PATHS.add.label,
     path: PATHS.add.path,
-    icon: GoFileCode,
+    auth: PATHS.add.auth,
+    icon: GoTelescope,
     icons: {
       main: ICONS.add.main,
       sub: ICONS.add.sub,
@@ -249,16 +276,7 @@ export const MODES = [
   },
 ];
 
-export const AUTH = [
-  {
-    label: PATHS.signout.label,
-    path: PATHS.signout.path,
-    icons: {
-      main: ICONS.signout.main,
-      sub: ICONS.signout.sub,
-      dark: ICONS.signout.dark,
-    },
-  },
+export const AUTH0 = [
   {
     label: PATHS.signin.label,
     path: PATHS.signin.path,
@@ -275,6 +293,27 @@ export const AUTH = [
       main: ICONS.signup.main,
       sub: ICONS.signup.sub,
       dark: ICONS.signup.dark,
+    },
+  },
+];
+
+export const AUTH = [
+  {
+    label: PATHS.signout.label,
+    path: PATHS.signout.path,
+    icons: {
+      main: ICONS.signout.main,
+      sub: ICONS.signout.sub,
+      dark: ICONS.signout.dark,
+    },
+  },
+  {
+    label: PATHS.deleteAccount.label,
+    path: PATHS.deleteAccount.path,
+    icons: {
+      main: ICONS.deleteAccount.main,
+      sub: ICONS.deleteAccount.sub,
+      dark: ICONS.deleteAccount.dark,
     },
   },
 ];
