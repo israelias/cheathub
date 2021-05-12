@@ -1,13 +1,17 @@
+/**
+ * Component represents all items in a Snippet article.
+ *
+ * CRUD operations begin from this component tree.
+ * @file defines the Card Snippet ui.
+ * @date 2021-04-21
+ */
+
 import * as React from 'react';
-
-import { useHistory } from 'react-router';
-
 import {
   Flex,
   Box,
   useMediaQuery,
   useBoolean,
-  useClipboard,
   useColorModeValue as mode,
 } from '@chakra-ui/react';
 
@@ -16,12 +20,12 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useUserContext } from '../../../context/user.context';
 
 import { Viewer } from '../editor/viewer';
-
+import { ViewerControls, CopyButton } from '../editor/controls';
 import {
   MotionSection,
   MotionBox,
   MotionFooter,
-} from '../../shared/motion-box';
+} from '../../shared/motion';
 
 import {
   Description,
@@ -32,28 +36,21 @@ import {
   SourceButton,
   EditButton,
   FaveButton,
-  ViewerControls,
-  CopyButton,
 } from '../body/elements';
-
-import { collection } from '../../../constants/colors.constants';
 
 const MotionArticle = motion(Box);
 
 /**
- * Frontend private endpoint that represents a single code snippet post.
- * Selected by `_id`.
- * CRUD operations begin from this component tree.
- * @file defines route for one unique Snippet.
+ * The main card component that represents all items in a Snippet article.
+ *
+ * @file defines the Card Snippet ui.
  * @date 2021-04-21
- * @param {any} match
- * @param {any} history
- * @return {=>}
  */
 const SnippetCard: React.FC<{
   setTags: React.Dispatch<React.SetStateAction<string>>;
   handleFave: (snipId: string) => Promise<void>;
   faveSnippet: boolean;
+  faving?: boolean;
   snippet: Snippet | undefined;
   editing: boolean;
   loading: boolean;
@@ -68,6 +65,7 @@ const SnippetCard: React.FC<{
   setTags,
   handleFave,
   faveSnippet,
+  faving,
   snippet,
   editing,
   loading,
@@ -81,8 +79,6 @@ const SnippetCard: React.FC<{
 }) => {
   const { accessToken, username } = useUserContext();
   const [baseLg] = useMediaQuery('(min-width: 62em)');
-  const history = useHistory();
-  const { hasCopied, onCopy } = useClipboard(value);
 
   const [lineNumbers, setLineNumbers] = useBoolean();
   const [wrapLines, setWrapLines] = useBoolean();
@@ -145,7 +141,7 @@ const SnippetCard: React.FC<{
                   ease: [0.04, 0.62, 0.23, 0.98],
                 }}
               >
-                <MotionBox ml="-10px" mr="-10px">
+                <MotionBox mr="-10px">
                   {editing && (
                     <ViewerControls
                       value={value}
@@ -217,6 +213,7 @@ const SnippetCard: React.FC<{
                           likedBy={snippet.likedBy}
                           faveSnippet={faveSnippet}
                           handleFave={handleFave}
+                          faving={faving}
                         />
                       )
                     )}

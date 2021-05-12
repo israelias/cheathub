@@ -31,7 +31,7 @@ import {
   GoDiffModified,
 } from 'react-icons/go';
 import { TimeAgo } from '../../shared/time';
-import { MotionUl, MotionLi, MotionP } from '../../shared/motion-box';
+import { MotionUl, MotionLi, MotionP } from '../../shared/motion';
 
 export const ViewerControls: React.FC<{
   value: string;

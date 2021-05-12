@@ -25,16 +25,24 @@ import {
   Checkbox,
   Switch,
   Divider,
+  useColorModeValue as mode,
   Select,
 } from '@chakra-ui/react';
 
 import { AnimatePresence, motion } from 'framer-motion';
 
 import { LANGUAGES } from '../../../constants/languages.constants';
-
+import { BrandButton } from '../../shared/brand-button';
 import { StyledLabel } from './form-label';
+import {
+  PrimaryFooter,
+  SecondaryHeader,
+  SecondaryFooter,
+} from '../../shared/particulars';
 
-import { MotionForm } from '../../shared/motion-box';
+import { MotionForm } from '../../shared/motion';
+
+const MotionBar = motion(Box);
 
 /**
  * Frontend private endpoint that represents a single code snippet post.
@@ -95,12 +103,29 @@ const SnippetCrud: React.FC<{
 }) => {
   const languages = [{ value: '', label: 'All' }, ...LANGUAGES];
   return (
-    <>
-      <Box
+    <AnimatePresence exitBeforeEnter>
+      <MotionBar
+        as="section"
         borderRadius="10px"
         padding={['0 10px']}
-        border={['1px solid #bbb']}
+        border={['1px solid']}
+        borderColor={mode('#9992b6', '#b6b1cb')}
         mt="10px"
+        display="flex"
+        flexDirection="column"
+        width="100%"
+        initial="collapsed"
+        animate="open"
+        exit="collapsed"
+        variants={{
+          open: { opacity: 1, height: 'auto' },
+          collapsed: { opacity: 0, height: '0' },
+        }}
+        transition={{
+          duration: 0.5,
+          ease: [0.04, 0.62, 0.23, 0.98],
+        }}
+        positionTransition
       >
         <AnimatePresence exitBeforeEnter>
           <MotionForm id="snippet" onSubmit={handleSubmit}>
@@ -109,7 +134,9 @@ const SnippetCrud: React.FC<{
               <Input
                 mt="10px"
                 type="text"
-                borderColor="#f6f6f6"
+                borderColor={mode('#7e88c3', '#786e89')}
+                focusBorderColor={mode('#ff5470', '#fde24f')}
+                bg={mode('#fafafa', '#0b0914')}
                 fontSize="sm"
                 placeHolder="My New Code Snippet"
                 value={title}
@@ -125,7 +152,9 @@ const SnippetCrud: React.FC<{
                 mr="-10px"
                 minHeight="20vh"
                 fontSize="sm"
-                borderRadius={0}
+                borderColor={mode('#7e88c3', '#786e89')}
+                focusBorderColor={mode('#ff5470', '#fde24f')}
+                bg={mode('#fafafa', '#0b0914')}
                 placeHolder="hello world"
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
@@ -139,8 +168,10 @@ const SnippetCrud: React.FC<{
               <StyledLabel label="Description" />
               <Textarea
                 mt="10px"
-                borderColor="#f6f6f6"
                 fontSize="sm"
+                borderColor={mode('#7e88c3', '#786e89')}
+                focusBorderColor={mode('#ff5470', '#fde24f')}
+                bg={mode('#fafafa', '#0b0914')}
                 placeHolder="About my new code snippet..."
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
@@ -155,6 +186,10 @@ const SnippetCrud: React.FC<{
               <Select
                 mt="10px"
                 size="sm"
+                borderRadius="6px"
+                borderColor={mode('#7e88c3', '#786e89')}
+                focusBorderColor={mode('#ff5470', '#fde24f')}
+                bg={mode('#fafafa', '#0b0914')}
                 value={language}
                 onChange={(e) => setLanguage(e.target.value)}
               >
@@ -172,7 +207,10 @@ const SnippetCrud: React.FC<{
                 mt="10px"
                 type="text"
                 size="sm"
-                borderColor="#f6f6f6"
+                borderRadius="6px"
+                borderColor={mode('#7e88c3', '#786e89')}
+                focusBorderColor={mode('#ff5470', '#fde24f')}
+                bg={mode('#fafafa', '#0b0914')}
                 placeHolder="intros, how-tos, placeholders"
                 value={tags}
                 onChange={(e) => setTags(e.target.value)}
@@ -188,7 +226,10 @@ const SnippetCrud: React.FC<{
                 mt="10px"
                 type="text"
                 size="sm"
-                borderColor="#f6f6f6"
+                borderRadius="6px"
+                borderColor={mode('#7e88c3', '#786e89')}
+                focusBorderColor={mode('#ff5470', '#fde24f')}
+                bg={mode('#fafafa', '#0b0914')}
                 value={source}
                 placeholder="https://"
                 onChange={(e) => setSource(e.target.value)}
@@ -200,6 +241,7 @@ const SnippetCrud: React.FC<{
 
             <FormControl pt="10px" display="flex" alignItems="center">
               <FormLabel
+                hidden
                 p={['0 10px']}
                 m={0}
                 bg="#f6f6f6"
@@ -227,88 +269,45 @@ const SnippetCrud: React.FC<{
               </FormHelperText>
             </FormControl>
           </MotionForm>
-          {editing ? (
-            <HStack>
-              <MotionForm id="delete" onSubmit={handleDelete}>
-                <Button
-                  type="button"
-                  isLoading={deleting}
-                  loadingText="Deleting"
-                  onClick={() => setAlert(true)}
-                >
-                  Delete
-                </Button>
-              </MotionForm>
-              <ButtonGroup
-                variant="outline"
-                spacing="8"
-                alignSelf="center"
-                padding={['20px 10px']}
-              >
-                <Button
-                  ml="12px"
-                  type="button"
-                  onClick={handleCancel}
-                >
-                  Cancel
-                </Button>
-
-                <Button
-                  type="submit"
-                  form="snippet"
-                  isLoading={submitting}
-                  loadingText="Submitting"
-                >
-                  {editing ? 'Update' : 'Add'}
-                </Button>
-              </ButtonGroup>
-            </HStack>
-          ) : (
-            <HStack>
-              <MotionForm id="delete" onSubmit={handleDelete}>
-                <Button
-                  type="button"
-                  isLoading={deleting}
-                  loadingText="Deleting"
-                  onClick={() => setAlert(true)}
-                >
-                  Delete
-                </Button>
-              </MotionForm>
-              <ButtonGroup
-                variant="outline"
-                spacing="8"
-                alignSelf="center"
-                padding={['20px 10px']}
-              >
-                <Button
-                  ml="12px"
-                  type="button"
-                  onClick={() => {
-                    setTitle('');
-                    setDescription('');
-                    setValue('');
-                    setLanguage('');
-                    setTags('');
-                  }}
-                >
-                  Cancel
-                </Button>
-
-                <Button
-                  type="submit"
-                  form="snippet"
-                  isLoading={submitting}
-                  loadingText="Submitting"
-                >
-                  {editing ? 'Update' : 'Add'}
-                </Button>
-              </ButtonGroup>
-            </HStack>
-          )}
         </AnimatePresence>
+      </MotionBar>
+
+      <Box position="sticky" width="100%" mt="auto" bottom={0}>
+        {' '}
+        <SecondaryFooter>
+          {editing && (
+            <MotionForm
+              ml="8px"
+              id="delete-snippet"
+              onSubmit={handleDelete}
+            >
+              <BrandButton
+                type="button"
+                isLoading={deleting}
+                loadingText="Deleting"
+                onClick={() => setAlert(true)}
+              >
+                Delete
+              </BrandButton>
+            </MotionForm>
+          )}
+
+          <BrandButton type="button" onClick={handleCancel}>
+            Cancel
+          </BrandButton>
+
+          <BrandButton
+            mr="16px"
+            type="submit"
+            form="snippet"
+            isLoading={submitting}
+            loadingText="Submitting"
+          >
+            {editing ? 'Update' : 'Add'}
+          </BrandButton>
+        </SecondaryFooter>
       </Box>
-    </>
+    </AnimatePresence>
   );
 };
 

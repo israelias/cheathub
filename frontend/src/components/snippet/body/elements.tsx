@@ -31,119 +31,29 @@ import {
   GoDiffModified,
 } from 'react-icons/go';
 import { TimeAgo } from '../../shared/time';
-import {
-  MotionSection,
-  MotionHeader,
-  MotionBox,
-  MotionFooter,
-  MotionAside,
-  MotionUl,
-  MotionLi,
-  MotionP,
-} from '../../shared/motion-box';
+import { MotionUl, MotionLi, MotionP } from '../../shared/motion';
 
-export const ViewerControls: React.FC<{
-  value: string;
-  lineNumbers: boolean;
-  wrapLines: boolean;
-  setWrapLines: {
-    readonly on: () => void;
-    readonly off: () => void;
-    readonly toggle: () => void;
-  };
-  setLineNumbers: {
-    readonly on: () => void;
-    readonly off: () => void;
-    readonly toggle: () => void;
-  };
-}> = ({
-  value,
-  lineNumbers,
-  wrapLines,
-  setLineNumbers,
-  setWrapLines,
-}) => (
-  <HStack>
-    <ButtonGroup size="xs" isAttached variant="outline">
-      <Button
-        onClick={setLineNumbers.toggle}
-        mr="-px"
-        fontWeight="light"
-        rightIcon={
-          lineNumbers ? (
-            <Icon fontSize="12px" as={GoDiffModified} />
-          ) : (
-            <Icon fontSize="12px" as={GoDiffIgnored} />
-          )
-        }
-      >
-        {lineNumbers ? 'Line numbers on' : 'Line numbers off'}
-      </Button>
+/**
+ * Components that represent all items in a Snippet article.
+ *
+ * CRUD operations begin from this component tree.
+ * @file defines body ui for Card Snippet.
+ * @date 2021-04-21
+ */
 
-      <Button
-        onClick={setWrapLines.toggle}
-        mr="-px"
-        fontWeight="light"
-        rightIcon={
-          <Icon
-            fontSize="10px"
-            as={wrapLines ? GoDiffModified : GoDiffIgnored}
-          />
-        }
-      >
-        {wrapLines ? 'Line wrap on' : 'Line wrap off'}
-      </Button>
-
-      <CopyButton editing value={value} />
-    </ButtonGroup>
-  </HStack>
-);
-
-export const CopyButton: React.FC<{
-  editing?: boolean;
-  value: string;
-}> = ({ editing, value }) => {
-  const { hasCopied, onCopy } = useClipboard(value);
-  return editing ? (
-    <Button
-      variant="outline"
-      size="xs"
-      mr="-px"
-      ml="8px"
-      fontWeight="light"
-      rightIcon={
-        hasCopied ? (
-          <CheckIcon fontSize="10px" />
-        ) : (
-          <CopyIcon fontSize="10px" />
-        )
-      }
-    >
-      {hasCopied ? 'Copied' : 'Copy'}
-    </Button>
-  ) : (
-    <IconButton
-      variant="outline"
-      color="gray.400"
-      bg="rgb(255,255,255, .3)"
-      size="xs"
-      aria-label="Copy snippet"
-      onClick={onCopy}
-      icon={hasCopied ? <CheckIcon /> : <CopyIcon />}
-      position="absolute"
-      right="36px"
-      mt="10px"
-    />
-  );
-};
-
+/**
+ * The description text in a Snippet article.
+ *
+ * @date 2021-05-10
+ */
 export const Description: React.FC<{ description: string }> = ({
   description,
 }) => (
   <MotionP
     p="10px"
     fontSize="14px"
-    fontWeight="normal"
+    fontWeight="thin"
+    color={mode('#252945', '#fff')}
     initial={{ opacity: 0 }}
     animate={{ opacity: 1 }}
     exit={{ opacity: 0 }}
@@ -158,6 +68,14 @@ export const Description: React.FC<{ description: string }> = ({
   </MotionP>
 );
 
+/**
+ * The Tag List in a Snippet article.
+ *
+ * Conditionally renders only 3 tags until representing more tags in a menu portal.
+ * @see TagMenu
+ *
+ * @date 2021-05-10
+ */
 export const TagList: React.FC<{
   tags: string[];
   editing: boolean;
@@ -170,7 +88,7 @@ export const TagList: React.FC<{
           <MotionLi
             key={`form-${tag}`}
             color="gray.600"
-            fontSize="sm"
+            fontSize={{ base: 'xs', lg: 'sm' }}
             cursor="default"
             pr="12px"
             _before={{
@@ -185,7 +103,7 @@ export const TagList: React.FC<{
           <MotionLi
             key={`form-${tag}`}
             color="gray.600"
-            fontSize="sm"
+            fontSize={{ base: 'xs', lg: 'sm' }}
             cursor={collections ? 'default' : 'pointer'}
             pr="12px"
             _before={{
@@ -203,6 +121,14 @@ export const TagList: React.FC<{
   </MotionUl>
 );
 
+/**
+ * The Tag Menu in a Snippet article.
+ *
+ * Compresses tags in a menu when there are many tags in a row.
+ * @see TagMenu
+ *
+ * @date 2021-05-10
+ */
 export const TagMenu: React.FC<{
   tags: string[];
   editing: boolean;
@@ -218,7 +144,7 @@ export const TagMenu: React.FC<{
           variant="link"
           color="gray.600"
           fontWeight="light"
-          fontSize="sm"
+          fontSize={{ base: 'xs', lg: 'sm' }}
           size="sm"
           leftIcon={
             <Icon fontSize="12px" as={isOpen ? GoDash : GoPlus} />
@@ -231,6 +157,7 @@ export const TagMenu: React.FC<{
             <MenuItem
               key={tag}
               value={tag}
+              fontSize={{ base: 'xs', lg: 'sm' }}
               disabled={editing || collections}
               onClick={() => setTags(tag)}
             >
@@ -243,6 +170,14 @@ export const TagMenu: React.FC<{
   </Menu>
 );
 
+/**
+ * The User data in a Snippet article.
+ *
+ * Shows addedBy `name` and addedOn `date`
+ * @see TimeAgo
+ *
+ * @date 2021-05-10
+ */
 export const PostUserData: React.FC<{
   username: string;
   addedBy: string;
@@ -250,6 +185,7 @@ export const PostUserData: React.FC<{
 }> = ({ username, addedBy, addedOn }) => (
   <Box
     as="span"
+    display={{ base: 'none', sm: 'inline' }}
     _before={{
       content: `': '`,
       fontSize: 'sm',
@@ -261,7 +197,7 @@ export const PostUserData: React.FC<{
       as="span"
       ml="2"
       color="gray.600"
-      fontSize="sm"
+      fontSize={{ base: 'xs', lg: 'sm' }}
       _after={{ content: `'.'` }}
     >
       <TimeAgo date={addedOn} />
@@ -269,6 +205,14 @@ export const PostUserData: React.FC<{
   </Box>
 );
 
+/**
+ * The Post Faves data in a Snippet article.
+ *
+ * Shows number of `faves` and shows names of `favers` in a Tooltip
+ * @see TimeAgo
+ *
+ * @date 2021-05-10
+ */
 export const PostFaveData: React.FC<{
   likedBy: string[];
 }> = ({ likedBy }) => (
@@ -293,7 +237,7 @@ export const PostFaveData: React.FC<{
       as="span"
       ml="2"
       color="gray.600"
-      fontSize="sm"
+      fontSize={{ base: 'xs', lg: 'sm' }}
       _before={{
         content: `'/ '`,
         color: 'blue.400',
@@ -305,17 +249,25 @@ export const PostFaveData: React.FC<{
   </Tooltip>
 );
 
+/**
+ * The button that links to a snippet's url source.
+ *
+ * @date 2021-05-10
+ */
 export const SourceButton: React.FC<{ source: string }> = ({
   source,
 }) => (
   <Button
-    display="flex"
+    display={{ base: 'none', sm: 'flex' }}
+    // display="flex"
     // alignItems="center"
     // variant="link"
     variant="outline"
     as={Link}
     size="xs"
     // mr="-px"
+    borderColor={mode('#d8d9da', '#7e88c3')}
+    color={mode('#252945', '#fafafa')}
     fontWeight="light"
     aria-label="Source"
     href={source}
@@ -327,6 +279,11 @@ export const SourceButton: React.FC<{ source: string }> = ({
   </Button>
 );
 
+/**
+ * The button that links to the edit snippet path.
+ *
+ * @date 2021-05-10
+ */
 export const EditButton: React.FC<{
   snipId: string;
   collections?: boolean;
@@ -339,9 +296,10 @@ export const EditButton: React.FC<{
       justifyContent="space-between"
       variant="outline"
       as={RouterLink}
-      fontSize="sm"
+      fontSize={{ base: 'xs', lg: 'sm' }}
       fontWeight="medium"
-      color="gray.600"
+      borderColor={mode('#d8d9da', '#7e88c3')}
+      color={mode('#252945', '#fafafa')}
       bg={mode('#fff', '#141625')}
       _hover={{
         bg: mode('#f6f6f6', '#252945'),
@@ -357,6 +315,8 @@ export const EditButton: React.FC<{
       // alignItems="center"
       justifyContent="space-between"
       variant="outline"
+      borderColor={mode('#d8d9da', '#7e88c3')}
+      color={mode('#252945', '#fafafa')}
       as={RouterLink}
       size="xs"
       mr="-px"
@@ -369,11 +329,17 @@ export const EditButton: React.FC<{
     </Button>
   );
 
+/**
+ * The button that toggles what a snippet is faved/unfaved.
+ *
+ * @date 2021-05-10
+ */
 export const FaveButton: React.FC<{
   faveSnippet?: boolean;
   collections?: boolean;
   snipId: string;
   handleFave?: (snipId: string) => Promise<void>;
+  faving?: boolean;
   likedBy: string[];
   username: string;
 }> = ({
@@ -381,6 +347,7 @@ export const FaveButton: React.FC<{
   collections,
   snipId,
   handleFave,
+  faving,
   likedBy,
   username,
 }) =>
@@ -388,10 +355,10 @@ export const FaveButton: React.FC<{
     <Button
       type="submit"
       variant="outline"
-      padding="10px"
+      padding={{ base: '6px', sm: '10px' }}
       width="100%"
       justifyContent="space-between"
-      fontSize="sm"
+      fontSize={{ base: 'xs', lg: 'sm' }}
       fontWeight="medium"
       bg={mode('#fff', '#141625')}
       _hover={{
@@ -412,10 +379,14 @@ export const FaveButton: React.FC<{
       type="submit"
       variant="outline"
       lineHeight="1"
-      size="xs"
+      fontSize="xs"
+      p={0}
       mr="-px"
+      pl="6px"
+      pr="6px"
       ml="8px"
       fontWeight="light"
+      isLoading={snipId === '' && faving}
       rightIcon={
         <Icon fontSize="10px" as={faveSnippet ? GoDash : GoPlus} />
       }

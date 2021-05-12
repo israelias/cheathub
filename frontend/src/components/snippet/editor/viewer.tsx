@@ -17,14 +17,6 @@ interface ViewerProps extends SyntaxHighlighterProps {
   id: string;
   value: string;
   language: string;
-  // style?: any;
-  // customStyle?: any;
-  // lineProps?: lineTagPropsFunction | React.HTMLProps<HTMLElement>;
-  // codeTagProps?: React.HTMLProps<HTMLElement>;
-  // useInlineStyles?: boolean;
-  // showLineNumbers?: boolean;
-  // startingLineNumber?: number;
-  // lineNumberStyle?: any;
 }
 
 export const Viewer: React.FC<ViewerProps> = ({
