@@ -13,28 +13,43 @@ import {
   FormControl,
   Input,
   FormLabel,
+  useColorModeValue as mode,
 } from '@chakra-ui/react';
-import { useUserContext } from '../../context/user.context';
+import { motion } from 'framer-motion';
 
-export const SignInPrompt: React.FC<{
+import { useUserContext } from '../../context/user.context';
+import { BrandButton } from '../shared/brand-button';
+import RegistrationForm from '../registration';
+import {
+  InputUsername,
+  InputEmail,
+  InputPassword,
+} from '../registration/inputs';
+
+export const AuthPrompt: React.FC<{
   isOpen: boolean;
-  onOpen: () => void;
+  onOpen?: () => void;
   onClose: () => void;
 }> = ({ isOpen, onOpen, onClose }) => {
-  const history = useHistory();
-  const { handleSignIn } = useUserContext();
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
-
   const initialRef = React.useRef<HTMLInputElement>(null);
   const finalRef = React.useRef<HTMLButtonElement>(null);
-
+  const {
+    username,
+    setUsername,
+    email,
+    setEmail,
+    password,
+    setPassword,
+    returning,
+    setReturning,
+    loading,
+    handleSignIn,
+  } = useUserContext();
   return (
     <>
       <Modal
         motionPreset="scale"
         initialFocusRef={initialRef}
-        // finalFocusRef={finalRef}
         isOpen={isOpen}
         onClose={onClose}
         isCentered
@@ -42,77 +57,45 @@ export const SignInPrompt: React.FC<{
       >
         <ModalOverlay />
         <ModalContent
-          bg="#fff"
-          border={['1px solid #bbb']}
+          bg={mode('#fff', '#141625')}
+          border={['1px solid']}
+          borderColor={mode('#bbb', '#7e88c3')}
           p="10px"
           borderRadius="10px"
+          borderWidth="1px"
         >
-          <form onSubmit={handleSignIn}>
-            <Box
-              bg="#fff"
-              border={['1px solid #bbb']}
-              p="10px"
-              borderRadius="10px"
-            >
-              <ModalHeader
-                display="flex"
-                alignItems="center"
-                justifyContent="space-between"
-                height="50px"
-                borderRadius="10px"
-                cursor="normal"
-                bg="#f6f6f6"
-                p={['0 10px']}
-                borderBottom={['1px solid #f6f6f6']}
-              >
-                You've been signed out. <ModalCloseButton />
-              </ModalHeader>
-
-              <ModalBody pb={6}>
-                <FormControl>
-                  <FormLabel>Email</FormLabel>
-                  <Input
-                    type="email"
-                    ref={initialRef}
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </FormControl>
-
-                <FormControl mt={4}>
-                  <FormLabel>Password</FormLabel>
-                  <Input
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                </FormControl>
-              </ModalBody>
-
-              <ModalFooter>
-                <Button
-                  variant="outline"
-                  type="submit"
-                  colorScheme="blue"
-                  mr={3}
-                >
-                  Login
-                </Button>
-                <Button
-                  variant="outline"
-                  type="button"
-                  onClick={() => {
-                    onClose();
-                    history.push('/');
-                  }}
-                >
-                  Stay Signed out
-                </Button>
-              </ModalFooter>
-            </Box>
-          </form>
+          <ModalHeader
+            display="flex"
+            alignItems="center"
+            justifyContent="space-between"
+            height="50px"
+            borderRadius="10px"
+            fontSize="md"
+            mt="20px"
+            ml="20px"
+            mr="20px"
+            cursor="normal"
+            bg={mode('#f6f6f6', '#252945')}
+            p={['10px']}
+            borderColor={mode('#bbb', '#7e88c3')}
+          >
+            It seems you have been logged out.{' '}
+            <ModalCloseButton mr="20px" mt="28px" />
+          </ModalHeader>
+          <ModalBody>
+            <RegistrationForm
+              username={username}
+              setUsername={setUsername}
+              email={email}
+              setEmail={setEmail}
+              password={password}
+              setPassword={setPassword}
+              returning={returning}
+              loading={loading}
+              setReturning={setReturning}
+              handleSignIn={handleSignIn}
+            />
+          </ModalBody>
         </ModalContent>
       </Modal>
     </>

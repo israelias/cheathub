@@ -6,7 +6,15 @@ import {
   WarningIcon,
   WarningTwoIcon,
 } from '@chakra-ui/icons';
-
+/**
+ * The main prompt for all messages following fetch methods.
+ *
+ * @see UserProvider
+ * @see DataHandlerProvider
+ * @see ProfileDataProvider
+ * @file defines feedback toast that relays message from backend.
+ * @date 2021-05-03
+ */
 export const Prompt: React.FC<{
   message: string;
   error?: boolean;
