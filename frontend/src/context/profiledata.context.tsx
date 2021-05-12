@@ -54,7 +54,7 @@ export function ProfileDataProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const { username } = useUserContext();
+  const { username, loggedIn } = useUserContext();
 
   const [snippetsProfile, setSnippetsProfile] = React.useState<
     SnippetsResponse | undefined
@@ -131,14 +131,14 @@ export function ProfileDataProvider({
   };
 
   React.useEffect(() => {
-    if (username) {
+    if (loggedIn && username) {
       loadCollectionsData();
       loadSnippetsData();
       loadFaveSnippets();
       loadSnippetsOptions();
       loadCollectionsOptions();
     }
-  }, [username]);
+  }, [loggedIn, username]);
 
   return (
     <ProfileData.Provider
