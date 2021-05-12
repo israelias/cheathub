@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   Grid,
   useColorModeValue as mode,
@@ -10,9 +11,16 @@ import {
 import { useHistory, useLocation } from 'react-router-dom';
 import { AnimateSharedLayout } from 'framer-motion';
 
-import { MotionBox } from '../../shared/motion-box';
+import { MotionBox } from '../../shared/motion';
+import {
+  AddSnippetButton,
+  AddCollectionButton,
+  BrandButton,
+} from '../../shared/brand-button';
+import { AuthPrompt } from '../../modals/auth-prompt';
 import { ACTIONS, MODES } from '../../../constants/actions.constants';
 import { useUserContext } from '../../../context/user.context';
+import { useProfileData } from '../../../context/profiledata.context';
 
 /**
  * This is an example of animating between different components in Framer Motion 2.
@@ -29,8 +37,12 @@ const Actions = () => {
   const history = useHistory();
   const location = useLocation();
   const { toggleColorMode } = useColorMode();
-  const { username, handleSignOut } = useUserContext();
+  const { loggedIn, username, handleSignOut } = useUserContext();
   const [baseLg] = useMediaQuery('(min-width: 62em)');
+  const { loadSnippetsData } = useProfileData();
+  const touring = location.pathname === '/registration';
+  const collection = location.pathname.includes('/collections');
+
   return (
     <AnimateSharedLayout>
       <Grid
@@ -48,19 +60,22 @@ const Actions = () => {
         alignContent="start"
         height={{ base: 'unset', lg: '100%' }}
         bg={mode('#fff', '#141625')}
+        zIndex="banner"
         borderRight={{
           base: 'none',
-          lg: mode('1px solid #ddd', '1px solid #7e88c3'),
+          lg: mode('1px solid #d8d9da', '1px solid #7e88c3'),
         }}
         borderBottom={{
-          base: mode('1px solid #ddd', '1px solid #7e88c3'),
+          base: mode('1px solid #d8d9da', '1px solid #7e88c3'),
           lg: 'none',
         }}
       >
         {ACTIONS.map((action) => (
           <Tooltip
             key={action.label}
-            label={action.label}
+            label={
+              loggedIn ? action.label : `Sign in to ${action.auth}`
+            }
             placement={baseLg ? 'right' : 'bottom'}
           >
             <Grid
@@ -79,7 +94,7 @@ const Actions = () => {
                 display="flex"
                 flexDirection="column"
                 alignItems="center"
-                // padding={['12px 0px 16px']}
+                disabled={!loggedIn}
                 padding={{
                   base: '12px 12px 12px',
                   lg: '8px 12px ',
@@ -141,6 +156,11 @@ const Actions = () => {
                     display="flex"
                     flexDirection="column"
                     alignItems="center"
+                    disabled={
+                      action.labels.main === 'Sign Out'
+                        ? !loggedIn
+                        : false
+                    }
                     padding={['8px 12px']}
                     position="relative"
                     size="lg"
