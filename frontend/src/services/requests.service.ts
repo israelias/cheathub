@@ -15,10 +15,8 @@
 
 /**
  * Api backend base URL.
- * Change to debloyed backend in production.
  */
-const API = 'http://localhost:5000';
-// const API = 'https://cheathub-backend.herokuapp.com';
+const API = 'https://cheathub-backend.herokuapp.com';
 
 /**
  * Describe your function

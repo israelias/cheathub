@@ -12,11 +12,9 @@ import axios from 'axios';
 
 /**
  * Api backend base URL.
- * Change to debloyed backend in production.
  */
 const axiosConfig = {
-  baseURL: 'http://localhost:5000/api/',
-  // baseURL: 'https://cheathub-backend.herokuapp.com/api',
+  baseURL: 'https://cheathub-backend.herokuapp.com/api',
 };
 
 /**
