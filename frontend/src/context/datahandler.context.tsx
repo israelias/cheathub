@@ -44,6 +44,7 @@ type HandlerType = {
   setSubmitting: React.Dispatch<React.SetStateAction<boolean>>;
   deleting: boolean;
   setDeleting: React.Dispatch<React.SetStateAction<boolean>>;
+  faving: boolean;
   alert: boolean;
   setAlert: React.Dispatch<React.SetStateAction<boolean>>;
   heading: string;
@@ -74,7 +75,13 @@ export function DataHandlerProvider({
 }) {
   const { username, accessToken } = useUserContext();
   const { loadInitialData } = useAppData();
-  const { loadSnippetsData } = useProfileData();
+  const {
+    loadSnippetsData,
+    loadFaveSnippets,
+    loadCollectionsOptions,
+    loadCollectionsData,
+    loadSnippetsOptions,
+  } = useProfileData();
   const toast = useToast();
   const history = useHistory();
   const [faveSnippet, setFaveSnippet] = useBoolean();
@@ -90,7 +97,7 @@ export function DataHandlerProvider({
   const [editing, setEditing] = React.useState<boolean>(false);
   const [submitting, setSubmitting] = React.useState<boolean>(false);
   const [deleting, setDeleting] = React.useState<boolean>(false);
-
+  const [faving, setFaving] = React.useState<boolean>(false);
   const [alert, setAlert] = React.useState(false);
 
   const [id, setId] = React.useState('');
@@ -104,9 +111,9 @@ export function DataHandlerProvider({
 
   const clearValues = () => {
     setId('');
-    setHeading('Add New');
-    setTitle('My new code snippet');
-    setDescription(`hello from ${username}`);
+    setHeading('');
+    setTitle('');
+    setDescription(``);
     setValue('hello world');
     setLanguage('javascript');
     setTags('first post');
@@ -147,7 +154,10 @@ export function DataHandlerProvider({
               clearValues();
               loadInitialData();
               loadSnippetsData();
-              history.push(`/collections/${username}`);
+              loadSnippetsOptions();
+              // loadCollectionsOptions();
+              history.goBack();
+              // history.push(`/collections/${username}`);
             }, 1500);
           } else {
             response.json().then((data) => {
@@ -158,6 +168,15 @@ export function DataHandlerProvider({
                   isClosable: true,
                   render: () => (
                     <Prompt warning message={data.message} />
+                  ),
+                });
+              } else {
+                setSubmitting(false);
+                toast({
+                  duration: 3000,
+                  isClosable: true,
+                  render: () => (
+                    <Prompt warning message="Add Failed" />
                   ),
                 });
               }
@@ -171,7 +190,6 @@ export function DataHandlerProvider({
           isClosable: true,
           render: () => <Prompt error message={err.message} />,
         });
-        setHeading(err.message);
       }
     } else {
       try {
@@ -199,7 +217,10 @@ export function DataHandlerProvider({
               clearValues();
               loadInitialData();
               loadSnippetsData();
-              history.push('/explore');
+              loadSnippetsOptions();
+              // loadCollectionsOptions();
+              history.goBack();
+              // history.push(`/collections/${username}`);
             }, 1500);
           } else {
             response.json().then((data) => {
@@ -210,6 +231,15 @@ export function DataHandlerProvider({
                   isClosable: true,
                   render: () => (
                     <Prompt warning message={data.message} />
+                  ),
+                });
+              } else {
+                setSubmitting(false);
+                toast({
+                  duration: 3000,
+                  isClosable: true,
+                  render: () => (
+                    <Prompt warning message="Update Failed" />
                   ),
                 });
               }
@@ -223,7 +253,6 @@ export function DataHandlerProvider({
           isClosable: true,
           render: () => <Prompt error message={err.message} />,
         });
-        setHeading(err.message);
       }
     }
   };
@@ -250,16 +279,27 @@ export function DataHandlerProvider({
             setDeleting(false);
             loadInitialData();
             loadSnippetsData();
-            history.push('/explore');
+            loadSnippetsOptions();
+
+            loadCollectionsData();
+            // loadCollectionsOptions();
+            history.goBack();
+            // history.push(`/collections/${username}`);
           }, 1500);
         }
       });
     } catch (err) {
-      setHeading(err.message);
+      setDeleting(false);
+      toast({
+        duration: 3000,
+        isClosable: true,
+        render: () => <Prompt error message={err.message} />,
+      });
     }
   };
 
   const handleFave = async (snipId: string) => {
+    setFaving(true);
     try {
       await likeRequest({
         url: `api/likesnippet/${snipId}`,
@@ -269,7 +309,9 @@ export function DataHandlerProvider({
         .then((res) => res.ok && res.json())
         .then((data) => {
           if (data) {
+            setFaving(false);
             setFaveSnippet.toggle();
+            loadFaveSnippets();
             setTimeout(() => {
               toast({
                 duration: 2500,
@@ -277,10 +319,24 @@ export function DataHandlerProvider({
                 render: () => <Prompt message={data?.message} />,
               });
             }, 100);
+          } else {
+            setFaving(false);
+            toast({
+              duration: 2500,
+              isClosable: true,
+              render: () => (
+                <Prompt warning message="Request failed" />
+              ),
+            });
           }
         });
     } catch (err) {
-      setHeading(err.message);
+      setFaving(false);
+      toast({
+        duration: 2500,
+        isClosable: true,
+        render: () => <Prompt error message={err.message} />,
+      });
     }
   };
 
@@ -314,6 +370,7 @@ export function DataHandlerProvider({
         heading,
         setHeading,
         clearValues,
+        faving,
         faveSnippet,
         setFaveSnippet,
         handleFave,
