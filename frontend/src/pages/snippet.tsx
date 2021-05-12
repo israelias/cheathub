@@ -1,25 +1,18 @@
-/* eslint-disable no-console */
 import * as React from 'react';
 
-import { AxiosResponse } from 'axios';
-
 import { RouteComponentProps } from 'react-router';
-import { Button, useMediaQuery } from '@chakra-ui/react';
+import { useMediaQuery, Flex, Box } from '@chakra-ui/react';
 
 import SnippetCard from '../components/snippet/card';
 import SnippetCrud from '../components/snippet/crud';
-import { DeleteModal } from '../components/modals/delete-snippet';
+import { DeleteModal } from '../components/modals/delete-modal';
 
-import { getSnippet } from '../services/get.service';
 import { getRequest } from '../services/crud.service';
 
 import { useDataHandler } from '../context/datahandler.context';
 import { useUserContext } from '../context/user.context';
 
-import { Secondary } from '../containers/secondary.container';
-import { Content } from '../connectors/main';
-import { SideNav } from '../connectors/side';
-import { HeaderBox } from '../connectors/header-box';
+import Page from '../containers/default.container';
 import { GoBackButton } from '../components/shared/brand-button';
 
 interface SnippetPageProps
@@ -56,16 +49,14 @@ const Snippet: React.FC<SnippetPageProps> = ({ match }) => {
     editing,
     setEditing,
     submitting,
-    setSubmitting,
     deleting,
-    setDeleting,
     alert,
     setAlert,
     heading,
     setHeading,
     clearValues,
+    faving,
     faveSnippet,
-    setFaveSnippet,
     handleFave,
     handleDelete,
     handleCancel,
@@ -73,11 +64,6 @@ const Snippet: React.FC<SnippetPageProps> = ({ match }) => {
   } = useDataHandler();
   const { accessToken, username } = useUserContext();
   const [baseLg] = useMediaQuery('(min-width: 62em)');
-
-  // const cancelRef = React.useRef<HTMLButtonElement>(null);
-
-  // const closeAlert = () => setAlert(false);
-
   const [snippet, setSnippet] = React.useState<Snippet | undefined>();
   const [loading, setLoading] = React.useState(false);
 
@@ -117,89 +103,76 @@ const Snippet: React.FC<SnippetPageProps> = ({ match }) => {
     }
   }, [snippet]);
 
+  const secondary = (
+    <SnippetCrud
+      snippet={snippet}
+      editing={editing}
+      setAlert={setAlert}
+      title={title}
+      setTitle={setTitle}
+      language={language}
+      setLanguage={setLanguage}
+      value={value}
+      setValue={setValue}
+      description={description}
+      setDescription={setDescription}
+      tags={tags}
+      setTags={setTags}
+      source={source}
+      setSource={setSource}
+      privatize={privatize}
+      setPrivatize={setPrivatize}
+      submitting={submitting}
+      deleting={deleting}
+      handleSubmit={handleSubmit}
+      handleDelete={handleDelete}
+      handleCancel={handleCancel}
+    />
+  );
+
+  const primary = loading ? (
+    <p>Loading..</p>
+  ) : (
+    <SnippetCard
+      editing={editing}
+      snippet={snippet}
+      loading={loading}
+      title={title}
+      language={language}
+      value={value}
+      description={description}
+      tags={tags}
+      source={source}
+      id={id}
+      setTags={setTags}
+      faving={faving}
+      handleFave={handleFave}
+      faveSnippet={faveSnippet}
+    />
+  );
+
+  const modals = (
+    <DeleteModal
+      snippet
+      title={title}
+      alert={alert}
+      setAlert={setAlert}
+    />
+  );
+
+  const secondaryHeading = heading;
+  const primaryHeading = heading;
+  const primaryChildren = <GoBackButton>Go Back</GoBackButton>;
   return (
     <>
-      <Secondary>
-        <HeaderBox left heading={id} />
-        <SideNav>
-          <SnippetCrud
-            snippet={snippet}
-            editing={editing}
-            setAlert={setAlert}
-            title={title}
-            setTitle={setTitle}
-            language={language}
-            setLanguage={setLanguage}
-            value={value}
-            setValue={setValue}
-            description={description}
-            setDescription={setDescription}
-            tags={tags}
-            setTags={setTags}
-            source={source}
-            setSource={setSource}
-            privatize={privatize}
-            setPrivatize={setPrivatize}
-            submitting={submitting}
-            deleting={deleting}
-            handleSubmit={handleSubmit}
-            handleDelete={handleDelete}
-            handleCancel={handleCancel}
-          />
-        </SideNav>
-      </Secondary>
-      <DeleteModal alert={alert} setAlert={setAlert} title={title} />
-      <Content>
-        <HeaderBox heading={heading}>
-          <GoBackButton>Go Back</GoBackButton>
-        </HeaderBox>
-
-        {!baseLg && (
-          <SnippetCrud
-            snippet={snippet}
-            editing={editing}
-            setAlert={setAlert}
-            title={title}
-            setTitle={setTitle}
-            language={language}
-            setLanguage={setLanguage}
-            value={value}
-            setValue={setValue}
-            description={description}
-            setDescription={setDescription}
-            tags={tags}
-            setTags={setTags}
-            source={source}
-            setSource={setSource}
-            privatize={privatize}
-            setPrivatize={setPrivatize}
-            submitting={submitting}
-            deleting={deleting}
-            handleSubmit={handleSubmit}
-            handleDelete={handleDelete}
-            handleCancel={handleCancel}
-          />
-        )}
-        {loading ? (
-          <p>Loading..</p>
-        ) : (
-          <SnippetCard
-            editing={editing}
-            snippet={snippet}
-            loading={loading}
-            title={title}
-            language={language}
-            value={value}
-            description={description}
-            tags={tags}
-            source={source}
-            id={id}
-            setTags={setTags}
-            handleFave={handleFave}
-            faveSnippet={faveSnippet}
-          />
-        )}
-      </Content>
+      <Page
+        secondary={secondary}
+        secondaryHeading={secondaryHeading}
+        primary={baseLg && primary}
+        primaryHeading={primaryHeading}
+        primaryChildren={primaryChildren}
+        modals={modals}
+      />
     </>
   );
 };
