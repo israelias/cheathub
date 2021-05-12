@@ -1,55 +1,25 @@
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-shadow */
 
-import React, { RefObject } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router';
-import {
-  Heading,
-  Link,
-  Flex,
-  Text,
-  Box,
-  VStack,
-  Button,
-  useDisclosure,
-  ButtonProps,
-  useToast,
-  useBoolean,
-  useMediaQuery,
-  HStack,
-  Icon,
-  IconButton,
-  Grid,
-} from '@chakra-ui/react';
-import { CloseIcon, HamburgerIcon } from '@chakra-ui/icons';
+import { useMediaQuery, HStack } from '@chakra-ui/react';
 
-import { GoTelescope } from 'react-icons/go';
-
-import { Secondary } from '../containers/secondary.container';
-import { Content } from '../connectors/main';
-import { SideNav } from '../connectors/side';
-import { SidePanel } from '../connectors/drawer';
-
-import SearchBar from '../components/navigation/searchbar';
-import Pagination from '../components/navigation/pagination';
+import Page from '../containers/default.container';
+import SearchBar from '../components/search/search-bar';
+import SearchBox from '../components/search/search-box';
 
 import { useUserContext } from '../context/user.context';
 import { useAppData } from '../context/appdata.context';
 import { useDataHandler } from '../context/datahandler.context';
 
-import SearchBox from '../components/snippet/search/searchbox';
-import { SnippetDataTable } from '../components/snippet/table/data.table';
-import { SnippetQueryTable } from '../components/snippet/table/query.table';
-import { SnippetPaginationTable } from '../components/snippet/table/pagination.table';
-import { HeaderBox } from '../connectors/header-box';
 import { BrandButton } from '../components/shared/brand-button';
-
+import { PrimaryHeader } from '../components/shared/particulars';
 import SnippetCard from '../components/snippet/card';
 
 const Snippets: React.FC = () => {
   const {
     data,
-    setData,
     loading,
     searchText,
     setSearchText,
@@ -63,27 +33,15 @@ const Snippets: React.FC = () => {
     page,
     setPage,
     allTags,
-    loadResultsData,
     loadInitialData,
-    loadAllTags,
   } = useAppData();
-  const { faveSnippet, handleFave } = useDataHandler();
+  const { faveSnippet, handleFave, faving } = useDataHandler();
   const { username, accessToken } = useUserContext();
   const router = useHistory();
   const [baseLg] = useMediaQuery('(min-width: 62em)');
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const sidePanelRef = React.useRef<HTMLButtonElement>(null);
 
   const [heading, setHeading] = React.useState<string>('');
   const [snippets, setSnippets] = React.useState<Snippet[] | []>([]);
-
-  const [title, setTitle] = React.useState<string>('');
-
-  const [source, setSource] = React.useState<string>('');
-  const [likedBy, setLikedBy] = React.useState<string[]>([]);
-
-  const [updatedOn, setUpdatedOn] = React.useState<string>('');
-  const [filename, setFilename] = React.useState<string>('');
 
   const [editing, setEditing] = React.useState(false);
 
@@ -113,20 +71,86 @@ const Snippets: React.FC = () => {
     }
   }, [data]);
 
-  React.useEffect(() => {
-    if (!(username || accessToken)) {
-      router.push('/login');
-    }
-  }, [username, accessToken]);
+  const secondary = (
+    <SearchBox
+      searchText={searchText}
+      language={language}
+      tags={tags}
+      onSearchTextChange={onSearchTextChange}
+      onLanguageChange={onLanguageChange}
+      onTagsChange={onTagChange}
+      allTags={allTags}
+      resetAll={resetAll}
+    />
+  );
+
+  const secondaryHeading = 'Explore Snippets';
+  const secondaryFooterHeading = heading;
+  const secondaryChildren = <></>;
+  const secondaryFooterSubheading = snippets?.length.toString();
+  const primary = loading ? (
+    <p>Loading...</p>
+  ) : (
+    snippets.map((snippet: Snippet, i: number) => (
+      <SnippetCard
+        key={snippet._id}
+        editing={editing}
+        snippet={snippet}
+        loading={loading}
+        title={snippet.title}
+        language={snippet.language}
+        value={snippet.value}
+        description={snippet.description}
+        tags={snippet.tags.join(', ')}
+        source={snippet.source}
+        id={snippet._id}
+        setTags={setTags}
+        handleFave={handleFave}
+        faveSnippet={faveSnippet}
+        faving={faving}
+      />
+    ))
+  );
+  const primaryHeading = '';
+  const primaryChildren = !baseLg ? (
+    <SearchBar
+      searchText={searchText}
+      language={language}
+      tags={tags}
+      onSearchTextChange={onSearchTextChange}
+      onLanguageChange={onLanguageChange}
+      onTagsChange={onTagChange}
+      allTags={allTags}
+      resetAll={resetAll}
+      heading={heading}
+    />
+  ) : (
+    <PrimaryHeader heading={heading}>
+      <HStack>
+        <BrandButton onClick={() => resetAll()}>Clear</BrandButton>
+      </HStack>
+    </PrimaryHeader>
+  );
+  const primaryFooterSubheading = heading;
+  const primaryFooterHeading = '';
 
   return (
     <>
-      <Secondary>
-        <HeaderBox left heading="Explore Snippets" />
-        <SideNav>
-          <Grid minH="100vh" p={3}>
-            <div> </div>
-            <VStack spacing={8}>
+      <Page
+        secondary={baseLg && secondary}
+        secondaryHeading={secondaryHeading}
+        secondaryFooterHeading={secondaryFooterHeading}
+        secondaryFooterSubheading={secondaryFooterSubheading}
+        primary={primary}
+        primaryHeading={primaryHeading}
+        primaryFooterSubheading={primaryFooterSubheading}
+        primaryChildren={primaryChildren}
+      />
+      {/* <Secondary>
+        <>
+          <Flex flexDirection="column" p={0} m={0}>
+            <SecondaryHeader heading="Explore Snippets" />
+            <Box>
               <SearchBox
                 searchText={searchText}
                 language={language}
@@ -137,68 +161,15 @@ const Snippets: React.FC = () => {
                 allTags={allTags}
                 resetAll={resetAll}
               />
-              <SnippetQueryTable
-                searchText={searchText}
-                setSearchText={setSearchText}
-                language={language}
-                setLanguage={setLanguage}
-                tags={tags}
-                setTags={setTags}
-              />
-              {/* <SnippetPaginationTable
-                totalItems={data?.total_items}
-                perPage={snippets.length}
-                currentPage={data?.page}
-              /> */}
-              {/* <SnippetDataTable
-                title={title}
-                language={language}
-                updatedOn={updatedOn}
-                source={source}
-                likedBy={likedBy}
-                filename={filename}
-              /> */}
-            </VStack>
-          </Grid>
-        </SideNav>
-      </Secondary>
-      {!baseLg && (
-        <SidePanel
-          isOpen={isOpen}
-          onOpen={onOpen}
-          onClose={onClose}
-          buttonRef={sidePanelRef}
-          heading="Query Data"
-        >
-          {!baseLg && (
-            <>
-              <SnippetQueryTable
-                searchText={searchText}
-                setSearchText={setSearchText}
-                language={language}
-                setLanguage={setLanguage}
-                tags={tags}
-                setTags={setTags}
-              />
-              <SnippetPaginationTable
-                totalItems={data?.total_items}
-                perPage={snippets.length}
-                currentPage={data?.page}
-              />
-              <SnippetDataTable
-                title={title}
-                language={language}
-                updatedOn={updatedOn}
-                source={source}
-                likedBy={likedBy}
-                filename={filename}
-              />
-            </>
-          )}
-        </SidePanel>
-      )}
-      <Content>
-        {!baseLg ? (
+            </Box>
+
+            <PrimaryFooter heading={heading} subheading="CH 2021" />
+          </Flex>
+        </>
+      </Secondary> */}
+
+      <>
+        {/* {!baseLg ? (
           <SearchBar
             searchText={searchText}
             language={language}
@@ -209,31 +180,18 @@ const Snippets: React.FC = () => {
             allTags={allTags}
             resetAll={resetAll}
             heading={heading}
-          >
-            {!baseLg && (
-              <IconButton
-                aria-label="Open Results Data"
-                ref={sidePanelRef}
-                icon={
-                  isOpen ? <CloseIcon /> : <Icon as={GoTelescope} />
-                }
-                onClick={onOpen}
-              >
-                Open
-              </IconButton>
-            )}
-          </SearchBar>
+          />
         ) : (
-          <HeaderBox heading={heading}>
+          <PrimaryHeader heading={heading}>
             <HStack>
               <BrandButton onClick={() => resetAll()}>
                 Clear
               </BrandButton>
             </HStack>
-          </HeaderBox>
-        )}
+          </PrimaryHeader>
+        )} */}
 
-        {loading ? (
+        {/* {loading ? (
           <p>Loading..</p>
         ) : (
           <Box
@@ -258,19 +216,34 @@ const Snippets: React.FC = () => {
                 setTags={setTags}
                 handleFave={handleFave}
                 faveSnippet={faveSnippet}
+                faving={faving}
               />
             ))}
           </Box>
-        )}
-        {!loading && (
-          <Pagination
-            hasPrev={data?.has_prev}
-            hasNext={data?.has_next}
-            page={page}
-            setPage={setPage}
-          />
-        )}
-      </Content>
+        )} */}
+
+        {/* <Flex>
+          <Box height="100%"> </Box>
+          <Box width="100%" mt="auto" position="sticky" bottom={0}>
+            {' '}
+            <PrimaryFooter heading={heading} subheading="CH 2021" />
+            <SecondaryFooter>
+              <BrandButton
+                disabled={!data?.has_prev}
+                onClick={() => setPage(page - 1)}
+              >
+                Previous
+              </BrandButton>
+              <BrandButton
+                disabled={!data?.has_next}
+                onClick={() => setPage(page + 1)}
+              >
+                Next
+              </BrandButton>
+            </SecondaryFooter>
+          </Box>
+        </Flex> */}
+      </>
     </>
   );
 };
