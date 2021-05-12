@@ -1,6 +1,6 @@
-from flask import Response, request, jsonify
+from flask import request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from database.models import Snippet, User, Collection
+from database.models import User
 from flask_restful import Resource
 from bson import ObjectId
 
@@ -18,11 +18,23 @@ from resources.errors import (
     UpdatingSnippetError,
     DeletingSnippetError,
     SnippetNotExistsError,
+    UserNotExistsError,
 )
+
+# ===========================================================================
+# *                User Document  RESTful Resource
+# ?  Queries User objects against the User database model.
+#
+# Responsible for all CRUD operations to a User document.
+# ===========================================================================
 
 
 class UsersApi(Resource):
+    """Requests against the User model to `api/users`"""
+
     def get(self):
+        """Returns an array of all User objects."""
+
         users = []
         for doc in User.objects():
             users.append(
@@ -58,9 +70,12 @@ class UsersApi(Resource):
 
 
 class UserApi(Resource):
+    """Requests against the User model to `api/users/<id>`"""
+
     def get(self, id):
+        """Returns a user object with username matching id."""
+
         try:
-            # user_id = get_jwt_identity()
             user = []
             for doc in User.objects(username=id):
                 user.append(
@@ -100,6 +115,15 @@ class UserApi(Resource):
 
     @jwt_required()
     def put(self):
+        """Update one User object with a matching id.
+
+        Raises:
+            Schema validation errors.
+            If required fields are missing.
+        Returns: {dict}
+            JSON Flask Response, 200
+                else: Notifies the frontend with status code and message.
+        """
         try:
             user_id = get_jwt_identity()
             body = request.get_json()
@@ -112,6 +136,13 @@ class UserApi(Resource):
 
     @jwt_required()
     def delete(self, id):
+        """Delete one User object with a matching id.
+
+        Returns: {dict}
+            JSON Flask Response, 200
+                with status message.
+        """
+
         try:
             user_id = get_jwt_identity()
             user = User.objects.get(username=user_id)

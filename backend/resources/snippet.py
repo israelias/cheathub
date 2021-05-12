@@ -1,13 +1,9 @@
-from flask import Response, request, jsonify
+from flask import request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from database.models import Snippet, User, Collection
-from flask_restful import Resource, marshal_with, url_for
+from database.models import Snippet, User
+from flask_restful import Resource, url_for
 from bson import ObjectId
 import datetime
-from flask_mongoengine import Pagination
-
-from flask_restful.reqparse import RequestParser
-from flask_restful.inputs import positive, url
 
 from mongoengine.errors import (
     FieldDoesNotExist,
@@ -31,12 +27,31 @@ from database.constants import (
     all_tags,
 )
 
+# ===========================================================================
+# *                Snippet  RESTful Resource
+# ?  Queries Snippet objects against the Snippet database model.
+#
+# Responsible for all CRUD operations to a Snippet document.
+# ===========================================================================
+
 
 class SnippetsApi(Resource):
-    """Handles HTTP requests to URL: api/snippets."""
+    """Requests against the Snippet model to `api/snippets` (plural)"""
 
     def get(self):
-        """Retrieve a list of public snippets."""
+        """Retrieve a list of public snippets.
+
+        Yields:
+            Parse web args from the request.
+            Get all existing tags from the databse.
+            Query snippets that include tags from the request.
+            If the tag field is empty,
+                return all snippets with all tags.
+
+        Returns:
+            [{dict}]: JSON Flask Response
+            A paginated list of Snippet objects
+        """
 
         tag_request = tag_parser.parse_args()
         tags = tag_request["tags"]
@@ -93,6 +108,18 @@ class SnippetsApi(Resource):
 
     @jwt_required()
     def post(self):
+        """Save a Snippet document created by an authorized User.
+
+        Yields:
+            Identify a user object against a User model
+            Set a Snippet document based on the Snippet model.
+            Add the Snippet to the User's `snippets_created` field.
+        Flags:
+            File and validation errors
+        Returns: {dict}
+            JSON Flask Response, 200
+                else: Notifies the frontend with status message.
+        """
         try:
             user_id = get_jwt_identity()
             body = request.get_json()
@@ -115,7 +142,20 @@ class SnippetsApi(Resource):
 
 
 class SnippetApi(Resource):
+    """Requests against the Snippet model to `api/snippets/<id>` (singular)"""
+
     def get(self, id):
+        """Retrieve one Snippet object with a matching id.
+
+        Yields:
+            Identify a Snippet object against a Snippet model
+        Flags:
+            If it doesn't exist.
+        Returns: [{dict}]
+            mappable JSON Flask Response, 200
+            an array, even with one value to keep the frontend handlers consistent.
+                else: Notifies the frontend with status message.
+        """
         try:
             snippet = Snippet.objects(id=id)
             response = [
@@ -148,6 +188,19 @@ class SnippetApi(Resource):
 
     @jwt_required()
     def put(self, id):
+        """Update one Snippet object with a matching id.
+
+        Yields:
+            Identify a user object against a User model via token.
+            Identify a Snippet document created by the user object.
+            Accept all updates to the Snippet document.
+        Flags:
+            If it doesn't exist.
+            If required fields are missing.
+        Returns: {dict}
+            JSON Flask Response, 200
+                else: Notifies the frontend with status code and message.
+        """
         try:
             user_id = get_jwt_identity()
             username = User.objects.get(username=user_id)
@@ -169,6 +222,20 @@ class SnippetApi(Resource):
 
     @jwt_required()
     def delete(self, id):
+        """Delete one Snippet object with a matching id.
+
+        Yields:
+            Identify a user object against a User model via token.
+            Identify a Snippet document created by the user object.
+            Delete the Snippet document.
+        Flags:
+            If it doesn't exist and we've gotten this far,
+                It means it's made by someone else.
+            If required fields are missing.
+        Returns: {dict}
+            JSON Flask Response, 200
+                else: Notifies the frontend with status code and message.
+        """
         try:
             user_id = get_jwt_identity()
             username = User.objects.get(username=user_id)
@@ -185,8 +252,26 @@ class SnippetApi(Resource):
 
 
 class LikeSnippetApi(Resource):
+    """Requests against the Snippet model to `api/likesnippet/<id>`"""
+
     @jwt_required()
     def post(self, id):
+        """Add/Remove a Snippet reference to the `snippets_liked` list field of a User
+            document with matching id; vice-versa to the `liked_by` list field of matching
+            Snippet document.
+
+        Yields:
+            Identify a user object against a User model via token.
+            Identify a Snippet document based on the `id` param.
+            If the User is already in the Snippet's `liked_by` array,
+                it means we're `unfaving` it.
+            Otherwise, we're `faving` it.
+            Update and reload both references to each other.
+        Returns: {dict}
+            JSON Flask Response, 200 with message
+        Note:
+            This response is a computation as there is no `Fave` collection.
+        """
         user_id = get_jwt_identity()
         user = User.objects.get(username=user_id)
         snippet = Snippet.objects.get(id=id)

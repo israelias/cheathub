@@ -20,9 +20,28 @@ from resources.errors import (
 import datetime
 from bson import ObjectId
 
+#===========================================================================
+# *                Collection  RESTful Resource
+# ?  Queries Collection objects against the Collection database model.
+# 
+# Responsible for all CRUD operations to a Collection document.
+#===========================================================================
 
 class CollectionsApi(Resource):
+    """Requests against the Collection model to `api/collections` (plural)"""
+
     def get(self):
+        """Retrieve loose list of all Collections.
+
+        Yields:
+            jsonify a Query object of the Collection model
+
+        Returns:
+            [{dict}]: JSON Flask Response
+            A loose reference list of Collection objects
+        Note:
+            This endpoint is not the primary endpoint for fetching field details,
+        """
         collections = Collection.objects(private=False)
         response = [
             {
@@ -45,6 +64,18 @@ class CollectionsApi(Resource):
 
     @jwt_required()
     def post(self):
+        """Save a Collection document created by an authorized User.
+
+        Yields:
+            Identify a user object against a User model
+            Set a Collection document based on the Collection model.
+            Add the Collection to the User's `collections` field.
+        Flags:
+            File and validation errors
+        Returns: {dict}
+            JSON Flask Response, 200
+                else: Notifies the frontend with status message.
+        """
         try:
             user_id = get_jwt_identity()
             body = request.get_json()
@@ -67,7 +98,21 @@ class CollectionsApi(Resource):
 
 
 class CollectionApi(Resource):
+    """Requests against the Collection model to `api/collections/<id>` (singular)"""
+
     def get(self, id):
+        """Retrieve one Collection object with a matching id.
+
+        Yields:
+            Identify a Collection object against a Collection model
+        Flags:
+            If it doesn't exist.
+        Returns: [{dict}]
+            mappable JSON Flask Response, 200,
+            with dereferenced nested fields full of data,
+            as an array even for one document to keep the frontend handlers consistent.
+                else: Notifies the frontend with status message.
+        """
         try:
             collection = []
             for doc in Collection.objects(id=id):
@@ -81,7 +126,6 @@ class CollectionApi(Resource):
                             {"label": i["title"], "value": str(ObjectId(i["id"]))}
                             for i in doc["snippets"]
                         ],
-                 
                         "snippets": [
                             {
                                 "_id": str(ObjectId(k["id"])),
@@ -112,6 +156,32 @@ class CollectionApi(Resource):
 
     @jwt_required()
     def put(self, id):
+        """Update one Collection object with a matching id.
+
+        Yields:
+            Identify a user object against a User model via token.
+            Identify a Collection document created by the user object.
+            Iterate through the `snippets` field of the request.
+                Identify a Snippet object against the Snippet model
+                for every item in the `snippets` field.
+            Set this array as a the new `snippets` field in the Collection.
+
+        Flags:
+            If it doesn't exist.
+            If required fields are missing.
+        Returns: {dict}
+            JSON Flask Response, 200
+                else: Notifies the frontend with status code and message.
+        Note:
+            Looping and setting a new array seems like an expensive computation
+            every time someone updates a collection, and the snippets within it.
+            Why can't we just keep it if it's already there, add it if it isn't?
+            Because the Snippet has to first exist in the database in order to
+            `find` and add it to a Collection, the result will always be an
+            `all or not all` flip. An alternative might be to create separate endpoints
+            for adding and removing values from a nested document, which may or may
+            not require the same amount of computation.
+        """
         try:
             user_id = get_jwt_identity()
             user = User.objects.get(username=user_id)
@@ -142,6 +212,20 @@ class CollectionApi(Resource):
 
     @jwt_required()
     def delete(self, id):
+        """Delete one Collection object with a matching id.
+
+        Yields:
+            Identify a user object against a User model via token.
+            Identify a Collection document created by the user object.
+            Delete the Collection document.
+        Flags:
+            If it doesn't exist and we've gotten this far,
+                It means it's made by someone else.
+            If required fields are missing.
+        Returns: {dict}
+            JSON Flask Response, 200
+                else: Notifies the frontend with status code and message.
+        """
         try:
             user_id = get_jwt_identity()
             user = User.objects.get(username=user_id)

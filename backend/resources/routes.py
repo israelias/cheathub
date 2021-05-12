@@ -15,6 +15,13 @@ from .status import Status
 
 from .tags import TagsApi
 
+# ===========================================================================
+# *             Initialize Routes
+# ?  Initializes assignment of defined resource classes to a url.
+# Responsible for linking the backend resources to the frontend UI
+# Definitions are synced with frontend fetch methods.
+# ===========================================================================
+
 
 def initialize_routes(api):
     """Backend root shows the status of the Api."""

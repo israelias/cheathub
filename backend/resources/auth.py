@@ -21,9 +21,40 @@ from resources.errors import (
     InternalServerError,
 )
 
+#===========================================================================
+# *             User Authentication  RESTful Resource
+# ?  Queries User objects against the User model.
+# All POST methods.
+# Responsible for attaching tokens and hashed passwords to a User doc model,
+# required to perform operations on a Snippet, a Collection and itself.
+#===========================================================================
 
 class SignupApi(Resource):
+    """Requests against the Snippet model to `api/auth/signup`"""
+
     def post(self):
+        """Create a new User object following the User model.
+
+        Yields:
+            Save a new User with the required username, email, password
+            fields.
+            Hash the password.
+            Create three Snippets for the user to have some UI to play with
+            upon authentication.
+        Flags:
+            Errors and returns status code with error message,
+                200, otherwise.
+        Returns:
+            {dict}: JSON Flask Response
+                with an access token and a username.
+                sets a refresh cookie in headers.
+        Note:
+            The computation to update, save, reload a Snippet is required to
+            ensure Objects have fully landed before they are referenced. It is extra 
+            complicated for this endpoint as we are awaiting reloads for three models:
+            User, Collection and Snippet, all of which vary in `having to exist` before
+            the other.
+        """
         try:
             body = request.get_json()
             user = User(**body)
@@ -36,7 +67,10 @@ class SignupApi(Resource):
 
             id = user.id
             username = user.username
-            # Required for assigned an owner to snippets
+            
+            # Required to instantiate a new reference to the very same 
+            # and very new User for the purposes of attaching an owner 
+            # to the snippets.
             saved_user = User.objects.get(username=username)
 
             snippet_py = Snippet(
@@ -121,7 +155,22 @@ class SignupApi(Resource):
 
 
 class LoginApi(Resource):
+    """Requests against the Snippet model to `api/auth/login`"""
+
     def post(self):
+        """Authenticate a User object against the User model.
+
+        Yields:
+            Check the email.
+            Check the password.
+        Flags:
+            Errors and returns status code with error message,
+                200, otherwise.
+        Returns:
+            {dict}: JSON Flask Response
+                with an access token and a username.
+                sets a refresh-cookie in headers.
+        """
         try:
             body = request.get_json()
             user = User.objects.get(email=body.get("email"))
@@ -152,17 +201,32 @@ class LoginApi(Resource):
 
         except (UnauthorizedError, DoesNotExist):
             return {"message": "Invalid username or password."}, 401
-            # raise UnauthorizedError
+
         except Exception as e:
             return {"message": "Something went wrong."}, 500
-            # raise InternalServerError
 
 
 class LogoutApi(Resource):
+    """Requests against the Snippet model to `api/auth/logout`"""
+
     @jwt_required()
     def post(self):
+        """Create a new TokenBlockList document following a User's logout request.
+
+        Yields:
+            Save an exiting User's access token to the TokenBlockList database.
+            This prevents the access token from being used between the logout event
+            and its expiration.
+        Flags:
+            Errors and returns status code with error message,
+                200, otherwise.
+        Returns:
+            {dict}: JSON Flask Response
+                confirmation that the token has been revoked.
+
+        """
         revoked_token = get_jwt()
-        # TODO set refresh and access token identities rule
+
         jti = revoked_token["jti"]
         owner = revoked_token["sub"]
         created_ts = int(revoked_token["iat"])

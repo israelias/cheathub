@@ -1,8 +1,15 @@
-"""
-Extends the Exception class to create different custom exceptions and then create an errors dictionary,
-which contains the error message and status codes for each exception.
-Errors are added to the flask-restful Api class
-"""
+# ===========================================================================
+# *           Errors
+# ?  Extends the Exception class to create different custom exceptions
+#
+# Errors dictionary with defined exceptions are passed to Flask-Restful's
+# Api classs upon `init` in app.py.
+#
+# Note: Errors/Exceptions for most response objects are written in the
+# Resource class itself as Flask-Restful's Api class is mostly for
+# internal validation of schemas via MongoEngine without returning an
+# HTTP Exception.
+# ===========================================================================
 
 
 class InternalServerError(Exception):
@@ -26,6 +33,10 @@ class DeletingSnippetError(Exception):
 
 
 class SnippetNotExistsError(Exception):
+    pass
+
+
+class UserNotExistsError(Exception):
     pass
 
 
@@ -69,6 +80,10 @@ errors = {
     },
     "SnippetNotExistsError": {
         "message": "Code Snippet with given id doesn't exist.",
+        "status": 410,
+    },
+    "UserNotExistsError": {
+        "message": "Could not find a user with credentials.",
         "status": 410,
     },
     "UsernameAlreadyExistsError": {

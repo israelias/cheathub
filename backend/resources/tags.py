@@ -5,6 +5,12 @@ from database.constants import (
     all_tags,
 )
 
+#===========================================================================
+# *                TAGS  RESTful Resource
+# ?  Locally computes the `tags` nested list-field of the Snippet model 
+# 
+# Responsible for presenting frontend with all currently searchable tags
+#===========================================================================
 
 class TagsApi(Resource):
     """Prepares all selectable tags: api/tags."""

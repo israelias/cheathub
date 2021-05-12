@@ -23,13 +23,33 @@ from resources.errors import (
     SnippetNotExistsError,
 )
 
+#===========================================================================
+# *                   User Profile RESTful Resource
+# ?  Queries to a User model's relationship to Snippets and Collections
+# All GET methods.
+# Unique to a User's own saved Snippet and Collection documents
+#===========================================================================
 
 class MySnippetsApi(Resource):
-    """Defines private endpoint that returns an array of all snippets created by authorized user."""
+    """Requests against the Snippet model to `api/users/<id>/snippets`"""
 
     def get(self, id):
-        """Get method at endpoint `/api/users/<id>/snippets` where `id` is the authorized user."""
+        """Retrieve a complete list of all Snippets created by a user.
 
+        Yields:
+            Identify a User object against a User model via username (id).
+            jsonify a Query object to the Snippets database of all
+            Snippet objects with field `addedBy` equal to the User
+            model's unique username.
+
+        Returns:
+            [{dict}]: JSON Flask Response
+            A complete list of Snippet objects, with all nested fields
+            dereferenced.
+        Note:
+            This endpoint is the primary endpoint for fetching User's
+            Snippets profile.
+        """
         user = User.objects.get(username=id)
         snippets = Snippet.objects(addedBy=user).order_by("-addedOn")
         resp = [
@@ -57,11 +77,28 @@ class MySnippetsApi(Resource):
 
 
 class MyFaveSnippetsApi(Resource):
-    """Defines private endpoint that returns an array of all snippets `liked` by authorized user."""
+    """Requests against the Snippet model to `api/users/<id>/snippets/faves`"""
 
     def get(self, id):
-        """Get method at endpoint `/api/users/<id>/snippets` where `id` is the authorized user."""
+        """Retrieve a complete list of all Snippets `liked` by a user.
 
+        Yields:
+            Identify a User object against a User model via username.
+            jsonify a Query object to the Snippets database of all
+            Snippet objects with a `likedBy` list field that includes the
+            User.
+
+        Returns:
+            [{dict}]: JSON Flask Response
+            A complete list of Snippet objects, with all nested fields
+            dereferenced.
+        Note:
+            This API response is modeled to be received as a Collection object,
+            even though it is a pure computation of values in nested document
+            fields. This is done to simplofy frontend handlers as the `Faves`
+            endpoint's UI is rendered as a unique `collection`.
+
+        """
         user = User.objects.get(username=id)
         snips = Snippet.objects(likedBy=user)
         response = [
@@ -86,7 +123,6 @@ class MyFaveSnippetsApi(Resource):
                         "updatedOn": k["updatedOn"],
                         "private": k["private"],
                         "source": k["source"],
-                        # "score": doc["score"],
                         "url": url_for("myfavesnippetsapi", id=user),
                     }
                     for k in snips
@@ -98,10 +134,25 @@ class MyFaveSnippetsApi(Resource):
 
 
 class MyCollectionsApi(Resource):
-    """Defines a private endpoint that returns an array of all all user-saved collections"""
+    """Requests against the Snippet model to `api/users/<id>/collections`"""
 
     def get(self, user_id):
-        """Get method at endpoint `/api/users/<user_id>/collections` where `user_id` is the authorized user's username."""
+        """Retrieve a complete list of all Collections created by a user.
+
+        Yields:
+            Identify a User object against a User model via username (id).
+            jsonify a Query object to the Collections database of all
+            Collection objects with field `owner` equal to the User
+            model via unique username and/or id.
+
+        Returns:
+            [{dict}]: JSON Flask Response
+            A complete list of Snippet objects, with all nested fields
+            dereferenced.
+        Note:
+            This endpoint is the primary endpoint for fetching User's
+            Snippets profile.
+        """
 
         user = User.objects.get(username=user_id)
         collections = Collection.objects(owner=user).order_by("-date")
@@ -130,7 +181,6 @@ class MyCollectionsApi(Resource):
                         "updatedOn": k["updatedOn"],
                         "private": k["private"],
                         "source": k["source"],
-                        # "score": doc["score"],
                         "url": url_for("snippetapi", id=str(ObjectId(doc["id"]))),
                     }
                     for k in doc["snippets"]
@@ -143,10 +193,27 @@ class MyCollectionsApi(Resource):
 
 
 class MyCollectionApi(Resource):
-    """Defines a private endpoint that returns a collection item from a user's own saved collections"""
+    """Requests against the Snippet model to `api/users/<user_id>/collections/<id>`"""
 
     def get(self, user_id, id):
-        """Get method at endpoint `/api/users/<user_id>/collections/<id>` where user_id is the authorized user's username, and `id` is the collection object id."""
+        """Retrieve one Collection created by a user.
+
+        Yields:
+            Identify a User object against a User model via username (user_id).
+            jsonify a Query object to the Collections database of a
+            Collection object with field `owner` equal to the User
+            model via unique username `user_id`, and a `collecion_id`
+            equal to the query `id`.
+
+        Returns:
+            [{dict}]: JSON Flask Response
+            A healthy Collection object with unnested, dereferenced Snippets  
+        Note:
+            This endpoint returns a response identical to `api/collections/<id>`;
+            the only difference being the `user_id` argument.
+            This is to accommodate Collections flagged as `private` to the User, a
+            field that is currently false for all Collections by default.
+        """
         try:
             user = User.objects.get(username=user_id)
             collection = []
@@ -195,10 +262,26 @@ class MyCollectionApi(Resource):
 
 
 class MyCollectionsOptionsApi(Resource):
-    """Prepares all selectable collections: api/snippets."""
+    """Requests against the Collection model to `api/users/<user_id>/collections/options`"""
 
     def get(self, user_id):
-        """Retrieve a all current collections as selectable options."""
+        """Retrieve an array of all Collections available to the user.
+
+        Yields:
+            Identify a User object against a User model via username (user_id).
+            jsonify a Query object to the Collections database of all
+            Collection objects with field `owner` equal to the User
+            model via unique username `user_id`, formatted as `options` in
+            an HTML `select` element.
+
+        Returns:
+            [{dict}]: JSON Flask Response
+                array of Collections with `label` and `value` keys for `Select` UI.  
+        Note:
+            This key endpoint is what allows the frontend to quickly present documents
+            as creatable and/or multi-select options immediately following updates to
+            a user's Collections profile.
+        """
         user = User.objects.get(username=user_id)
         collections = Collection.objects(owner=user)
         response = [
@@ -209,10 +292,26 @@ class MyCollectionsOptionsApi(Resource):
 
 
 class MySnippetsOptionsApi(Resource):
-    """Prepares all selectable snippets: api/snippets."""
+    """Requests against the Snippet model to `api/users/<user_id>/snippets/options`"""
 
     def get(self, user_id):
-        """Retrieve a all current snippets as selectable options."""
+        """Retrieve an array of all Snippets available to the user.
+
+        Yields:
+            Identify a User object against a User model via username (user_id).
+            jsonify a Query object to the Snippet database of all
+            Snippet objects with field `addedBy` equal to the User
+            model via unique username `user_id`, formatted as `options` in
+            an HTML `select` element.
+
+        Returns:
+            [{dict}]: JSON Flask Response
+                array of Snippets with `label` and `value` keys for `Select` UI.  
+        Note:
+            This key endpoint is what allows the frontend to present documents
+            as creatable and/or multi-select options in an instant following live 
+            and/or recurrent updates and additions to a user's saved Snippets.
+        """
         user = User.objects.get(username=user_id)
         snippets = Snippet.objects(addedBy=user)
         response = [

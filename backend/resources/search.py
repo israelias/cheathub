@@ -1,26 +1,14 @@
-from flask import Response, request, jsonify
+from flask import jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from database.models import Snippet, User, Collection
+from database.models import Snippet
 from flask_restful import Resource, url_for
 from bson import ObjectId
 import datetime
 
-from flask_restful.reqparse import RequestParser
-from flask_restful.inputs import positive, url
+from mongoengine.errors import DoesNotExist
 
-from mongoengine.errors import (
-    FieldDoesNotExist,
-    NotUniqueError,
-    DoesNotExist,
-    ValidationError,
-    InvalidQueryError,
-)
 from resources.errors import (
-    SchemaValidationError,
-    SnippetAlreadyExistsError,
     InternalServerError,
-    UpdatingSnippetError,
-    DeletingSnippetError,
     SnippetNotExistsError,
 )
 
@@ -38,13 +26,20 @@ from database.constants import (
     all_tags,
 )
 
+# ===========================================================================
+# *             Search Snippets  RESTful Resource
+# ?  Queries Snippet database with url params.
+# All GET methods.
+# Parsers enabled for indices within `title` and `description` fields.
+# Local computation on existing `tags` and `language` fields are parsed.
+# ===========================================================================
+
 
 class SearchApi(Resource):
     """Handles query, language and tag params in URL search endpoint: api/search."""
 
     def get(self):
-
-        """Retrieve a list of public snippets.
+        """Retrieve a paginated list of public snippets.
 
         Yields:
             `/api/search?`
@@ -62,7 +57,7 @@ class SearchApi(Resource):
 
             `tags=javascript&tags=jquery`
             Tags query appends to a list.
-            Frontend can cappend {tags=a&tags=b&tags=c} multiple times, and the parser will parse:
+            Frontend can append {tags=a&tags=b&tags=c} multiple times, and the parser will parse:
             [a, b, c]
 
             ` &page=1`
@@ -73,7 +68,8 @@ class SearchApi(Resource):
             InternalServerError: Server error.
 
         Returns:
-            {dict}: JSON Flask Response
+            [{dict}]: JSON Flask Response
+                array of Snippets that match a query
         """
         try:
             search_request = search_parser.parse_args()
