@@ -12,14 +12,11 @@ import { CollectionHandlerProvider } from './context/collectionhandler';
 
 import Snippets from './pages/snippets';
 import Snippet from './pages/snippet';
-import { Registration } from './pages/registration';
 import { Home } from './pages/home';
 import Collections from './pages/collections';
 import Collection from './pages/collection';
 
 import { PrivateRoute } from './lib/privateRoute';
-
-import { SignInPrompt } from './components/modals/auth-prompt';
 
 const App: React.FC = () => (
   <BrowserRouter>
@@ -29,13 +26,9 @@ const App: React.FC = () => (
           <DataHandlerProvider>
             <CollectionHandlerProvider>
               <AppContainer>
-                {/* <SignInPrompt
-                  onOpen={openAlert}
-                  onClose={closeAlert}
-                  isOpen={alert}
-                /> */}
                 <Switch>
                   <Route path="/" exact component={Home} />
+
                   <PrivateRoute
                     path="/collections/:id"
                     exact
@@ -56,8 +49,8 @@ const App: React.FC = () => (
                     exact
                     component={Collection}
                   />
+                  <Route path="/:id" exact component={Home} />
 
-                  <Route path="/:id" exact component={Registration} />
                   <Route path="/" render={() => <div>404</div>} />
                 </Switch>
               </AppContainer>
@@ -68,5 +61,4 @@ const App: React.FC = () => (
     </UserProvider>
   </BrowserRouter>
 );
-
 export default App;
