@@ -16,7 +16,7 @@ import { ACTIONS, MODES } from '../../constants/actions.constants';
 import { MotionBox } from './motion';
 
 const PrimaryHeader: React.FC<{
-  heading: string;
+  heading?: string;
   left?: boolean;
   children?: React.ReactNode;
 }> = ({ heading, left, children }) => {
