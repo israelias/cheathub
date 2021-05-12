@@ -8,6 +8,8 @@ import {
   signUpRequest,
   signOutRequest,
 } from '../services/auth.service';
+
+import { deleteRequest } from '../services/crud.service';
 import { Prompt } from '../components/modals/toast-feedback';
 
 /**
@@ -41,6 +43,9 @@ export type UserContent = {
   handleSignOut: (
     e: React.MouseEvent<HTMLButtonElement>
   ) => Promise<void>;
+  handleDelete: (
+    e: React.FormEvent<HTMLFormElement>
+  ) => Promise<void>;
 };
 
 export const UserContext = React.createContext<UserContent>(
@@ -61,7 +66,7 @@ export function UserProvider({
   const [password, setPassword] = React.useState('');
   const [heading, setHeading] = React.useState('');
   const [alert, setAlert] = React.useState(false);
-  const [returning, setReturning] = React.useState(false);
+  const [returning, setReturning] = React.useState(true);
 
   const toast = useToast();
   const history = useHistory();
@@ -81,9 +86,10 @@ export function UserProvider({
           },
         }).then((response) => {
           if (response.ok) {
-            console.log(response.headers.get('set-cookie'));
             response.json().then((data) => {
               if (data.access_token) {
+                setEmail('');
+                setPassword('');
                 setAccessToken(data.access_token);
                 setUsername(data.username);
                 setLoggedIn(true);
@@ -107,18 +113,27 @@ export function UserProvider({
               }
             });
           } else {
-            setLoading(false);
-            toast({
-              duration: 3000,
-              isClosable: true,
-              render: () => (
-                <Prompt error message="Registration Failed" />
-              ),
+            response.json().then((data) => {
+              if (data.message) {
+                setLoading(false);
+                toast({
+                  duration: 3000,
+                  isClosable: true,
+                  render: () => (
+                    <Prompt warning message={data.message} />
+                  ),
+                });
+              }
             });
           }
         });
       } catch (err) {
-        setHeading(err.message);
+        setLoading(false);
+        toast({
+          duration: 3000,
+          isClosable: true,
+          render: () => <Prompt error message={err.message} />,
+        });
       }
     } else {
       try {
@@ -129,9 +144,10 @@ export function UserProvider({
           },
         }).then((response) => {
           if (response.ok) {
-            console.log(response.headers.get('set-cookie'));
             response.json().then((data) => {
               if (data.access_token) {
+                setEmail('');
+                setPassword('');
                 setAccessToken(data.access_token);
                 setUsername(data.username);
                 setLoggedIn(true);
@@ -166,21 +182,27 @@ export function UserProvider({
               }
             });
           } else {
-            setLoading(false);
-            toast({
-              duration: 3000,
-              isClosable: true,
-              render: () => (
-                <Prompt
-                  error
-                  message={`Sign in failed: ${response?.status}`}
-                />
-              ),
+            response.json().then((data) => {
+              if (data.message) {
+                setLoading(false);
+                toast({
+                  duration: 3000,
+                  isClosable: true,
+                  render: () => (
+                    <Prompt warning message={data.message} />
+                  ),
+                });
+              }
             });
           }
         });
       } catch (err) {
-        setHeading(err.message);
+        setLoading(false);
+        toast({
+          duration: 3000,
+          isClosable: true,
+          render: () => <Prompt error message={err.message} />,
+        });
       }
     }
   };
@@ -196,6 +218,7 @@ export function UserProvider({
           setAccessToken('');
           setUsername('');
           setLoggedIn(false);
+          setReturning(true);
           storage.clearUserLocal();
           storage.setLogoutEvent();
           setTimeout(() => {
@@ -223,13 +246,70 @@ export function UserProvider({
     }
   };
 
+  const handleDelete = async (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      await deleteRequest({
+        url: `api/users/${username}`,
+        accessToken,
+      }).then((res) => {
+        if (res.ok) {
+          setAccessToken('');
+          setUsername('');
+          setLoggedIn(false);
+          storage.clearUserLocal();
+          storage.setLogoutEvent();
+          setTimeout(() => {
+            toast({
+              duration: 3000,
+              isClosable: true,
+              render: () => <Prompt message="Account Deleted" />,
+            });
+          }, 750);
+          setTimeout(() => {
+            setLoading(false);
+
+            history.push('/');
+          }, 1500);
+        } else {
+          setLoading(false);
+          toast({
+            duration: 3000,
+            isClosable: true,
+            render: () => <Prompt warning message="Request Failed" />,
+          });
+        }
+      });
+    } catch (err) {
+      setLoading(false);
+      toast({
+        duration: 3000,
+        isClosable: true,
+        render: () => <Prompt error message={err.message} />,
+      });
+    }
+  };
+
   React.useEffect(() => {
     function checkUserData(e: StorageEvent) {
       if (e.key === 'app_logout') {
         setAccessToken('');
         setUsername('');
         setLoggedIn(false);
-        setAlert(true);
+        setReturning(true);
+        toast({
+          duration: 3000,
+          isClosable: true,
+          render: () => (
+            <Prompt
+              error
+              message="Oops. It seems you've been logged out."
+            />
+          ),
+        });
       }
     }
     window.addEventListener('storage', (e) => checkUserData(e));
@@ -238,11 +318,11 @@ export function UserProvider({
     };
   }, []);
 
-  React.useEffect(() => {
-    if (!(username || accessToken)) {
-      history.push('/');
-    }
-  }, [username, accessToken]);
+  // React.useEffect(() => {
+  //   if (!(username || accessToken)) {
+  //     history.push('/');
+  //   }
+  // }, [username, accessToken]);
 
   return (
     <UserContext.Provider
@@ -257,6 +337,7 @@ export function UserProvider({
         setLoading,
         handleSignIn,
         handleSignOut,
+        handleDelete,
         email,
         setEmail,
         password,
