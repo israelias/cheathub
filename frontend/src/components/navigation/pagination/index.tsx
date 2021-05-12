@@ -6,7 +6,13 @@ import {
 } from '@chakra-ui/react';
 
 import { BrandButton } from '../../shared/brand-button';
-
+/**
+ * The Pagination component for the search page.
+ *
+ * Based on the JSON response object with pagination data from backend search api.
+ * @file defines pagination controls for search api.
+ * @date 2021-05-03
+ */
 const Pagination: React.FC<{
   hasPrev: boolean | undefined;
   hasNext: boolean | undefined;

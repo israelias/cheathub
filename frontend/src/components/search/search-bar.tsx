@@ -9,7 +9,7 @@ import {
 
 import { MdArrowDropDown } from 'react-icons/md';
 
-import { MotionBox } from '../shared/motion-box';
+import { MotionBox } from '../shared/motion';
 
 import { SelectInput, TextInput } from './inputs';
 

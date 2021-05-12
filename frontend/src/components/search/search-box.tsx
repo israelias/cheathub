@@ -1,41 +1,15 @@
 import * as React from 'react';
 
 import {
-  Flex,
-  Heading,
-  IconButton,
   Button,
   ButtonGroup,
-  Text,
   FormControl,
-  FormLabel,
   Input,
-  FormHelperText,
-  Textarea,
   Box,
   HStack,
-  VStack,
-  Editable,
-  EditableInput,
-  EditablePreview,
-  Checkbox,
-  Switch,
-  Divider,
   Select,
   useColorModeValue as mode,
 } from '@chakra-ui/react';
-
-import {
-  CheckIcon,
-  InfoIcon,
-  WarningIcon,
-  CopyIcon,
-  AddIcon,
-  CloseIcon,
-  LinkIcon,
-  EditIcon,
-  MinusIcon,
-} from '@chakra-ui/icons';
 
 import { AnimatePresence, motion } from 'framer-motion';
 
@@ -43,7 +17,7 @@ import { LANGUAGES } from '../../constants/languages.constants';
 
 import { StyledLabel } from '../snippet/crud/form-label';
 
-import { MotionSection } from '../shared/motion-box';
+import { MotionSection } from '../shared/motion';
 
 const MotionBar = motion(Box);
 

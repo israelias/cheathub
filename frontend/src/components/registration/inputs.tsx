@@ -1,9 +1,21 @@
 /* eslint-disable react/require-default-props */
 import * as React from 'react';
 import { FormControl, Input, FormHelperText } from '@chakra-ui/react';
-
 import { StyledLabel } from '../snippet/crud/form-label';
 
+/**
+ * Inputs that make up a registration form.
+ *
+ * State and setState hooks are passed to activate these components.
+ * Auth inputs rely on these UI.
+ * @see RegistrationForm
+ * @file defines the Registration Form elemts..
+ * @date 2021-05-11
+ */
+
+/**
+ * Username text input.
+ */
 function InputUsername({
   username,
   setUsername,
@@ -25,11 +37,13 @@ function InputUsername({
         value={username}
         onChange={(e) => setUsername(e.target.value)}
       />
-      <FormHelperText hidden>Username.</FormHelperText>
+      <FormHelperText hidden>A unique username</FormHelperText>
     </FormControl>
   );
 }
-
+/**
+ * Email text input.
+ */
 function InputEmail({
   email,
   setEmail,
@@ -48,11 +62,15 @@ function InputEmail({
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
-      <FormHelperText hidden>Email.</FormHelperText>
+      <FormHelperText hidden>
+        We don't share you email with anyone.
+      </FormHelperText>
     </FormControl>
   );
 }
-
+/**
+ * Password text input.
+ */
 function InputPassword({
   password,
   setPassword,

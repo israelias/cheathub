@@ -13,7 +13,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 import { BrandButton } from '../shared/brand-button';
 
-import { MotionBox } from '../shared/motion-box';
+import { MotionBox } from '../shared/motion';
 
 import { InputUsername, InputEmail, InputPassword } from './inputs';
 
