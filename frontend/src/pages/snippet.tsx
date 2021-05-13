@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { RouteComponentProps } from 'react-router';
-import { useMediaQuery, Flex, Box } from '@chakra-ui/react';
+import { useMediaQuery } from '@chakra-ui/react';
 
 import SnippetCard from '../components/snippet/card';
 import SnippetCrud from '../components/snippet/crud';
@@ -14,6 +14,7 @@ import { useUserContext } from '../context/user.context';
 
 import Page from '../containers/default.container';
 import { GoBackButton } from '../components/shared/brand-button';
+import LoadSpinner from '../components/shared/spinner';
 
 interface SnippetPageProps
   extends RouteComponentProps<{ id: string }> {}
@@ -131,7 +132,7 @@ const Snippet: React.FC<SnippetPageProps> = ({ match }) => {
   );
 
   const primary = loading ? (
-    <p>Loading..</p>
+    <LoadSpinner />
   ) : (
     <SnippetCard
       editing={editing}

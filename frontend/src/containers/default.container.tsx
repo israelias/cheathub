@@ -1,35 +1,16 @@
-/* eslint-disable no-console */
-/* eslint-disable @typescript-eslint/no-shadow */
-
 import React from 'react';
-import { useHistory } from 'react-router';
-import {
-  Flex,
-  Box,
-  useMediaQuery,
-  HStack,
-  useDisclosure,
-  useColorModeValue as mode,
-} from '@chakra-ui/react';
+
+import { Flex, Box, useMediaQuery } from '@chakra-ui/react';
 
 import { Secondary } from './secondary.container';
 import { Primary } from './primary.container';
 
-import SearchBar from '../components/search/search-bar';
-import SearchBox from '../components/search/search-box';
-
-import { useUserContext } from '../context/user.context';
-import { useAppData } from '../context/appdata.context';
-import { useDataHandler } from '../context/datahandler.context';
-import { SidePanel } from '../components/shared/drawer';
-import { BrandButton } from '../components/shared/brand-button';
 import {
   PrimaryHeader,
   SecondaryHeader,
   PrimaryFooter,
   SecondaryFooter,
 } from '../components/shared/particulars';
-import SnippetCard from '../components/snippet/card';
 
 const Page: React.FC<{
   primary: React.ReactNode;
@@ -44,6 +25,11 @@ const Page: React.FC<{
   secondaryFooterSubheading?: string;
   modals?: React.ReactNode;
   drawers?: React.ReactNode;
+  pagination?: React.ReactNode;
+  search?: React.ReactNode;
+  preSecondaryChildren?: React.ReactNode;
+  postSecondaryChildren?: React.ReactNode;
+  icon?: React.ReactNode;
 }> = ({
   primary,
   primaryHeading = 'CheatHub',
@@ -55,85 +41,102 @@ const Page: React.FC<{
   secondaryChildren,
   secondaryFooterHeading,
   secondaryFooterSubheading = 'CH 2021',
+  preSecondaryChildren,
+  postSecondaryChildren,
   modals,
   drawers,
+  pagination,
+  search,
+  icon,
 }) => {
   const [baseLg] = useMediaQuery('(min-width: 62em)');
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const sidePanelRef = React.useRef<HTMLButtonElement>(null);
   return (
     <>
       <Secondary>
         <Flex
-          // bg={mode('#fff', '#141625')}
-          // borderColor={mode('rgb(235, 236, 237)', '#252945')}
+          overflow={['hidden auto']}
+          css={{
+            '&::-webkit-scrollbar': {
+              width: '0px',
+            },
+            '&::-webkit-scrollbar-track': {
+              width: '0px',
+            },
+            '&::-webkit-scrollbar-thumb': {
+              background: '#252945',
+              borderRadius: '0px',
+            },
+          }}
           flexDirection="column"
           p={0}
           m={0}
         >
-          <SecondaryHeader heading={secondaryHeading}>
+          <SecondaryHeader icon={icon} heading={secondaryHeading}>
             {secondaryChildren}
           </SecondaryHeader>
-
+          {preSecondaryChildren}
           <Box>{secondary}</Box>
-
+          {postSecondaryChildren}
           <PrimaryFooter
             heading={secondaryFooterHeading}
             subheading={secondaryFooterSubheading}
           />
         </Flex>
       </Secondary>
-
       <Primary>
-        <PrimaryHeader heading={primaryHeading}>
-          {primaryChildren}
-        </PrimaryHeader>
-        {baseLg ? (
-          <Box
-            p={{
-              base: '10px 10px 0px 10px',
-              lg: '10px 0px 0px 0px',
-            }}
-          >
-            {primary}
-          </Box>
-        ) : (
-          <Box
-            p={{
-              base: '10px 10px 0px 10px',
-              lg: '10px 0px 0px 0px',
-            }}
-          >
-            {secondary}
-          </Box>
+        {search || (
+          <PrimaryHeader heading={primaryHeading}>
+            {primaryChildren}
+          </PrimaryHeader>
         )}
 
-        {!baseLg && (
-          <Box
-            p={{
-              base: '10px 10px 0px 10px',
-              lg: '10px 0px 0px 0px',
-            }}
-          >
-            {primary}
+        <Box
+          display="flex"
+          flexDirection="column"
+          mt="atuo"
+          mb="auto"
+        >
+          {baseLg ? (
+            <Box
+              p={{
+                base: '10px 10px 0px 10px',
+                lg: '10px 0px 0px 0px',
+                width: '100%',
+              }}
+            >
+              {primary}
+            </Box>
+          ) : (
+            <Box
+              p={{
+                base: '10px 10px 0px 10px',
+                lg: '10px 0px 0px 0px',
+              }}
+            >
+              {secondary}
+            </Box>
+          )}
+
+          {!baseLg && (
+            <Box
+              p={{
+                base: '10px 10px 0px 10px',
+                lg: '10px 0px 0px 0px',
+              }}
+            >
+              {primary}
+            </Box>
+          )}
+        </Box>
+        <Box height="100%"> </Box>
+
+        {pagination && (
+          <Box position="sticky" width="100%" mt="auto" bottom={0}>
+            <SecondaryFooter>{pagination}</SecondaryFooter>
           </Box>
         )}
-
-        <Flex>
-          <Box height="100%"> </Box>
-          <Box width="100%" mt="auto" position="sticky" bottom={0}>
-            {' '}
-            <PrimaryFooter
-              heading={primaryFooterHeading}
-              subheading={primaryFooterSubheading}
-            />
-            <SecondaryFooter>
-              <BrandButton>Previous</BrandButton>
-              <BrandButton>Next</BrandButton>
-            </SecondaryFooter>
-          </Box>
-        </Flex>
       </Primary>
+
       {modals}
       {drawers}
     </>

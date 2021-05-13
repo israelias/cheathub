@@ -3,17 +3,9 @@ import {
   Text,
   Flex,
   useMediaQuery,
-  Grid,
   useColorModeValue as mode,
-  Tooltip,
-  IconButton,
-  Icon,
-  useColorMode,
   Heading,
 } from '@chakra-ui/react';
-
-import { ACTIONS, MODES } from '../../constants/actions.constants';
-import { MotionBox } from './motion';
 
 const PrimaryHeader: React.FC<{
   heading?: string;
@@ -79,14 +71,15 @@ const PrimaryHeader: React.FC<{
 
 const SecondaryHeader: React.FC<{
   heading?: string;
+  icon?: React.ReactNode;
   children?: React.ReactNode;
-}> = ({ heading, children }) => (
+  moreChildren?: React.ReactNode;
+}> = ({ heading, children, icon, moreChildren }) => (
   <Box
     display="flex"
-    // position="sticky"
     zIndex="banner"
     flexDirection="column"
-    bg={mode('#ebeced', '#0b0914')}
+    bg={mode('#fbfbfb', '#0b0914')}
     borderColor={mode('#9992b6', '#b6b1cb')}
     top={0}
     mb="auto"
@@ -106,6 +99,7 @@ const SecondaryHeader: React.FC<{
       justifyContent="space-between"
       alignItems="baseline"
     >
+      {icon}
       {heading}
       {children}
     </Box>
@@ -132,6 +126,7 @@ const SecondaryHeader: React.FC<{
       fontWeight="light"
     >
       {' '}
+      {moreChildren}
     </Text>
   </Box>
 );
@@ -143,24 +138,19 @@ const PrimaryFooter: React.FC<{
   <Box
     display="flex"
     flexDirection="column"
-    // width="100%"
-    bg={mode('#ebeced', '#0b0914')}
+    bg={mode('#ebeced', '#8a8c8f')}
     bottom={0}
     mt="auto"
   >
     <Text
       mt="auto"
       width="100%"
-      // borderBottom={['1px solid']}
       p={2}
       as="span"
       fontSize="xs"
-      // color="gray.600"
-      borderColor={mode('#d8d9da', '#252945')}
-      // fontWeight="medium"
+      bg={mode('#f6f6f6', '#0b0914')}
+      borderColor={mode('#d8d9da', '#b6b1cb')}
       pt={4}
-      // textAlign="center"
-      // color="gray.600"
       textAlign="start"
       fontWeight="bold"
       textTransform="uppercase"
@@ -174,8 +164,8 @@ const PrimaryFooter: React.FC<{
       p={2}
       as="span"
       fontSize="xs"
-      // color="gray.600"
-      borderColor={mode('#d8d9da', '#252945')}
+      bg={mode('#fafafa', '#0b0914')}
+      borderColor={mode('#d8d9da', '#8a8c8f')}
       textAlign="start"
       fontWeight="bold"
       textTransform="uppercase"
@@ -189,8 +179,8 @@ const PrimaryFooter: React.FC<{
       p={2}
       as="span"
       fontSize="xs"
-      // color="gray.600"
-      borderColor={mode('#d8d9da', '#252945')}
+      bg={mode('#fafafa', '#0b0914')}
+      borderColor={mode('#d8d9da', '#b6b1cb')}
       textAlign="start"
       fontWeight="bold"
       textTransform="uppercase"
@@ -207,7 +197,8 @@ const PrimaryFooter: React.FC<{
       fontSize="xs"
       color="gray.600"
       textAlign="center"
-      borderColor={mode('#d8d9da', '#252945')}
+      bg={mode('#fafafa', '#0b0914')}
+      borderColor={mode('#9992b6', '#252945')}
       fontWeight="light"
     >
       <Text
@@ -218,7 +209,8 @@ const PrimaryFooter: React.FC<{
         fontSize="xs"
         color="gray.600"
         textAlign="center"
-        borderColor={mode('#d8d9da', '#252945')}
+        bg={mode('#fafafa', '#0b0914')}
+        borderColor={mode('#bdbfc4', '#252945')}
         fontWeight="light"
       >
         {subheading}
@@ -235,18 +227,13 @@ const SecondaryFooter: React.FC<{
     <Box
       display="flex"
       flexDirection="column"
-      // width="100%"
-      bg={mode('#ebeced', '#0b0914')}
+      width="100%"
+      bg={mode('#ebeced', '#8a8c8f')}
       bottom={0}
       mt="auto"
       pt="auto"
       position="sticky"
-      // width={['calc(100vw - 96px)']}
-      // width="100%"
-      // width={{ base: '100%', lg: 'calc(100vw - 96px)' }}
       zIndex="banner"
-
-      // mr="20px"
     >
       <Text
         width="100%"
@@ -254,8 +241,8 @@ const SecondaryFooter: React.FC<{
         p={1}
         as="span"
         fontSize="xs"
-        // color="gray.600"
-        borderColor={mode('#d8d9da', '#252945')}
+        bg={mode('#fafafa', '#0b0914')}
+        borderColor={mode('#d8d9da', '#b6b1cb')}
         textAlign="start"
         fontWeight="bold"
         textTransform="uppercase"
@@ -269,8 +256,8 @@ const SecondaryFooter: React.FC<{
         p={1}
         as="span"
         fontSize="xs"
-        // color="gray.600"
-        borderColor={mode('#d8d9da', '#252945')}
+        bg={mode('#ebeced', '#0b0914')}
+        borderColor={mode('#d8d9da', '#8a8c8f')}
         textAlign="start"
         fontWeight="bold"
         textTransform="uppercase"
@@ -287,7 +274,8 @@ const SecondaryFooter: React.FC<{
         fontSize="xs"
         color="gray.600"
         textAlign="center"
-        borderColor={mode('#d8d9da', '#252945')}
+        bg={mode('#fafafa', '#0b0914')}
+        borderColor={mode('#9992b6', '#b6b1cb')}
         fontWeight="light"
       >
         <Box
@@ -296,12 +284,12 @@ const SecondaryFooter: React.FC<{
           alignItems="center"
           justifyContent="space-between"
           p={2}
-          // mt={8}
           as="span"
           fontSize="xs"
           color="gray.600"
           textAlign="center"
-          borderColor={mode('#d8d9da', '#252945')}
+          bg={mode('#fafafa', '#0b0914')}
+          borderColor={mode('#bdbfc4', '#252945')}
           fontWeight="light"
         >
           {children}

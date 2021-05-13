@@ -107,7 +107,7 @@ export function UserProvider({
                 setTimeout(() => {
                   setLoading(false);
                   history.push({
-                    pathname: `/collections/${data.username}`,
+                    pathname: `/collections/explore`,
                   });
                 }, 1500);
               }
@@ -165,7 +165,7 @@ export function UserProvider({
                 }, 750);
                 setTimeout(() => {
                   setLoading(false);
-                  history.push(`/collections/${data.username}`);
+                  history.push(`/collections/explore`);
                 }, 1500);
               } else {
                 setLoading(false);
@@ -318,11 +318,11 @@ export function UserProvider({
     };
   }, []);
 
-  // React.useEffect(() => {
-  //   if (!(username || accessToken)) {
-  //     history.push('/');
-  //   }
-  // }, [username, accessToken]);
+  React.useEffect(() => {
+    if (!(username || accessToken)) {
+      history.push('/');
+    }
+  }, [username, accessToken]);
 
   return (
     <UserContext.Provider

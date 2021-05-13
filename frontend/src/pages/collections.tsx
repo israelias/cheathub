@@ -1,8 +1,3 @@
-/* eslint-disable no-console */
-/* eslint-disable no-return-assign */
-/* eslint-disable react-hooks/rules-of-hooks */
-
-/* eslint-disable no-extra-boolean-cast */
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import {
@@ -16,7 +11,7 @@ import {
   useColorModeValue as mode,
 } from '@chakra-ui/react';
 import { CloseIcon } from '@chakra-ui/icons';
-import { GoFileDirectory, GoFileSubmodule } from 'react-icons/go';
+import { GoFileSubmodule } from 'react-icons/go';
 
 import { useProfileData } from '../context/profiledata.context';
 import { useCollectionHandler } from '../context/collectionhandler';
@@ -33,6 +28,7 @@ import {
 
 import CollectionItem from '../components/collections/collection';
 import SnippetItem from '../components/collections/snippets';
+import LoadSpinner from '../components/shared/spinner';
 
 interface CollectionsProps
   extends RouteComponentProps<{ id: string }> {}
@@ -97,7 +93,7 @@ const Collections: React.FC<CollectionsProps> = ({ match }) => {
   }, [match.params.id]);
 
   const secondary = loadingCollections ? (
-    <p>Loading Collections...</p>
+    <LoadSpinner />
   ) : (
     <>
       {faveSnippets?.data?.map(
@@ -190,7 +186,7 @@ const Collections: React.FC<CollectionsProps> = ({ match }) => {
   );
 
   const primary = loadingSnippets ? (
-    <p> Loading Snippets...</p>
+    <LoadSpinner />
   ) : (
     selections?.map((snippet: Snippet, index: number) => (
       <SnippetItem

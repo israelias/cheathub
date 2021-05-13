@@ -1,0 +1,32 @@
+/* Required styles for multi select component */
+
+.Select__value-container{
+ height: 35px;
+ border-radius: 10px;
+ padding: 10px
+}
+
+.Select__menu-list {
+    max-height: 10px !important;
+}
+.select__multi-value__label {
+    margin-right: 8px !important;
+}
+
+.css-12boxfe-multiValue {
+    border-radius: 20px;
+};
+
+.css-12boxfe-multiValue:focus {
+     border-color: '#ff5470' !important;
+     box-shadow: 'none'
+};
+
+.select__control {
+    border-color:'#7e88c3';
+
+}
+
+.select_control:hover {
+    border-color: '#ff5470' !important;
+}

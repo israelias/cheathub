@@ -1,8 +1,6 @@
-/* eslint-disable no-console */
-
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useToast, useBoolean } from '@chakra-ui/react';
+import { useToast } from '@chakra-ui/react';
 
 import { Prompt } from '../components/modals/toast-feedback';
 
@@ -63,13 +61,11 @@ export function CollectionHandlerProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const { username, accessToken } = useUserContext();
-  const { loadInitialData } = useAppData();
+  const { accessToken } = useUserContext();
+
   const {
-    loadSnippetsData,
     loadCollectionsData,
     loadSnippetsOptions,
-    loadCollectionsOptions,
   } = useProfileData();
 
   const toast = useToast();
@@ -112,9 +108,6 @@ export function CollectionHandlerProvider({
     clearValues();
   };
 
-  console.log(snippets);
-  console.log(snippets.map((snip) => snip.value));
-
   const handleSubmit = async (
     e: React.FormEvent<HTMLFormElement>
   ) => {
@@ -122,7 +115,6 @@ export function CollectionHandlerProvider({
     setSubmitting(true);
     if (!editing) {
       try {
-        console.log(snippets);
         await postReload({
           url: `api/collections`,
           accessToken,
@@ -142,13 +134,11 @@ export function CollectionHandlerProvider({
             setTimeout(() => {
               setSubmitting(false);
               clearValues();
-              // loadSnippetsData();
+
               loadSnippetsOptions();
               loadCollectionsData();
-              // loadCollectionsOptions()
-              // loadInitialData();
+
               history.goBack();
-              // history.push(`/collections/${username}`);
             }, 1500);
           } else {
             response.json().then((data) => {
@@ -175,7 +165,6 @@ export function CollectionHandlerProvider({
       }
     } else {
       try {
-        console.log(snippets);
         await putReload({
           url: `api/collections/${id}`,
           accessToken,
@@ -195,12 +184,10 @@ export function CollectionHandlerProvider({
             setTimeout(() => {
               setSubmitting(false);
               clearValues();
-              // loadSnippetsData();
+
               loadSnippetsOptions();
               loadCollectionsData();
-              // loadCollectionsOptions();
-              // loadInitialData();
-              // history.push('/explore');
+
               history.goBack();
             }, 1500);
           } else {

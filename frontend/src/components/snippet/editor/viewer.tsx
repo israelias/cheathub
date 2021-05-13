@@ -3,15 +3,8 @@ import {
   Prism as SyntaxHighlighter,
   SyntaxHighlighterProps,
 } from 'react-syntax-highlighter';
-import {
-  tomorrow,
-  prism,
-  solarizedlight,
-} from 'react-syntax-highlighter/dist/cjs/styles/prism';
-import {
-  useColorModeValue as mode,
-  useMediaQuery,
-} from '@chakra-ui/react';
+import { tomorrow } from 'react-syntax-highlighter/dist/cjs/styles/prism';
+import { useMediaQuery } from '@chakra-ui/react';
 
 interface ViewerProps extends SyntaxHighlighterProps {
   id: string;
@@ -25,7 +18,6 @@ export const Viewer: React.FC<ViewerProps> = ({
   language = 'python',
   ...props
 }) => {
-  const wtf = 'wtf';
   const [baseLg] = useMediaQuery('(min-width: 62em)');
   return (
     <SyntaxHighlighter

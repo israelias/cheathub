@@ -1,7 +1,3 @@
-/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-
 import React from 'react';
 import {
   Box,
@@ -15,12 +11,7 @@ import {
 
 import { useHistory } from 'react-router-dom';
 
-import {
-  HamburgerIcon,
-  CloseIcon,
-  AddIcon,
-  MinusIcon,
-} from '@chakra-ui/icons';
+import { AddIcon, MinusIcon } from '@chakra-ui/icons';
 import { AnimatePresence } from 'framer-motion';
 
 import cn from 'classnames';

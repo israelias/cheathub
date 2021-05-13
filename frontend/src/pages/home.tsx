@@ -1,35 +1,26 @@
-/* eslint-disable no-console */
 import React from 'react';
 import {
   Box,
-  Text,
-  Link,
-  VStack,
-  Grid,
-  useMediaQuery,
+  Image,
+  useColorModeValue as mode,
 } from '@chakra-ui/react';
 import {
   Link as RouterLink,
-  useHistory,
-  useLocation,
   RouteComponentProps,
 } from 'react-router-dom';
 
-import { AxiosResponse } from 'axios';
 import { PR_HELLO } from '../constants/db.constants';
 
 import { useUserContext } from '../context/user.context';
 import { useAppData } from '../context/appdata.context';
 import { useDataHandler } from '../context/datahandler.context';
 
-import { getCollection } from '../services/get.service';
 import { getRequest } from '../services/crud.service';
 
 import RegistrationForm from '../components/registration';
-import SearchBox from '../components/search/search-box';
+
 import SnippetCard from '../components/snippet/card';
 import Page from '../containers/default.container';
-import { Primary } from '../containers/primary.container';
 
 interface HomeProps extends RouteComponentProps<{ id: string }> {}
 // const Collections: React.FC<CollectionsProps> = ({ match }) =>
@@ -56,16 +47,10 @@ export const Home: React.FC<HomeProps> = ({ match }) => {
     accessToken,
   } = useUserContext();
   const { data, setTags } = useAppData();
-  const {
-    handleFave,
-    setFaveSnippet,
-    faveSnippet,
-  } = useDataHandler();
+  const { handleFave, faveSnippet } = useDataHandler();
 
   const [landing, setLanding] = React.useState(true);
   const [snippets, setSnippets] = React.useState<Snippet[] | []>([]);
-  const [baseLg] = useMediaQuery('(min-width: 62em)');
-  const [heading, setHeading] = React.useState<string>('');
 
   const [homeCollection, setHomeCollection] = React.useState<
     Collection | undefined
@@ -102,7 +87,10 @@ export const Home: React.FC<HomeProps> = ({ match }) => {
     }
   }, [match.params.id]);
 
-  console.log(match.params.id);
+  const lightBanner =
+    'https://raw.githubusercontent.com/israelias/cheathub/master/public/logo_banner_yellow_transparent.png';
+  const darkBanner =
+    'https://raw.githubusercontent.com/israelias/cheathub/master/public/logo_banner_blue_transparent.png';
 
   const primary = snippets.map((snippet: Snippet, i: number) => (
     <SnippetCard
@@ -136,95 +124,29 @@ export const Home: React.FC<HomeProps> = ({ match }) => {
       handleSignIn={handleSignIn}
     />
   );
-  return <Page primary={primary} secondary={secondary} />;
+
+  const icon = (
+    <Box mb="auto">
+      <Image
+        src={mode(darkBanner, lightBanner)}
+        alt="CheatHub"
+        htmlWidth="200px"
+      />
+    </Box>
+  );
+
+  const preSecondaryChildren = (
+    <Box p="10px" fontSize="xs" fontWeight="light">
+      <Box>Find a home for all your code snippets.</Box>
+    </Box>
+  );
+
+  return (
+    <Page
+      icon={icon}
+      primary={primary}
+      preSecondaryChildren={preSecondaryChildren}
+      secondary={secondary}
+    />
+  );
 };
-
-const Pages = (
-  <>
-    <Box textAlign="center" fontSize="xl">
-      <Grid minH="100vh" p={3}>
-        <div> </div>
-        {/* <VStack spacing={8}>
-          <RegistrationForm
-            username={username}
-            setUsername={setUsername}
-            email={email}
-            setEmail={setEmail}
-            password={password}
-            setPassword={setPassword}
-            returning={returning}
-            loading={loading}
-            setReturning={setReturning}
-            handleSignIn={handleSignIn}
-          />
-
-          {loggedIn ? (
-            <>
-              {' '}
-              <Text>You are Logged In.</Text>
-              <Link
-                as={RouterLink}
-                color="teal.500"
-                to={`/collections/${username}`}
-                fontSize="2xl"
-              >
-                See your Feed.
-              </Link>
-            </>
-          ) : (
-            <>
-              {' '}
-              <Text>Welcome to Cheat Hub.</Text>
-              <Link
-                as={RouterLink}
-                color="teal.500"
-                to="/registration"
-                fontSize="2xl"
-              >
-                Start the tour.
-              </Link>
-            </>
-          )}
-        </VStack> */}
-      </Grid>
-    </Box>
-    <Box
-      textAlign="center"
-      fontSize="xl"
-      display={{ base: 'none', lg: 'flex' }}
-    >
-      <Grid minH="100vh" p={3}>
-        <div> </div>
-        <VStack spacing={8}>
-          <Box
-            height="90vh"
-            overflowY="scroll"
-            overflowX="hidden"
-            width="500px"
-          >
-            <Box>
-              {/* {snippets.map((snippet: Snippet, i: number) => (
-                <SnippetCard
-                  key={snippet._id}
-                  editing={false}
-                  snippet={snippet}
-                  loading={loading}
-                  title={snippet.title}
-                  language={snippet.language}
-                  value={snippet.value}
-                  description={snippet.description}
-                  tags={snippet.tags.join(', ')}
-                  source={snippet.source}
-                  id={snippet._id}
-                  setTags={setTags}
-                  handleFave={handleFave}
-                  faveSnippet={faveSnippet}
-                />
-              ))} */}
-            </Box>
-          </Box>
-        </VStack>
-      </Grid>
-    </Box>
-  </>
-);

@@ -34,11 +34,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { LANGUAGES } from '../../../constants/languages.constants';
 import { BrandButton } from '../../shared/brand-button';
 import { StyledLabel } from './form-label';
-import {
-  PrimaryFooter,
-  SecondaryHeader,
-  SecondaryFooter,
-} from '../../shared/particulars';
+import { SecondaryFooter } from '../../shared/particulars';
 
 import { MotionForm } from '../../shared/motion';
 

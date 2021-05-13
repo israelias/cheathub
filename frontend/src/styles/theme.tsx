@@ -156,7 +156,7 @@ const globalTheme = extendTheme({
     ...theme.config,
     cssVarPrefix: 'ch',
     useSystemColorMode: false,
-    initialColorMode: 'light',
+    initialColorMode: 'dark',
   },
   styles,
 });

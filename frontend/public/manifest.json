@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "CheatHub",
+  "name": "Create Collections out of all your code snippets",
   "icons": [
     {
       "src": "favicon.ico",

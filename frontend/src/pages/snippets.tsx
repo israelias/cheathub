@@ -1,9 +1,6 @@
-/* eslint-disable no-console */
-/* eslint-disable @typescript-eslint/no-shadow */
-
 import React from 'react';
 import { useHistory } from 'react-router';
-import { useMediaQuery, HStack } from '@chakra-ui/react';
+import { useMediaQuery, HStack, Spinner } from '@chakra-ui/react';
 
 import Page from '../containers/default.container';
 import SearchBar from '../components/search/search-bar';
@@ -13,8 +10,10 @@ import { useUserContext } from '../context/user.context';
 import { useAppData } from '../context/appdata.context';
 import { useDataHandler } from '../context/datahandler.context';
 
+import LoadSpinner from '../components/shared/spinner';
+
 import { BrandButton } from '../components/shared/brand-button';
-import { PrimaryHeader } from '../components/shared/particulars';
+
 import SnippetCard from '../components/snippet/card';
 
 const Snippets: React.FC = () => {
@@ -71,6 +70,8 @@ const Snippets: React.FC = () => {
     }
   }, [data]);
 
+  const spinner = <LoadSpinner />;
+
   const secondary = (
     <SearchBox
       searchText={searchText}
@@ -88,31 +89,54 @@ const Snippets: React.FC = () => {
   const secondaryFooterHeading = heading;
   const secondaryChildren = <></>;
   const secondaryFooterSubheading = snippets?.length.toString();
-  const primary = loading ? (
-    <p>Loading...</p>
-  ) : (
-    snippets.map((snippet: Snippet, i: number) => (
-      <SnippetCard
-        key={snippet._id}
-        editing={editing}
-        snippet={snippet}
-        loading={loading}
-        title={snippet.title}
-        language={snippet.language}
-        value={snippet.value}
-        description={snippet.description}
-        tags={snippet.tags.join(', ')}
-        source={snippet.source}
-        id={snippet._id}
-        setTags={setTags}
-        handleFave={handleFave}
-        faveSnippet={faveSnippet}
-        faving={faving}
-      />
-    ))
-  );
+  const primary = loading
+    ? spinner
+    : snippets.map((snippet: Snippet, i: number) => (
+        <SnippetCard
+          key={snippet._id}
+          editing={editing}
+          snippet={snippet}
+          loading={loading}
+          title={snippet.title}
+          language={snippet.language}
+          value={snippet.value}
+          description={snippet.description}
+          tags={snippet.tags.join(', ')}
+          source={snippet.source}
+          id={snippet._id}
+          setTags={setTags}
+          handleFave={handleFave}
+          faveSnippet={faveSnippet}
+          faving={faving}
+        />
+      ));
   const primaryHeading = '';
-  const primaryChildren = !baseLg ? (
+  const primaryChildren = (
+    <HStack>
+      <BrandButton onClick={() => resetAll()}>Clear</BrandButton>
+    </HStack>
+  );
+  const primaryFooterSubheading = heading;
+  const primaryFooterHeading = '';
+  const pagination = (
+    <>
+      {' '}
+      <BrandButton
+        disabled={!data?.has_prev}
+        onClick={() => setPage(page - 1)}
+      >
+        Previous
+      </BrandButton>
+      <BrandButton
+        disabled={!data?.has_next}
+        onClick={() => setPage(page + 1)}
+      >
+        Next
+      </BrandButton>
+    </>
+  );
+
+  const search = (
     <SearchBar
       searchText={searchText}
       language={language}
@@ -124,15 +148,7 @@ const Snippets: React.FC = () => {
       resetAll={resetAll}
       heading={heading}
     />
-  ) : (
-    <PrimaryHeader heading={heading}>
-      <HStack>
-        <BrandButton onClick={() => resetAll()}>Clear</BrandButton>
-      </HStack>
-    </PrimaryHeader>
   );
-  const primaryFooterSubheading = heading;
-  const primaryFooterHeading = '';
 
   return (
     <>
@@ -143,107 +159,11 @@ const Snippets: React.FC = () => {
         secondaryFooterSubheading={secondaryFooterSubheading}
         primary={primary}
         primaryHeading={primaryHeading}
-        primaryFooterSubheading={primaryFooterSubheading}
         primaryChildren={primaryChildren}
+        primaryFooterSubheading={primaryFooterSubheading}
+        pagination={pagination}
+        search={search}
       />
-      {/* <Secondary>
-        <>
-          <Flex flexDirection="column" p={0} m={0}>
-            <SecondaryHeader heading="Explore Snippets" />
-            <Box>
-              <SearchBox
-                searchText={searchText}
-                language={language}
-                tags={tags}
-                onSearchTextChange={onSearchTextChange}
-                onLanguageChange={onLanguageChange}
-                onTagsChange={onTagChange}
-                allTags={allTags}
-                resetAll={resetAll}
-              />
-            </Box>
-
-            <PrimaryFooter heading={heading} subheading="CH 2021" />
-          </Flex>
-        </>
-      </Secondary> */}
-
-      <>
-        {/* {!baseLg ? (
-          <SearchBar
-            searchText={searchText}
-            language={language}
-            tags={tags}
-            onSearchTextChange={onSearchTextChange}
-            onLanguageChange={onLanguageChange}
-            onTagsChange={onTagChange}
-            allTags={allTags}
-            resetAll={resetAll}
-            heading={heading}
-          />
-        ) : (
-          <PrimaryHeader heading={heading}>
-            <HStack>
-              <BrandButton onClick={() => resetAll()}>
-                Clear
-              </BrandButton>
-            </HStack>
-          </PrimaryHeader>
-        )} */}
-
-        {/* {loading ? (
-          <p>Loading..</p>
-        ) : (
-          <Box
-            p={{
-              base: '10px 10px 0px 10px',
-              lg: '10px 0px 0px 0px',
-            }}
-          >
-            {snippets.map((snippet: Snippet, i: number) => (
-              <SnippetCard
-                key={snippet._id}
-                editing={editing}
-                snippet={snippet}
-                loading={loading}
-                title={snippet.title}
-                language={snippet.language}
-                value={snippet.value}
-                description={snippet.description}
-                tags={snippet.tags.join(', ')}
-                source={snippet.source}
-                id={snippet._id}
-                setTags={setTags}
-                handleFave={handleFave}
-                faveSnippet={faveSnippet}
-                faving={faving}
-              />
-            ))}
-          </Box>
-        )} */}
-
-        {/* <Flex>
-          <Box height="100%"> </Box>
-          <Box width="100%" mt="auto" position="sticky" bottom={0}>
-            {' '}
-            <PrimaryFooter heading={heading} subheading="CH 2021" />
-            <SecondaryFooter>
-              <BrandButton
-                disabled={!data?.has_prev}
-                onClick={() => setPage(page - 1)}
-              >
-                Previous
-              </BrandButton>
-              <BrandButton
-                disabled={!data?.has_next}
-                onClick={() => setPage(page + 1)}
-              >
-                Next
-              </BrandButton>
-            </SecondaryFooter>
-          </Box>
-        </Flex> */}
-      </>
     </>
   );
 };

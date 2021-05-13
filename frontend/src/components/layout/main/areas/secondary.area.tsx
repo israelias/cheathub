@@ -32,10 +32,22 @@ const SecondaryArea: React.FC<{ children: React.ReactNode }> = ({
       borderLeft={mode('1px solid #ff5470', '1px solid #252945')}
       borderRight={mode('1px solid #ff5470', '1px solid #252945')}
       borderColor={mode('#d8d9da', '#252945')}
+      bg={mode('#f6f6f6', '#0b0914')}
       pr={0}
       pl={0}
-      // pb="48px"
       gridArea={['secondary']}
+      css={{
+        '&::-webkit-scrollbar': {
+          width: '0px',
+        },
+        '&::-webkit-scrollbar-track': {
+          width: '0px',
+        },
+        '&::-webkit-scrollbar-thumb': {
+          background: '#252945',
+          borderRadius: '0px',
+        },
+      }}
     >
       {children}
     </GridItem>

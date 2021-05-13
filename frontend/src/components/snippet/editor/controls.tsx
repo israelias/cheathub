@@ -1,37 +1,15 @@
 import React from 'react';
-import { useHistory, Link as RouterLink } from 'react-router-dom';
 import {
-  FormLabel,
-  Box,
-  Tooltip,
-  Menu,
-  MenuItem,
-  MenuList,
-  MenuButton,
-  VStack,
   HStack,
   Button,
   IconButton,
-  Link,
   Icon,
-  useBoolean,
   useClipboard,
   useColorModeValue as mode,
   ButtonGroup,
 } from '@chakra-ui/react';
-import { CheckIcon, CloseIcon, CopyIcon } from '@chakra-ui/icons';
-import {
-  GoPlus,
-  GoPlusSmall,
-  GoDash,
-  GoLinkExternal,
-  GoLink,
-  GoPencil,
-  GoDiffIgnored,
-  GoDiffModified,
-} from 'react-icons/go';
-import { TimeAgo } from '../../shared/time';
-import { MotionUl, MotionLi, MotionP } from '../../shared/motion';
+import { CheckIcon, CopyIcon } from '@chakra-ui/icons';
+import { GoDiffIgnored, GoDiffModified } from 'react-icons/go';
 
 export const ViewerControls: React.FC<{
   value: string;
