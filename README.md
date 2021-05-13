@@ -1,3 +1,4 @@
+![](https://github.com/israelias/cheathub/blob/master/public/featurescreanshot.png?raw=true)
 # MS3 Cheat-Hub
 A cheatsheet hub.
 
@@ -129,7 +130,6 @@ The project can be understood as a library of user-created <em><b>Albums</b></em
  -  Ability to `fave` or `unfave` snippet results from search. *(Registered User)*
  -  Ability to perform `crud` operations on snippet results from search. *(Registered Owner)*
 ### Features Left to Implement
-- Ability to delete an account. 
 - Add query params to all resources
 - Extend query parser to parse more than one query at a time
 - Optimize performance by dereferencing database records
@@ -165,8 +165,7 @@ The project can be understood as a library of user-created <em><b>Albums</b></em
       - The screen for `Cheathub` appears with a description of its functionality.
       - User reads description.
     - User continues.
-    - Review:
-    - ... 
+ 
 - As a new visitor, I want to be able to register for an account.
     - User is clicks `Switch to sign up `
         - The sign up form appears
@@ -188,8 +187,7 @@ The project can be understood as a library of user-created <em><b>Albums</b></em
             - A success toast alert appears.
         - User is redirected to his/her `collections` profile.
     - User continues
-    - Review:
-    - ... 
+  
 - As a Returning Visitor, I want to be able to create a code snippet.
     - User clicks `Add new snippet`
       - A form appears.
@@ -221,8 +219,7 @@ The project can be understood as a library of user-created <em><b>Albums</b></em
           - A success toast alert appears.
       - User is redirected to his/her `collections` profile.
     - User continues
-    - Review:
-    - ... 
+ 
 - As a Returning Visitor, I want to be able to delete my code snippet(s).
     - User clicks `Edit this snippet`
       - A form appears.
@@ -235,8 +232,7 @@ The project can be understood as a library of user-created <em><b>Albums</b></em
           - A success toast alert appears.
       - User is redirected to his/her `collections` profile.
     - User continues
-    - Review:
-    - ... 
+
 - As a Returning Visitor, I want to be able to create a collection of my code snippets.
     - User clicks `Add New Collection`
       - A form appears.
@@ -254,8 +250,7 @@ The project can be understood as a library of user-created <em><b>Albums</b></em
       - A `collections` card appears.
         - User sees `collection` interface that includes snippets added.
     - User continues
-    - Review:
-    - ... 
+
 - As a Returning Visitor, I want to be able to edit collections of my code snippets.
     - User clicks `Edit this Collection`
       - A form appears.
@@ -268,8 +263,7 @@ The project can be understood as a library of user-created <em><b>Albums</b></em
       - User is redirected to his/her `collections` profile.
       - An updated `collection` appears.
     - User continues
-    - Review:
-    - ... 
+
 - As a Returning Visitor, I want to be able to delete a collection of my code snippet(s).
     - User clicks `Edit this Collection`
       - A form appears.
@@ -282,8 +276,7 @@ The project can be understood as a library of user-created <em><b>Albums</b></em
           - A success toast alert appears.
       - User is redirected to his/her `collections` profile.
     - User continues
-    - Review:
-    - ... 
+
 - As a Frequent Visitor, I want to be able to search code snippets I have created.
     - User clicks `Snippets`
       - User is rerouted to `Snippets` page.
@@ -303,8 +296,7 @@ The project can be understood as a library of user-created <em><b>Albums</b></em
           - User clicks `Next`
             - Snippet cards for next page appear.
       - User continues
-      - Review:
-      - ... 
+
 - As a Frequent Visitor,  I want to be able to like/fave code snippets created by others.
     - User is in `Snippets` page.
       - A feed of all public snippet cards appear.
@@ -312,15 +304,12 @@ The project can be understood as a library of user-created <em><b>Albums</b></em
         - User clicks `Fave`  
           - A success toast appears 
     - User continues
-    - Review:
-    - ... 
+
 - I want to be able to see my favorite code snippets created by others.
     - User is in `Collections` page.
       - A collection named `Faves` appears.
         - User finds all favorite snippts as a collection.
     - User continues
-    - Review:
-    - ... 
 - As a Frequent Visitor, I want to be able to unlike/unfave code snippets created by others.
     - User is in `Snippets` page.
       - A feed of all public snippet cards appear.
@@ -331,8 +320,7 @@ The project can be understood as a library of user-created <em><b>Albums</b></em
         - The faves collection appears.
         - User sees updated Faves.
     - User continues
-    - Review:
-    - ... 
+
 - I want to be able to reference and copy code snippets to the clipboard.
     - User is in `Search` page.
       - A feed of all public snippet cards appear.
@@ -341,8 +329,7 @@ The project can be understood as a library of user-created <em><b>Albums</b></em
           - The copy button changes to a success icon.
           - The code snippet is copied to the clipboard.
     - User continues
-    - Review:
-    - ... 
+
 - As a Frequent Visitor, I want to be able to delete my account.
     - User is clicks `Delete my account`
       - Modal appears
@@ -355,6 +342,8 @@ The project can be understood as a library of user-created <em><b>Albums</b></em
     - Review:
     - A user is able to securely remove his/her history from the database.
 
+Note: All screen shots  of expected results of User testing can be viewed in the public docs directory.
+Please view them [here](https://github.com/israelias/cheathub/tree/master/public)
 ### Code Testing
 #### Frontend
 ##### Performance, Accessibility, Best Practices, SEO, PWA
@@ -401,10 +390,6 @@ The project can be understood as a library of user-created <em><b>Albums</b></em
 [Go to frontend](https://github.com/israelias/cheathub/tree/master/frontend)\
 [Go to backend](https://github.com/israelias/cheathub/tree/master/backend)
 ## Credits
-### Code
-- Accordion module styles is attributed to [link]()
-- Framer Motion Configs
-- Frontend/Backend Configs
 
 ### Content and Media
 - Code snippets used to fill the database are public cheat sheets gathered throughout the development of the project include url references in the snippet cards. The `hello world` feature collection is references from [Say `hello world` in 28 different languages](https://excelwithbusiness.com/blog/say-hello-world-in-28-different-programming-languages/)
@@ -421,3 +406,8 @@ The project can be understood as a library of user-created <em><b>Albums</b></em
 #### Flask backend with React frontend References
 - [Subdirectory Heroku Deployment](https://stackoverflow.com/questions/7539382/how-can-i-deploy-push-only-a-subdirectory-of-my-git-repo-to-heroku)
 - [Deploying Flask Restful Backend](https://medium.com/analytics-vidhya/flask-restful-api-with-heroku-da1ecf3e04b)
+
+### Mentoring
+- Aarong Sinnot
+- Code Institute tutors
+- Fellow Code Institute students
