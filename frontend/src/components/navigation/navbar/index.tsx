@@ -104,6 +104,9 @@ const NavBar: React.FC = () => {
                     {AUTH.map((auth) =>
                       auth.label === 'Sign Out' ? (
                         <MenuItem
+                          bg={mode('#fafafa', '#252945')}
+                          borderColor={mode('#bdbfc4', '#786e89')}
+                          color={mode('#252945', '#fafafa')}
                           key={`auth-${auth.label}`}
                           icon={<Icon as={auth.icons.main} />}
                           onClick={handleSignOut}
@@ -116,6 +119,9 @@ const NavBar: React.FC = () => {
                           onSubmit={handleDelete}
                         >
                           <MenuItem
+                            bg={mode('#fafafa', '#252945')}
+                            borderColor={mode('#bdbfc4', '#786e89')}
+                            color={mode('#252945', '#fafafa')}
                             key={`auth-${auth.label}`}
                             icon={<Icon as={auth.icons.main} />}
                             onClick={() => setAlert(true)}
