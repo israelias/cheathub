@@ -10,6 +10,7 @@ import {
 } from 'react-router-dom';
 
 import { PR_HELLO } from '../constants/db.constants';
+import { LOGO } from '../constants/hrefs.constants';
 import LoadSpinner from '../components/shared/spinner';
 
 import { useUserContext } from '../context/user.context';
@@ -89,11 +90,6 @@ export const Home: React.FC<HomeProps> = ({ match }) => {
     }
   }, [match.params.id]);
 
-  const lightBanner =
-    'https://raw.githubusercontent.com/israelias/cheathub/master/public/logo_banner_yellow_transparent.png';
-  const darkBanner =
-    'https://raw.githubusercontent.com/israelias/cheathub/master/public/logo_banner_blue_transparent.png';
-
   const spinner = <LoadSpinner />;
   const primary = loadingHome
     ? spinner
@@ -133,7 +129,7 @@ export const Home: React.FC<HomeProps> = ({ match }) => {
   const icon = (
     <Box mb="auto">
       <Image
-        src={mode(darkBanner, lightBanner)}
+        src={mode(LOGO.dark, LOGO.light)}
         alt="CheatHub"
         htmlWidth="200px"
       />
