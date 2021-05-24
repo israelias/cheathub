@@ -107,7 +107,7 @@ export function UserProvider({
                 setTimeout(() => {
                   setLoading(false);
                   history.push({
-                    pathname: `/collections/explore`,
+                    pathname: `/explore`,
                   });
                 }, 1500);
               }
@@ -165,7 +165,7 @@ export function UserProvider({
                 }, 750);
                 setTimeout(() => {
                   setLoading(false);
-                  history.push(`/collections/explore`);
+                  history.push(`/explore`);
                 }, 1500);
               } else {
                 setLoading(false);
