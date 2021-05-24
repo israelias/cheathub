@@ -7,6 +7,8 @@ import {
   Tooltip,
   useMediaQuery,
   useColorMode,
+  Box,
+  Flex,
 } from '@chakra-ui/react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { AnimateSharedLayout } from 'framer-motion';
@@ -17,10 +19,12 @@ import {
   AddCollectionButton,
   BrandButton,
 } from '../../shared/brand-button';
+import { Logo } from '../../shared/logo';
 import { AuthPrompt } from '../../modals/auth-prompt';
 import { ACTIONS, MODES } from '../../../constants/actions.constants';
 import { useUserContext } from '../../../context/user.context';
 import { useProfileData } from '../../../context/profiledata.context';
+import AccountMenu from '../account';
 
 /**
  * This is an example of animating between different components in Framer Motion 2.
@@ -55,7 +59,7 @@ const Actions = () => {
         top={0}
         width={{ base: 'unset', lg: '100%' }}
         maxWidth={{ base: '100vw', lg: '72px' }}
-        overflow={['hidden auto']}
+        // overflow={['hidden auto']}
         padding={{ base: 'unset', lg: '12px 0px 16px' }}
         alignContent="start"
         height={{ base: 'unset', lg: '100%' }}
@@ -70,6 +74,31 @@ const Actions = () => {
           lg: 'none',
         }}
       >
+        {baseLg && (
+          <Grid
+            as="span"
+            templateColumns={{
+              base: 'unset',
+              lg: 'minmax(0px, 1fr)',
+            }}
+            top={{ base: 'unset', lg: 0 }}
+            alignContent={{ base: 'unset', lg: 'start' }}
+            fontWeight={500}
+          >
+            <Box
+              padding={{
+                base: '12px 12px 12px',
+                lg: '8px 12px ',
+              }}
+              position="relative"
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+            >
+              <Logo dashboard />
+            </Box>
+          </Grid>
+        )}
         {ACTIONS.map((action) => (
           <Tooltip
             key={action.label}
@@ -135,6 +164,19 @@ const Actions = () => {
             </Grid>
           </Tooltip>
         ))}
+
+        {baseLg && loggedIn && (
+          <Flex
+            position="absolute"
+            width="100%"
+            bottom={24}
+            alignItems="center"
+            flexDirection="column"
+            padding={['12px 0px 16px']}
+          >
+            <AccountMenu dashboard />
+          </Flex>
+        )}
 
         {baseLg && (
           <Grid
