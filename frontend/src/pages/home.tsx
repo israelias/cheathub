@@ -1,16 +1,12 @@
 import React from 'react';
-import {
-  Box,
-  Image,
-  useColorModeValue as mode,
-} from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import {
   Link as RouterLink,
   RouteComponentProps,
 } from 'react-router-dom';
 
 import { PR_HELLO } from '../constants/db.constants';
-import { LOGO } from '../constants/hrefs.constants';
+import { Logo } from '../components/shared/logo';
 import LoadSpinner from '../components/shared/spinner';
 
 import { useUserContext } from '../context/user.context';
@@ -126,21 +122,21 @@ export const Home: React.FC<HomeProps> = ({ match }) => {
     />
   );
 
-  const icon = (
-    <Box mb="auto">
-      <Image
-        src={mode(LOGO.dark, LOGO.light)}
-        alt="CheatHub"
-        htmlWidth="200px"
-      />
-    </Box>
-  );
+  const icon = <Logo />;
 
   const preSecondaryChildren = (
     <Box p="10px" fontSize="xs" fontWeight="light">
-      <Box>Find a home for all your code snippets.</Box>
+      <Box>.</Box>
     </Box>
   );
+
+  const primaryChildren = (
+    <Box p="10px" fontSize="sm" fontWeight="light">
+      <Box as="h2">A home for all your code snippets.</Box>
+    </Box>
+  );
+
+  const primaryHeading = 'Welcome to CheatHub';
 
   return (
     <Page
@@ -148,6 +144,8 @@ export const Home: React.FC<HomeProps> = ({ match }) => {
       primary={primary}
       preSecondaryChildren={preSecondaryChildren}
       secondary={secondary}
+      primaryHeading={primaryHeading}
+      primaryChildren={primaryChildren}
     />
   );
 };
