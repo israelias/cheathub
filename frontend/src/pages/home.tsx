@@ -43,28 +43,28 @@ export const Home: React.FC<HomeProps> = ({ match }) => {
     returning,
     setReturning,
     loggedIn,
+    loading,
     handleSignIn,
     accessToken,
   } = useUserContext();
   const { data, setTags } = useAppData();
   const { handleFave, faveSnippet } = useDataHandler();
 
-  const [landing, setLanding] = React.useState(true);
   const [snippets, setSnippets] = React.useState<Snippet[] | []>([]);
-  const [loading, setLoading] = React.useState(false);
+  const [loadingHome, setLoadingHome] = React.useState(false);
   const [homeCollection, setHomeCollection] = React.useState<
     Collection | undefined
   >(undefined!);
 
   const loadHomeCollection = async () => {
     const id = PR_HELLO._id;
-    setLoading(true);
+    setLoadingHome(true);
     const response = await getRequest({
       accessToken,
       url: `api/collections/${id}`,
     });
     if (response && response.length > 0) {
-      setLoading(false);
+      setLoadingHome(false);
       setHomeCollection(response[0]);
     }
   };
@@ -95,14 +95,14 @@ export const Home: React.FC<HomeProps> = ({ match }) => {
     'https://raw.githubusercontent.com/israelias/cheathub/master/public/logo_banner_blue_transparent.png';
 
   const spinner = <LoadSpinner />;
-  const primary = loading
+  const primary = loadingHome
     ? spinner
     : snippets.map((snippet: Snippet, i: number) => (
         <SnippetCard
           key={snippet._id}
           editing={false}
           snippet={snippet}
-          loading={loading}
+          loading={loadingHome}
           title={snippet.title}
           language={snippet.language}
           value={snippet.value}
