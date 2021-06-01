@@ -10,16 +10,12 @@ import {
 } from 'react-router-dom';
 
 import { PR_HELLO } from '../constants/db.constants';
-import LoadSpinner from '../components/shared/spinner';
 
 import { useUserContext } from '../context/user.context';
 import { useAppData } from '../context/appdata.context';
 import { useDataHandler } from '../context/datahandler.context';
-
 import { getRequest } from '../services/crud.service';
-
 import RegistrationForm from '../components/registration';
-
 import SnippetCard from '../components/snippet/card';
 import Page from '../containers/default.container';
 
@@ -42,6 +38,7 @@ export const Home: React.FC<HomeProps> = ({ match }) => {
     setPassword,
     returning,
     setReturning,
+    loading,
     loggedIn,
     handleSignIn,
     accessToken,
@@ -51,34 +48,29 @@ export const Home: React.FC<HomeProps> = ({ match }) => {
 
   const [landing, setLanding] = React.useState(true);
   const [snippets, setSnippets] = React.useState<Snippet[] | []>([]);
-  const [loading, setLoading] = React.useState(false);
+
   const [homeCollection, setHomeCollection] = React.useState<
     Collection | undefined
   >(undefined!);
 
   const loadHomeCollection = async () => {
     const id = PR_HELLO._id;
-    setLoading(true);
     const response = await getRequest({
       accessToken,
       url: `api/collections/${id}`,
     });
     if (response && response.length > 0) {
-      setLoading(false);
       setHomeCollection(response[0]);
     }
   };
-
   React.useEffect(() => {
     loadHomeCollection();
   }, []);
-
   React.useEffect(() => {
     if (homeCollection) {
       setSnippets(homeCollection.snippets);
     }
   }, [homeCollection]);
-
   React.useEffect(() => {
     if (match.params.id === 'signup') {
       setReturning(false);
@@ -88,33 +80,29 @@ export const Home: React.FC<HomeProps> = ({ match }) => {
       setReturning(false);
     }
   }, [match.params.id]);
-
   const lightBanner =
     'https://raw.githubusercontent.com/israelias/cheathub/master/public/logo_banner_yellow_transparent.png';
   const darkBanner =
     'https://raw.githubusercontent.com/israelias/cheathub/master/public/logo_banner_blue_transparent.png';
 
-  const spinner = <LoadSpinner />;
-  const primary = loading
-    ? spinner
-    : snippets.map((snippet: Snippet, i: number) => (
-        <SnippetCard
-          key={snippet._id}
-          editing={false}
-          snippet={snippet}
-          loading={loading}
-          title={snippet.title}
-          language={snippet.language}
-          value={snippet.value}
-          description={snippet.description}
-          tags={snippet.tags.join(', ')}
-          source={snippet.source}
-          id={snippet._id}
-          setTags={setTags}
-          handleFave={handleFave}
-          faveSnippet={faveSnippet}
-        />
-      ));
+  const primary = snippets.map((snippet: Snippet, i: number) => (
+    <SnippetCard
+      key={snippet._id}
+      editing={false}
+      snippet={snippet}
+      loading={loading}
+      title={snippet.title}
+      language={snippet.language}
+      value={snippet.value}
+      description={snippet.description}
+      tags={snippet.tags.join(', ')}
+      source={snippet.source}
+      id={snippet._id}
+      setTags={setTags}
+      handleFave={handleFave}
+      faveSnippet={faveSnippet}
+    />
+  ));
   const secondary = (
     <RegistrationForm
       username={username}
@@ -129,7 +117,6 @@ export const Home: React.FC<HomeProps> = ({ match }) => {
       handleSignIn={handleSignIn}
     />
   );
-
   const icon = (
     <Box mb="auto">
       <Image
@@ -139,13 +126,11 @@ export const Home: React.FC<HomeProps> = ({ match }) => {
       />
     </Box>
   );
-
   const preSecondaryChildren = (
     <Box p="10px" fontSize="xs" fontWeight="light">
       <Box>Find a home for all your code snippets.</Box>
     </Box>
   );
-
   return (
     <Page
       icon={icon}
