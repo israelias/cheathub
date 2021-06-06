@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import { Box } from '@chakra-ui/react';
 import {
@@ -5,15 +6,12 @@ import {
   RouteComponentProps,
 } from 'react-router-dom';
 
-import { PR_HELLO } from '../constants/db.constants';
+import { HELLOWORLD } from '../constants/home.constants';
 import { Logo } from '../components/shared/logo';
-import LoadSpinner from '../components/shared/spinner';
 
 import { useUserContext } from '../context/user.context';
 import { useAppData } from '../context/appdata.context';
 import { useDataHandler } from '../context/datahandler.context';
-
-import { getRequest } from '../services/crud.service';
 
 import RegistrationForm from '../components/registration';
 
@@ -47,35 +45,6 @@ export const Home: React.FC<HomeProps> = ({ match }) => {
   const { data, setTags } = useAppData();
   const { handleFave, faveSnippet } = useDataHandler();
 
-  const [snippets, setSnippets] = React.useState<Snippet[] | []>([]);
-  const [loadingHome, setLoadingHome] = React.useState(false);
-  const [homeCollection, setHomeCollection] = React.useState<
-    Collection | undefined
-  >(undefined!);
-
-  const loadHomeCollection = async () => {
-    const id = PR_HELLO._id;
-    setLoadingHome(true);
-    const response = await getRequest({
-      accessToken,
-      url: `api/collections/${id}`,
-    });
-    if (response && response.length > 0) {
-      setLoadingHome(false);
-      setHomeCollection(response[0]);
-    }
-  };
-
-  React.useEffect(() => {
-    loadHomeCollection();
-  }, []);
-
-  React.useEffect(() => {
-    if (homeCollection) {
-      setSnippets(homeCollection.snippets);
-    }
-  }, [homeCollection]);
-
   React.useEffect(() => {
     if (match.params.id === 'signup') {
       setReturning(false);
@@ -86,27 +55,26 @@ export const Home: React.FC<HomeProps> = ({ match }) => {
     }
   }, [match.params.id]);
 
-  const spinner = <LoadSpinner />;
-  const primary = loadingHome
-    ? spinner
-    : snippets.map((snippet: Snippet, i: number) => (
-        <SnippetCard
-          key={snippet._id}
-          editing={false}
-          snippet={snippet}
-          loading={loadingHome}
-          title={snippet.title}
-          language={snippet.language}
-          value={snippet.value}
-          description={snippet.description}
-          tags={snippet.tags.join(', ')}
-          source={snippet.source}
-          id={snippet._id}
-          setTags={setTags}
-          handleFave={handleFave}
-          faveSnippet={faveSnippet}
-        />
-      ));
+  const primary = HELLOWORLD[0].snippets.map(
+    (snippet: any, i: number) => (
+      <SnippetCard
+        key={snippet._id}
+        editing={false}
+        snippet={snippet}
+        loading={loading}
+        title={snippet.title}
+        language={snippet.language}
+        value={snippet.value}
+        description={snippet.description}
+        tags={snippet.tags.join(', ')}
+        source={snippet.source}
+        id={snippet._id}
+        setTags={setTags}
+        handleFave={handleFave}
+        faveSnippet={faveSnippet}
+      />
+    )
+  );
   const secondary = (
     <RegistrationForm
       username={username}
