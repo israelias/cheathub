@@ -94,7 +94,7 @@ export const Home: React.FC<HomeProps> = ({ match }) => {
 
   const preSecondaryChildren = (
     <Box p="10px" fontSize="xs" fontWeight="light">
-      <Box>.</Box>
+      <Box> </Box>
     </Box>
   );
 
