@@ -110,7 +110,7 @@ const Snippets: React.FC = () => {
           faving={faving}
         />
       ));
-  const primaryHeading = '';
+  const primaryHeading = heading;
   const primaryChildren = (
     <HStack>
       <BrandButton onClick={() => resetAll()}>Clear</BrandButton>

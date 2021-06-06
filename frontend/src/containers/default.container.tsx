@@ -84,7 +84,9 @@ const Page: React.FC<{
         </Flex>
       </Secondary>
       <Primary>
-        {search || (
+        {search && !baseLg ? (
+          search
+        ) : (
           <PrimaryHeader heading={primaryHeading}>
             {primaryChildren}
           </PrimaryHeader>
