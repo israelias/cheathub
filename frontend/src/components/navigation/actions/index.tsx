@@ -43,7 +43,9 @@ const Actions = () => {
   const { toggleColorMode } = useColorMode();
   const { loggedIn, username, handleSignOut } = useUserContext();
   const [baseLg] = useMediaQuery('(min-width: 62em)');
-  const { loadSnippetsData } = useProfileData();
+  const { loadingSnippets, loadingCollections } = useProfileData();
+
+  const loadingProfile = loadingSnippets || loadingCollections;
   const touring = location.pathname === '/registration';
   const collection = location.pathname.includes('/collections');
 
@@ -124,6 +126,9 @@ const Actions = () => {
                 flexDirection="column"
                 alignItems="center"
                 disabled={!loggedIn}
+                isLoading={
+                  action.label === 'Collections' && loadingProfile
+                }
                 padding={{
                   base: '12px 12px 12px',
                   lg: '8px 12px ',
