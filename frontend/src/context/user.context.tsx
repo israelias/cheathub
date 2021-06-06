@@ -212,6 +212,11 @@ export function UserProvider({
   ) => {
     e.preventDefault();
     setLoading(true);
+    toast({
+      duration: 1500,
+      isClosable: true,
+      render: () => <Prompt message="Signing out..." />,
+    });
     try {
       await signOutRequest({ accessToken }).then((response) => {
         if (response.ok) {
@@ -227,11 +232,11 @@ export function UserProvider({
               isClosable: true,
               render: () => <Prompt message="Signed out" />,
             });
-          }, 750);
+          }, 250);
           setTimeout(() => {
             setLoading(false);
             history.push(`/`);
-          }, 1500);
+          }, 750);
         } else {
           setLoading(false);
           toast({
