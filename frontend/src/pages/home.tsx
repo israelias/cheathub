@@ -40,7 +40,6 @@ export const Home: React.FC<HomeProps> = ({ match }) => {
     loggedIn,
     loading,
     handleSignIn,
-    accessToken,
   } = useUserContext();
   const { data, setTags } = useAppData();
   const { handleFave, faveSnippet } = useDataHandler();
