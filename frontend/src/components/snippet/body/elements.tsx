@@ -389,6 +389,10 @@ export const FaveButton: React.FC<{
       ml="8px"
       fontWeight="light"
       isLoading={snipId === '' && faving}
+      _hover={{
+        color: mode('#0c0e16', '#252945'),
+        bg: mode('#f5f2f0', '#DFE3FA'),
+      }}
       rightIcon={
         <Icon fontSize="10px" as={faveSnippet ? GoDash : GoPlus} />
       }
