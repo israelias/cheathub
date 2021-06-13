@@ -42,7 +42,7 @@ export const Home: React.FC<HomeProps> = ({ match }) => {
     handleSignIn,
   } = useUserContext();
   const { data, setTags } = useAppData();
-  const { handleFave, faveSnippet } = useDataHandler();
+  const { handleFave, faveSnippet, faving } = useDataHandler();
 
   React.useEffect(() => {
     if (match.params.id === 'signup') {
@@ -71,6 +71,7 @@ export const Home: React.FC<HomeProps> = ({ match }) => {
         setTags={setTags}
         handleFave={handleFave}
         faveSnippet={faveSnippet}
+        faving={faving}
       />
     )
   );
