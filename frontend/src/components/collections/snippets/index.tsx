@@ -92,7 +92,7 @@ const SnippetItem: React.FC<{
         }}
       >
         <Text>{snippet.title}</Text>
-        <Box>
+        <Box display="flex" alignItems="center">
           <Text
             justifySelf="end"
             as="span"
