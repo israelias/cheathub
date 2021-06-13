@@ -312,7 +312,6 @@ export const EditButton: React.FC<{
   ) : (
     <Button
       display="flex"
-      // alignItems="center"
       justifyContent="space-between"
       variant="outline"
       borderColor={mode('#d8d9da', '#7e88c3')}
@@ -339,7 +338,7 @@ export const FaveButton: React.FC<{
   collections?: boolean;
   snipId: string;
   handleFave?: (snipId: string) => Promise<void>;
-  faving?: boolean;
+  faving: boolean;
   likedBy: string[];
   username: string;
 }> = ({
@@ -377,9 +376,12 @@ export const FaveButton: React.FC<{
   ) : (
     <Button
       type="submit"
+      display="flex"
+      justifyContent="space-between"
       variant="outline"
       lineHeight="1"
       fontSize="xs"
+      size="xs"
       p={0}
       mr="-px"
       pl="6px"
