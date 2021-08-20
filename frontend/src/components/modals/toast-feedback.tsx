@@ -16,7 +16,7 @@ import {
  * @date 2021-05-03
  */
 export const Prompt: React.FC<{
-  message: string;
+  message: string | any;
   error?: boolean;
   warning?: boolean;
   info?: boolean;

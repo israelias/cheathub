@@ -127,7 +127,7 @@ export function UserProvider({
             });
           }
         });
-      } catch (err) {
+      } catch (err: any) {
         setLoading(false);
         toast({
           duration: 3000,
@@ -196,7 +196,7 @@ export function UserProvider({
             });
           }
         });
-      } catch (err) {
+      } catch (err: any) {
         setLoading(false);
         toast({
           duration: 3000,
@@ -246,7 +246,7 @@ export function UserProvider({
           });
         }
       });
-    } catch (err) {
+    } catch (err: any) {
       setHeading(err.message);
     }
   };
@@ -288,7 +288,7 @@ export function UserProvider({
           });
         }
       });
-    } catch (err) {
+    } catch (err: any) {
       setLoading(false);
       toast({
         duration: 3000,
@@ -326,6 +326,18 @@ export function UserProvider({
   React.useEffect(() => {
     if (!(username || accessToken)) {
       history.push('/');
+      setLoggedIn(false);
+      setReturning(true);
+      toast({
+        duration: 3000,
+        isClosable: true,
+        render: () => (
+          <Prompt
+            error
+            message="Oops. It seems you've been logged out."
+          />
+        ),
+      });
     }
   }, [username, accessToken]);
 
