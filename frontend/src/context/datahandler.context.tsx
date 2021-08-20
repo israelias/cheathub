@@ -114,9 +114,9 @@ export function DataHandlerProvider({
     setHeading('');
     setTitle('');
     setDescription(``);
-    setValue('hello world');
+    setValue(' ');
     setLanguage('javascript');
-    setTags('first post');
+    setTags(' ');
     setSource('');
     setPrivatize('');
     setSource('');
