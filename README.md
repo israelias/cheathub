@@ -165,7 +165,7 @@ The project can be understood as a library of user-created <em><b>Albums</b></em
       - The screen for `Cheathub` appears with a description of its functionality.
       - User reads description.
     - User continues.
- 
+ ![Landing demo](public/gifs/demo_signin.gif)
 - As a new visitor, I want to be able to register for an account.
     - User is clicks `Switch to sign up `
         - The sign up form appears
@@ -178,6 +178,7 @@ The project can be understood as a library of user-created <em><b>Albums</b></em
     - User continues
     - Review:
     - A user is able to securely create an account.
+![Create Account demo](public/gifs/demo_signin.gif)
 - As a Returning Visitor, I want to be able to log in securely.
     - User clicks `Switch to sign in`
       - The sign in form appears
@@ -187,6 +188,7 @@ The project can be understood as a library of user-created <em><b>Albums</b></em
             - A success toast alert appears.
         - User is redirected to his/her `collections` profile.
     - User continues
+![Sign in demo](public/gifs/demo_signin.gif)
   
 - As a Returning Visitor, I want to be able to create a code snippet.
     - User clicks `Add new snippet`
@@ -198,15 +200,13 @@ The project can be understood as a library of user-created <em><b>Albums</b></em
           - A success toast alert appears.
       - User is redirected to his/her `collections` profile.
     - User continues
-    - Review:
-    - ... 
+![Create Snippet demo](public/gifs/demo_signin.gif)
 - As a Returning Visitor, I want to be able to see my code snippet.
     - User arrives at `Collections` profile.
       - A snippet card appears.
         - User sees code snippet interface with his/her 
     - User continues
-    - Review:
-    - ... 
+![View Snippet demo](public/gifs/demo_signin.gif)
 - As a Returning Visitor, I want to be able to edit my code snippet.
     - User clicks `Edit this snippet`
       - A form appears.
@@ -219,7 +219,7 @@ The project can be understood as a library of user-created <em><b>Albums</b></em
           - A success toast alert appears.
       - User is redirected to his/her `collections` profile.
     - User continues
- 
+ ![Eit Snippet demo](public/gifs/demo_signin.gif)
 - As a Returning Visitor, I want to be able to delete my code snippet(s).
     - User clicks `Edit this snippet`
       - A form appears.
@@ -232,7 +232,7 @@ The project can be understood as a library of user-created <em><b>Albums</b></em
           - A success toast alert appears.
       - User is redirected to his/her `collections` profile.
     - User continues
-
+![Delete Snippet demo](public/gifs/demo_signin.gif)
 - As a Returning Visitor, I want to be able to create a collection of my code snippets.
     - User clicks `Add New Collection`
       - A form appears.
@@ -243,14 +243,13 @@ The project can be understood as a library of user-created <em><b>Albums</b></em
           - A success toast alert appears.
       - User is redirected to his/her `collections` profile.
     - User continues
-    - Review:
-    - ... 
+![Create Collection demo](public/gifs/demo_signin.gif)
 - As a Returning Visitor, I want to be able to see collections of my code snippets.
     - User arrives at `Collections` profile.
       - A `collections` card appears.
         - User sees `collection` interface that includes snippets added.
     - User continues
-
+![View Collection demo](public/gifs/demo_signin.gif)
 - As a Returning Visitor, I want to be able to edit collections of my code snippets.
     - User clicks `Edit this Collection`
       - A form appears.
@@ -263,7 +262,7 @@ The project can be understood as a library of user-created <em><b>Albums</b></em
       - User is redirected to his/her `collections` profile.
       - An updated `collection` appears.
     - User continues
-
+![Edit Collection demo](public/gifs/demo_signin.gif)
 - As a Returning Visitor, I want to be able to delete a collection of my code snippet(s).
     - User clicks `Edit this Collection`
       - A form appears.
@@ -276,7 +275,7 @@ The project can be understood as a library of user-created <em><b>Albums</b></em
           - A success toast alert appears.
       - User is redirected to his/her `collections` profile.
     - User continues
-
+![Create Snippet demo](public/gifs/demo_signin.gif)
 - As a Frequent Visitor, I want to be able to search code snippets I have created.
     - User clicks `Snippets`
       - User is rerouted to `Snippets` page.
@@ -296,7 +295,7 @@ The project can be understood as a library of user-created <em><b>Albums</b></em
           - User clicks `Next`
             - Snippet cards for next page appear.
       - User continues
-
+![Search Snippet demo](public/gifs/demo_signin.gif)
 - As a Frequent Visitor,  I want to be able to like/fave code snippets created by others.
     - User is in `Snippets` page.
       - A feed of all public snippet cards appear.
@@ -304,12 +303,13 @@ The project can be understood as a library of user-created <em><b>Albums</b></em
         - User clicks `Fave`  
           - A success toast appears 
     - User continues
-
+![Fave Snippet demo](public/gifs/demo_signin.gif)
 - I want to be able to see my favorite code snippets created by others.
     - User is in `Collections` page.
       - A collection named `Faves` appears.
         - User finds all favorite snippts as a collection.
     - User continues
+![View Faves demo](public/gifs/demo_signin.gif)
 - As a Frequent Visitor, I want to be able to unlike/unfave code snippets created by others.
     - User is in `Snippets` page.
       - A feed of all public snippet cards appear.
@@ -320,7 +320,7 @@ The project can be understood as a library of user-created <em><b>Albums</b></em
         - The faves collection appears.
         - User sees updated Faves.
     - User continues
-
+![Unfave Snippet demo](public/gifs/demo_signin.gif)
 - I want to be able to reference and copy code snippets to the clipboard.
     - User is in `Search` page.
       - A feed of all public snippet cards appear.
@@ -329,7 +329,7 @@ The project can be understood as a library of user-created <em><b>Albums</b></em
           - The copy button changes to a success icon.
           - The code snippet is copied to the clipboard.
     - User continues
-
+![Copy Snippet demo](public/gifs/demo_signin.gif)
 - As a Frequent Visitor, I want to be able to delete my account.
     - User is clicks `Delete my account`
       - Modal appears
@@ -341,7 +341,7 @@ The project can be understood as a library of user-created <em><b>Albums</b></em
     - User continues
     - Review:
     - A user is able to securely remove his/her history from the database.
-
+![Delete Account demo](public/gifs/demo_signin.gif)
 Note: All screen shots  of expected results of User testing can be viewed in the public docs directory.
 Please view them [here](https://github.com/israelias/cheathub/tree/master/public)
 ### Code Testing
