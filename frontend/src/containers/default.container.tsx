@@ -133,7 +133,13 @@ const Page: React.FC<{
         <Box height="100%"> </Box>
 
         {pagination && (
-          <Box position="sticky" width="100%" mt="auto" bottom={0}>
+          <Box
+            position="sticky"
+            width="100%"
+            // mt="auto"
+            mt="80vh"
+            bottom={0}
+          >
             <SecondaryFooter>{pagination}</SecondaryFooter>
           </Box>
         )}

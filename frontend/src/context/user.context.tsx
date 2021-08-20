@@ -323,23 +323,23 @@ export function UserProvider({
     };
   }, []);
 
-  React.useEffect(() => {
-    if (!(username || accessToken)) {
-      history.push('/');
-      setLoggedIn(false);
-      setReturning(true);
-      toast({
-        duration: 3000,
-        isClosable: true,
-        render: () => (
-          <Prompt
-            error
-            message="Oops. It seems you've been logged out."
-          />
-        ),
-      });
-    }
-  }, [username, accessToken]);
+  // React.useEffect(() => {
+  //   if (!(username || accessToken)) {
+  //     history.push('/');
+  //     setLoggedIn(false);
+  //     setReturning(true);
+  //     toast({
+  //       duration: 3000,
+  //       isClosable: true,
+  //       render: () => (
+  //         <Prompt
+  //           error
+  //           message="Oops. It seems you've been logged out."
+  //         />
+  //       ),
+  //     });
+  //   }
+  // }, [username, accessToken]);
 
   return (
     <UserContext.Provider
