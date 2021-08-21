@@ -1,10 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import { Box } from '@chakra-ui/react';
-import {
-  Link as RouterLink,
-  RouteComponentProps,
-} from 'react-router-dom';
+import { RouteComponentProps } from 'react-router-dom';
 
 import { HELLOWORLD } from '../constants/home.constants';
 import { Logo } from '../components/shared/logo';
@@ -12,14 +8,12 @@ import { Logo } from '../components/shared/logo';
 import { useUserContext } from '../context/user.context';
 import { useAppData } from '../context/appdata.context';
 import { useDataHandler } from '../context/datahandler.context';
-
 import RegistrationForm from '../components/registration';
-
 import SnippetCard from '../components/snippet/card';
 import Page from '../containers/default.container';
 
 interface HomeProps extends RouteComponentProps<{ id: string }> {}
-// const Collections: React.FC<CollectionsProps> = ({ match }) =>
+
 /**
  * Frontend public endpoint that represents the Home route.
  *
@@ -37,7 +31,6 @@ export const Home: React.FC<HomeProps> = ({ match }) => {
     setPassword,
     returning,
     setReturning,
-    loggedIn,
     loading,
     handleSignIn,
   } = useUserContext();
