@@ -114,9 +114,9 @@ export function DataHandlerProvider({
     setHeading('');
     setTitle('');
     setDescription(``);
-    setValue('hello world');
+    setValue(' ');
     setLanguage('javascript');
-    setTags('first post');
+    setTags(' ');
     setSource('');
     setPrivatize('');
     setSource('');
@@ -183,7 +183,7 @@ export function DataHandlerProvider({
             });
           }
         });
-      } catch (err) {
+      } catch (err: any) {
         setSubmitting(false);
         toast({
           duration: 3000,
@@ -246,7 +246,7 @@ export function DataHandlerProvider({
             });
           }
         });
-      } catch (err) {
+      } catch (err: any) {
         setSubmitting(false);
         toast({
           duration: 3000,
@@ -288,7 +288,7 @@ export function DataHandlerProvider({
           }, 1500);
         }
       });
-    } catch (err) {
+    } catch (err: any) {
       setDeleting(false);
       toast({
         duration: 3000,
@@ -330,7 +330,7 @@ export function DataHandlerProvider({
             });
           }
         });
-    } catch (err) {
+    } catch (err: any) {
       setFaving(false);
       toast({
         duration: 2500,

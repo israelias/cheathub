@@ -107,7 +107,7 @@ export function UserProvider({
                 setTimeout(() => {
                   setLoading(false);
                   history.push({
-                    pathname: `/collections/explore`,
+                    pathname: `/explore`,
                   });
                 }, 1500);
               }
@@ -127,7 +127,7 @@ export function UserProvider({
             });
           }
         });
-      } catch (err) {
+      } catch (err: any) {
         setLoading(false);
         toast({
           duration: 3000,
@@ -165,7 +165,7 @@ export function UserProvider({
                 }, 750);
                 setTimeout(() => {
                   setLoading(false);
-                  history.push(`/collections/explore`);
+                  history.push(`/explore`);
                 }, 1500);
               } else {
                 setLoading(false);
@@ -196,7 +196,7 @@ export function UserProvider({
             });
           }
         });
-      } catch (err) {
+      } catch (err: any) {
         setLoading(false);
         toast({
           duration: 3000,
@@ -212,6 +212,11 @@ export function UserProvider({
   ) => {
     e.preventDefault();
     setLoading(true);
+    toast({
+      duration: 1500,
+      isClosable: true,
+      render: () => <Prompt message="Signing out..." />,
+    });
     try {
       await signOutRequest({ accessToken }).then((response) => {
         if (response.ok) {
@@ -227,11 +232,11 @@ export function UserProvider({
               isClosable: true,
               render: () => <Prompt message="Signed out" />,
             });
-          }, 750);
+          }, 250);
           setTimeout(() => {
             setLoading(false);
             history.push(`/`);
-          }, 1500);
+          }, 750);
         } else {
           setLoading(false);
           toast({
@@ -241,7 +246,7 @@ export function UserProvider({
           });
         }
       });
-    } catch (err) {
+    } catch (err: any) {
       setHeading(err.message);
     }
   };
@@ -283,7 +288,7 @@ export function UserProvider({
           });
         }
       });
-    } catch (err) {
+    } catch (err: any) {
       setLoading(false);
       toast({
         duration: 3000,
@@ -318,11 +323,23 @@ export function UserProvider({
     };
   }, []);
 
-  React.useEffect(() => {
-    if (!(username || accessToken)) {
-      history.push('/');
-    }
-  }, [username, accessToken]);
+  // React.useEffect(() => {
+  //   if (!(username || accessToken)) {
+  //     history.push('/');
+  //     setLoggedIn(false);
+  //     setReturning(true);
+  //     toast({
+  //       duration: 3000,
+  //       isClosable: true,
+  //       render: () => (
+  //         <Prompt
+  //           error
+  //           message="Oops. It seems you've been logged out."
+  //         />
+  //       ),
+  //     });
+  //   }
+  // }, [username, accessToken]);
 
   return (
     <UserContext.Provider

@@ -7,6 +7,7 @@ import {
   FormHelperText,
   Box,
   HStack,
+  Heading,
   useColorModeValue as mode,
 } from '@chakra-ui/react';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -61,8 +62,25 @@ const RegistrationForm: React.FC<{
       <InputPassword password={password} setPassword={setPassword} />
     ),
   };
-  const signin = [inputs.email, inputs.password];
-  const signup = [inputs.username, inputs.email, inputs.password];
+
+  const heading = (text: string) => (
+    <Heading
+      as="h3"
+      p={['8px 8px']}
+      fontSize="21px"
+      fontWeight="light"
+    >
+      {text}
+    </Heading>
+  );
+
+  const signin = [heading('Sign in'), inputs.email, inputs.password];
+  const signup = [
+    heading('Sign up'),
+    inputs.username,
+    inputs.email,
+    inputs.password,
+  ];
 
   return (
     <AnimatePresence exitBeforeEnter>

@@ -155,7 +155,7 @@ export function CollectionHandlerProvider({
             });
           }
         });
-      } catch (err) {
+      } catch (err: any) {
         setSubmitting(false);
         toast({
           duration: 3000,
@@ -205,7 +205,7 @@ export function CollectionHandlerProvider({
             });
           }
         });
-      } catch (err) {
+      } catch (err: any) {
         setSubmitting(false);
         toast({
           duration: 3000,
@@ -254,7 +254,7 @@ export function CollectionHandlerProvider({
           });
         }
       });
-    } catch (err) {
+    } catch (err: any) {
       setDeleting(false);
       toast({
         duration: 3000,

@@ -186,7 +186,9 @@ const Collections: React.FC<CollectionsProps> = ({ match }) => {
   );
 
   const primary = loadingSnippets ? (
-    <LoadSpinner />
+    <Box mt="40vh">
+      <LoadSpinner />
+    </Box>
   ) : (
     selections?.map((snippet: Snippet, index: number) => (
       <SnippetItem

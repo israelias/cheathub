@@ -50,7 +50,7 @@ const SnippetCard: React.FC<{
   setTags: React.Dispatch<React.SetStateAction<string>>;
   handleFave: (snipId: string) => Promise<void>;
   faveSnippet: boolean;
-  faving?: boolean;
+  faving: boolean;
   snippet: Snippet | undefined;
   editing: boolean;
   loading: boolean;

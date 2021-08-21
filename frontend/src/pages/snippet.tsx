@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { RouteComponentProps } from 'react-router';
-import { useMediaQuery } from '@chakra-ui/react';
+import { useMediaQuery, Box } from '@chakra-ui/react';
 
 import SnippetCard from '../components/snippet/card';
 import SnippetCrud from '../components/snippet/crud';
@@ -132,7 +132,9 @@ const Snippet: React.FC<SnippetPageProps> = ({ match }) => {
   );
 
   const primary = loading ? (
-    <LoadSpinner />
+    <Box mt="40vh">
+      <LoadSpinner />
+    </Box>
   ) : (
     <SnippetCard
       editing={editing}

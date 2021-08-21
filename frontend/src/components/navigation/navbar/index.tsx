@@ -8,29 +8,20 @@ import {
   Box,
   Flex,
   HStack,
-  Heading,
   useColorModeValue as mode,
   Stack,
   useMediaQuery,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  IconButton,
-  Icon,
 } from '@chakra-ui/react';
 
-import { GoPerson } from 'react-icons/go';
+import { Logo } from '../../shared/logo';
 
 import { AUTH } from '../../../constants/actions.constants';
+import AccountMenu from '../account';
 
-import { AuthPrompt } from '../../modals/auth-prompt';
-import { DeleteModal } from '../../modals/delete-modal';
 import { LogoutButton } from '../../shared/logout';
 import { ModeSwitch } from '../../shared/mode';
 import { BrandButton } from '../../shared/brand-button';
 import { useUserContext } from '../../../context/user.context';
-import { useProfileData } from '../../../context/profiledata.context';
 
 /**
  * The header component with top-level user actions.
@@ -45,11 +36,11 @@ const NavBar: React.FC = () => {
     '(min-width: 30em)',
     '(min-width: 48em)',
   ]);
-  const { loggedIn, handleSignOut, handleDelete } = useUserContext();
+  const { loggedIn } = useUserContext();
   const history = useHistory();
   const location = useLocation();
   const touring = location.pathname === '/add';
-  const [alert, setAlert] = React.useState<boolean>(false);
+
   const collection = location.pathname.includes('/collections');
 
   return (
@@ -69,16 +60,7 @@ const NavBar: React.FC = () => {
         >
           <HStack spacing={8} alignItems="center">
             <Flex align="center" mr={0}>
-              <RouterLink to="/">
-                <Heading
-                  color={mode('rgb(33, 30, 47)', 'teal')}
-                  as="span"
-                  size="md"
-                  letterSpacing="-.1rem"
-                >
-                  Cheat-Hub
-                </Heading>
-              </RouterLink>
+              <Logo />
             </Flex>
           </HStack>
           <Stack
@@ -89,51 +71,8 @@ const NavBar: React.FC = () => {
           >
             {loggedIn ? (
               <>
-                <Menu>
-                  <MenuButton
-                    as={IconButton}
-                    bg={mode('#fafafa', '#252945')}
-                    borderColor={mode('#bdbfc4', '#786e89')}
-                    color={mode('#252945', '#fafafa')}
-                    _hover={{ bg: mode('#f5f2f0', '#373B53') }}
-                    aria-label="Account actions"
-                    icon={<Icon as={GoPerson} />}
-                    variant="outline"
-                  />
-                  <MenuList>
-                    {AUTH.map((auth) =>
-                      auth.label === 'Sign Out' ? (
-                        <MenuItem
-                          bg={mode('#fafafa', '#252945')}
-                          borderColor={mode('#bdbfc4', '#786e89')}
-                          color={mode('#252945', '#fafafa')}
-                          key={`auth-${auth.label}`}
-                          icon={<Icon as={auth.icons.main} />}
-                          onClick={handleSignOut}
-                        >
-                          {auth.label}
-                        </MenuItem>
-                      ) : (
-                        <form
-                          id="delete-account"
-                          onSubmit={handleDelete}
-                        >
-                          <MenuItem
-                            bg={mode('#fafafa', '#252945')}
-                            borderColor={mode('#bdbfc4', '#786e89')}
-                            color={mode('#252945', '#fafafa')}
-                            key={`auth-${auth.label}`}
-                            icon={<Icon as={auth.icons.main} />}
-                            onClick={() => setAlert(true)}
-                          >
-                            {auth.label}
-                          </MenuItem>
-                        </form>
-                      )
-                    )}
-                  </MenuList>
-                </Menu>
-                <LogoutButton asLink />
+                <AccountMenu />
+
                 <ModeSwitch variant="ghost" marginLeft="2" />
               </>
             ) : (
@@ -153,7 +92,6 @@ const NavBar: React.FC = () => {
           </Stack>
         </Flex>
       </Box>
-      <DeleteModal account alert={alert} setAlert={setAlert} />
     </>
   );
 };

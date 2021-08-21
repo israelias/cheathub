@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router';
-import { useMediaQuery, HStack, Spinner } from '@chakra-ui/react';
+import { useMediaQuery, HStack, Box } from '@chakra-ui/react';
 
 import Page from '../containers/default.container';
 import SearchBar from '../components/search/search-bar';
@@ -70,7 +70,11 @@ const Snippets: React.FC = () => {
     }
   }, [data]);
 
-  const spinner = <LoadSpinner />;
+  const spinner = (
+    <Box mt="40vh" mb="40vh">
+      <LoadSpinner />
+    </Box>
+  );
 
   const secondary = (
     <SearchBox
@@ -110,7 +114,7 @@ const Snippets: React.FC = () => {
           faving={faving}
         />
       ));
-  const primaryHeading = '';
+  const primaryHeading = heading;
   const primaryChildren = (
     <HStack>
       <BrandButton onClick={() => resetAll()}>Clear</BrandButton>

@@ -1,26 +1,19 @@
 import React from 'react';
-import {
-  Box,
-  Image,
-  useColorModeValue as mode,
-} from '@chakra-ui/react';
-import {
-  Link as RouterLink,
-  RouteComponentProps,
-} from 'react-router-dom';
+import { Box } from '@chakra-ui/react';
+import { RouteComponentProps } from 'react-router-dom';
 
-import { PR_HELLO } from '../constants/db.constants';
+import { HELLOWORLD } from '../constants/home.constants';
+import { Logo } from '../components/shared/logo';
 
 import { useUserContext } from '../context/user.context';
 import { useAppData } from '../context/appdata.context';
 import { useDataHandler } from '../context/datahandler.context';
-import { getRequest } from '../services/crud.service';
 import RegistrationForm from '../components/registration';
 import SnippetCard from '../components/snippet/card';
 import Page from '../containers/default.container';
 
 interface HomeProps extends RouteComponentProps<{ id: string }> {}
-// const Collections: React.FC<CollectionsProps> = ({ match }) =>
+
 /**
  * Frontend public endpoint that represents the Home route.
  *
@@ -39,38 +32,11 @@ export const Home: React.FC<HomeProps> = ({ match }) => {
     returning,
     setReturning,
     loading,
-    loggedIn,
     handleSignIn,
-    accessToken,
   } = useUserContext();
   const { data, setTags } = useAppData();
-  const { handleFave, faveSnippet } = useDataHandler();
+  const { handleFave, faveSnippet, faving } = useDataHandler();
 
-  const [landing, setLanding] = React.useState(true);
-  const [snippets, setSnippets] = React.useState<Snippet[] | []>([]);
-
-  const [homeCollection, setHomeCollection] = React.useState<
-    Collection | undefined
-  >(undefined!);
-
-  const loadHomeCollection = async () => {
-    const id = PR_HELLO._id;
-    const response = await getRequest({
-      accessToken,
-      url: `api/collections/${id}`,
-    });
-    if (response && response.length > 0) {
-      setHomeCollection(response[0]);
-    }
-  };
-  React.useEffect(() => {
-    loadHomeCollection();
-  }, []);
-  React.useEffect(() => {
-    if (homeCollection) {
-      setSnippets(homeCollection.snippets);
-    }
-  }, [homeCollection]);
   React.useEffect(() => {
     if (match.params.id === 'signup') {
       setReturning(false);
@@ -80,29 +46,28 @@ export const Home: React.FC<HomeProps> = ({ match }) => {
       setReturning(false);
     }
   }, [match.params.id]);
-  const lightBanner =
-    'https://raw.githubusercontent.com/israelias/cheathub/master/public/logo_banner_yellow_transparent.png';
-  const darkBanner =
-    'https://raw.githubusercontent.com/israelias/cheathub/master/public/logo_banner_blue_transparent.png';
 
-  const primary = snippets.map((snippet: Snippet, i: number) => (
-    <SnippetCard
-      key={snippet._id}
-      editing={false}
-      snippet={snippet}
-      loading={loading}
-      title={snippet.title}
-      language={snippet.language}
-      value={snippet.value}
-      description={snippet.description}
-      tags={snippet.tags.join(', ')}
-      source={snippet.source}
-      id={snippet._id}
-      setTags={setTags}
-      handleFave={handleFave}
-      faveSnippet={faveSnippet}
-    />
-  ));
+  const primary = HELLOWORLD[0].snippets.map(
+    (snippet: any, i: number) => (
+      <SnippetCard
+        key={snippet._id}
+        editing={false}
+        snippet={snippet}
+        loading={loading}
+        title={snippet.title}
+        language={snippet.language}
+        value={snippet.value}
+        description={snippet.description}
+        tags={snippet.tags.join(', ')}
+        source={snippet.source}
+        id={snippet._id}
+        setTags={setTags}
+        handleFave={handleFave}
+        faveSnippet={faveSnippet}
+        faving={faving}
+      />
+    )
+  );
   const secondary = (
     <RegistrationForm
       username={username}
@@ -117,26 +82,31 @@ export const Home: React.FC<HomeProps> = ({ match }) => {
       handleSignIn={handleSignIn}
     />
   );
-  const icon = (
-    <Box mb="auto">
-      <Image
-        src={mode(darkBanner, lightBanner)}
-        alt="CheatHub"
-        htmlWidth="200px"
-      />
-    </Box>
-  );
+
+  const icon = <Logo />;
+
   const preSecondaryChildren = (
     <Box p="10px" fontSize="xs" fontWeight="light">
-      <Box>Find a home for all your code snippets.</Box>
+      <Box> </Box>
     </Box>
   );
+
+  const primaryChildren = (
+    <Box p="10px" fontSize="sm" fontWeight="light">
+      <Box as="h2">A home for all your code snippets.</Box>
+    </Box>
+  );
+
+  const primaryHeading = 'Welcome to CheatHub';
+
   return (
     <Page
       icon={icon}
       primary={primary}
       preSecondaryChildren={preSecondaryChildren}
       secondary={secondary}
+      primaryHeading={primaryHeading}
+      primaryChildren={primaryChildren}
     />
   );
 };

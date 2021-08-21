@@ -31,7 +31,7 @@ const NavigationArea: React.FC<{ children: React.ReactNode }> = ({
       overflow={['hidden auto']}
       height="100vh"
       width={{ base: '100%', lg: '72px' }}
-      zIndex={{ base: 9997, lg: 'unset' }}
+      zIndex={9997}
       bg={mode('#fff', '#141625')}
       top={0}
     >
