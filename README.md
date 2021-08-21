@@ -24,6 +24,8 @@ Additionally, the restful backend API can be viwed at [cheathub-backend.herokuap
   - [Programs and Software](#programs-and-software)
 - [Notes](#notes)
 - [Testing](#testing)
+  - [User Testing](#user-testing)
+  - [Code Testing](#code-testing)
 - [Deployment](#deployment)
 - [Cloning This Repository](#cloning-this-repository)
 - [Credits](#credits)
@@ -160,12 +162,17 @@ The project can be understood as a library of user-created <em><b>Albums</b></em
 
 ## Testing
 ### User Testing
+
+#### Arrival
 -  As a new vistor, I want to have a good understanding of what the website does
     - User arrives at home page.
       - The screen for `Cheathub` appears with a description of its functionality.
       - User reads description.
     - User continues.
- ![Landing demo](public/gifs/demo_signin.gif)
+
+[<div style="text-align:center"><img src="public/gifs/demo_landing.gif" width="500" alt="sign up landing"/></div>](public/gifs/demo_landing.gif)
+
+#### Sign Up
 - As a new visitor, I want to be able to register for an account.
     - User is clicks `Switch to sign up `
         - The sign up form appears
@@ -178,7 +185,11 @@ The project can be understood as a library of user-created <em><b>Albums</b></em
     - User continues
     - Review:
     - A user is able to securely create an account.
-![Create Account demo](public/gifs/demo_signin.gif)
+ 
+[<div style="text-align:center"><img src="public/gifs/demo_signup.gif" width="500" alt="sign up"/></div>](public/gifs/demo_signinup.gif)
+
+#### Sign In
+
 - As a Returning Visitor, I want to be able to log in securely.
     - User clicks `Switch to sign in`
       - The sign in form appears
@@ -188,8 +199,11 @@ The project can be understood as a library of user-created <em><b>Albums</b></em
             - A success toast alert appears.
         - User is redirected to his/her `collections` profile.
     - User continues
-![Sign in demo](public/gifs/demo_signin.gif)
-  
+
+[<div style="text-align:center"><img src="public/gifs/demo_login.gif" width="500" alt="sign in"/></div>](public/gifs/demo_login.gif)
+
+#### Add and View Snippet
+
 - As a Returning Visitor, I want to be able to create a code snippet.
     - User clicks `Add new snippet`
       - A form appears.
@@ -200,39 +214,25 @@ The project can be understood as a library of user-created <em><b>Albums</b></em
           - A success toast alert appears.
       - User is redirected to his/her `collections` profile.
     - User continues
-![Create Snippet demo](public/gifs/demo_signin.gif)
+
 - As a Returning Visitor, I want to be able to see my code snippet.
     - User arrives at `Collections` profile.
       - A snippet card appears.
         - User sees code snippet interface with his/her 
     - User continues
-![View Snippet demo](public/gifs/demo_signin.gif)
-- As a Returning Visitor, I want to be able to edit my code snippet.
-    - User clicks `Edit this snippet`
-      - A form appears.
-        - The title field is in focus.
-          - User modifies `description`
-          - User updates code snippet.
-          - User adds optional `source` url.
-          - User adds optional `tags`
-        - User clicks submit.
-          - A success toast alert appears.
-      - User is redirected to his/her `collections` profile.
-    - User continues
- ![Eit Snippet demo](public/gifs/demo_signin.gif)
-- As a Returning Visitor, I want to be able to delete my code snippet(s).
-    - User clicks `Edit this snippet`
-      - A form appears.
-        - The title field is in focus.
-          - User clicks `Delete`
-            - Modal appears
-            - The cancel button is in focus
-            - User confirms
-          - The modal is closed
-          - A success toast alert appears.
-      - User is redirected to his/her `collections` profile.
-    - User continues
-![Delete Snippet demo](public/gifs/demo_signin.gif)
+
+[<div style="text-align:center"><img src="public/gifs/demo_addsnippet.gif" width="500" alt="add snippet"/></div>](public/gifs/demo_addsnippet.gif)
+
+<details><summary><em>Add Another Snippet</em></summary>
+<br>
+
+[<div style="text-align:center"><img src="public/gifs/demo_addnewsnippet.gif" width="500" alt="add another snippet"/></div>](public/gifs/demo_addnewsnippet.gif)
+<br>
+</details>
+<br>
+
+#### Add Collection
+
 - As a Returning Visitor, I want to be able to create a collection of my code snippets.
     - User clicks `Add New Collection`
       - A form appears.
@@ -243,13 +243,21 @@ The project can be understood as a library of user-created <em><b>Albums</b></em
           - A success toast alert appears.
       - User is redirected to his/her `collections` profile.
     - User continues
-![Create Collection demo](public/gifs/demo_signin.gif)
+
+[<div style="text-align:center"><img src="public/gifs/demo_addcollection.gif" width="500" alt="add collection"/></div>](public/gifs/demo_addcollection.gif)
+
+#### View Collection
+
 - As a Returning Visitor, I want to be able to see collections of my code snippets.
     - User arrives at `Collections` profile.
       - A `collections` card appears.
         - User sees `collection` interface that includes snippets added.
     - User continues
-![View Collection demo](public/gifs/demo_signin.gif)
+
+[<div style="text-align:center"><img src="public/gifs/demo_viewcollection.gif" width="500" alt="view collection"/></div>](public/gifs/demo_viewcollection.gif)
+
+#### Edit Collection Details
+
 - As a Returning Visitor, I want to be able to edit collections of my code snippets.
     - User clicks `Edit this Collection`
       - A form appears.
@@ -262,7 +270,59 @@ The project can be understood as a library of user-created <em><b>Albums</b></em
       - User is redirected to his/her `collections` profile.
       - An updated `collection` appears.
     - User continues
-![Edit Collection demo](public/gifs/demo_signin.gif)
+
+[<div style="text-align:center"><img src="public/gifs/demo_editcollectionname.gif" width="500" alt="edit collection name"/></div>](public/gifs/demo_editcollectionname.gif)
+#### Edit and View Snippet
+
+- As a Returning Visitor, I want to be able to edit my code snippet.
+    - User clicks `Edit this snippet`
+      - A form appears.
+        - The title field is in focus.
+          - User modifies `description`
+          - User updates code snippet.
+          - User adds optional `source` url.
+          - User adds optional `tags`
+        - User clicks submit.
+          - A success toast alert appears.
+      - User is redirected to his/her `collections` profile.
+    - User continues
+
+[<div style="text-align:center"><img src="public/gifs/demo_editfirstsnippet.gif" width="500" alt="edit first snippet"/></div>](public/gifs/demo_editfirstsnippet.gif)
+
+<details><summary><em>Edit Another Snippet</em></summary>
+<br>
+
+[<div style="text-align:center"><img src="public/gifs/demo_editsnippet.gif" width="500" alt="edit another snippet"/></div>](public/gifs/demo_editsnippet.gif)
+<br>
+</details>
+<br>
+
+#### Delete Snippet
+
+- As a Returning Visitor, I want to be able to delete my code snippet(s).
+    - User clicks `Edit this snippet`
+      - A form appears.
+        - The title field is in focus.
+          - User clicks `Delete`
+            - Modal appears
+            - The cancel button is in focus
+            - User confirms
+          - The modal is closed
+          - A success toast alert appears.
+      - User is redirected to his/her `collections` profile.
+    - User continues
+
+[<div style="text-align:center"><img src="public/gifs/demo_deletefirstsnippet.gif" width="500" alt="delete first snippet"/></div>](public/gifs/demo_deletefirstsnippet.gif)
+
+<details><summary><em>Delete Another Snippet</em></summary>
+<br>
+
+[<div style="text-align:center"><img src="public/gifs/demo_deletelastsnippet.gif" width="500" alt="delete another snippet"/></div>](public/gifs/demo_deletelastsnippet.gif)
+<br>
+</details>
+<br>
+#### Delete Collection
+
 - As a Returning Visitor, I want to be able to delete a collection of my code snippet(s).
     - User clicks `Edit this Collection`
       - A form appears.
@@ -275,7 +335,11 @@ The project can be understood as a library of user-created <em><b>Albums</b></em
           - A success toast alert appears.
       - User is redirected to his/her `collections` profile.
     - User continues
-![Create Snippet demo](public/gifs/demo_signin.gif)
+
+[<div style="text-align:center"><img src="public/gifs/demo_deletecollection.gif" width="500" alt="delete collection"/></div>](public/gifs/demo_deletecollection.gif)
+
+#### Search Snippets
+
 - As a Frequent Visitor, I want to be able to search code snippets I have created.
     - User clicks `Snippets`
       - User is rerouted to `Snippets` page.
@@ -295,7 +359,11 @@ The project can be understood as a library of user-created <em><b>Albums</b></em
           - User clicks `Next`
             - Snippet cards for next page appear.
       - User continues
-![Search Snippet demo](public/gifs/demo_signin.gif)
+
+[<div style="text-align:center"><img src="public/gifs/demo_search.gif" width="500" alt="search"/></div>](public/gifs/demo_search.gif)
+
+#### Fave/Unfave Snippet and View Faved/Unfaved Snippets
+
 - As a Frequent Visitor,  I want to be able to like/fave code snippets created by others.
     - User is in `Snippets` page.
       - A feed of all public snippet cards appear.
@@ -303,13 +371,6 @@ The project can be understood as a library of user-created <em><b>Albums</b></em
         - User clicks `Fave`  
           - A success toast appears 
     - User continues
-![Fave Snippet demo](public/gifs/demo_signin.gif)
-- I want to be able to see my favorite code snippets created by others.
-    - User is in `Collections` page.
-      - A collection named `Faves` appears.
-        - User finds all favorite snippts as a collection.
-    - User continues
-![View Faves demo](public/gifs/demo_signin.gif)
 - As a Frequent Visitor, I want to be able to unlike/unfave code snippets created by others.
     - User is in `Snippets` page.
       - A feed of all public snippet cards appear.
@@ -320,7 +381,16 @@ The project can be understood as a library of user-created <em><b>Albums</b></em
         - The faves collection appears.
         - User sees updated Faves.
     - User continues
-![Unfave Snippet demo](public/gifs/demo_signin.gif)
+- As a Frequent Visitor, I want to be able to see my favorite code snippets created by others.
+    - User is in `Collections` page.
+      - A collection named `Faves` appears.
+        - User finds all favorite snippts as a collection.
+    - User continues
+
+[<div style="text-align:center"><img src="public/gifs/demo_addfave.gif" width="500" alt="add fave and view faves"/></div>](public/gifs/demo_addfave.gif)
+
+#### Copy Snippet to Clipboard
+
 - I want to be able to reference and copy code snippets to the clipboard.
     - User is in `Search` page.
       - A feed of all public snippet cards appear.
@@ -329,7 +399,8 @@ The project can be understood as a library of user-created <em><b>Albums</b></em
           - The copy button changes to a success icon.
           - The code snippet is copied to the clipboard.
     - User continues
-![Copy Snippet demo](public/gifs/demo_signin.gif)
+
+#### Delete Account
 - As a Frequent Visitor, I want to be able to delete my account.
     - User is clicks `Delete my account`
       - Modal appears
@@ -341,7 +412,13 @@ The project can be understood as a library of user-created <em><b>Albums</b></em
     - User continues
     - Review:
     - A user is able to securely remove his/her history from the database.
-![Delete Account demo](public/gifs/demo_signin.gif)
+
+[<div style="text-align:center"><img src="public/gifs/demo_deleteaccount.gif" width="500" alt="delete account"/></div>](public/gifs/demo_deleteaccount.gif)
+
+#### Switch Theme
+
+[<div style="text-align:center"><img src="public/gifs/demo_lightmodes.gif" width="500" alt="search"/></div>](public/gifs/demo_lightmodes.gif)
+
 Note: All screen shots  of expected results of User testing can be viewed in the public docs directory.
 Please view them [here](https://github.com/israelias/cheathub/tree/master/public)
 ### Code Testing
@@ -352,7 +429,7 @@ Please view them [here](https://github.com/israelias/cheathub/tree/master/public
     ```
     lighthouse-badges 
     -o docs/badges -r 
-    -u https://synonyms.vercel.app/ [... all other urls]
+    -u https://cheathub.vercel.app/ [... all other urls]
                        
    # Output to docs/badges
    # Badges will contain the respective
@@ -408,6 +485,6 @@ Please view them [here](https://github.com/israelias/cheathub/tree/master/public
 - [Deploying Flask Restful Backend](https://medium.com/analytics-vidhya/flask-restful-api-with-heroku-da1ecf3e04b)
 
 ### Mentoring
-- Aarong Sinnot
+- Aaron Sinnott
 - Code Institute tutors
 - Fellow Code Institute students
