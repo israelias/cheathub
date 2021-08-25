@@ -4,8 +4,6 @@ import {
   useColorModeValue as mode,
 } from '@chakra-ui/react';
 
-import { useUserContext } from '../../context/user.context';
-
 /**
  * Shared copyright link to github profile.
  *

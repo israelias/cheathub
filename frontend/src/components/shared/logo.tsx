@@ -1,13 +1,6 @@
 import React from 'react';
-import {
-  Box,
-  Image,
-  useColorModeValue as mode,
-} from '@chakra-ui/react';
-import {
-  Link as RouterLink,
-  RouteComponentProps,
-} from 'react-router-dom';
+import { Image, useColorModeValue as mode } from '@chakra-ui/react';
+import { Link as RouterLink } from 'react-router-dom';
 
 import { LOGO } from '../../constants/hrefs.constants';
 import { useUserContext } from '../../context/user.context';
@@ -23,7 +16,6 @@ export const Logo: React.FC<{ dashboard?: boolean }> = ({
   dashboard,
 }) => {
   const { username } = useUserContext();
-  const wtf = 'wtf';
   return (
     <RouterLink to={username ? `/collections/${username}` : '/'}>
       {dashboard ? (
