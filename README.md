@@ -321,6 +321,7 @@ The project can be understood as a library of user-created <em><b>Albums</b></em
 <br>
 </details>
 <br>
+
 #### Delete Collection
 
 - As a Returning Visitor, I want to be able to delete a collection of my code snippet(s).
