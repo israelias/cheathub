@@ -13,6 +13,7 @@ import { useDataHandler } from '../context/datahandler.context';
 import LoadSpinner from '../components/shared/spinner';
 
 import { BrandButton } from '../components/shared/brand-button';
+import { Copyright } from '../components/shared/copyright';
 
 import SnippetCard from '../components/snippet/card';
 
@@ -92,7 +93,7 @@ const Snippets: React.FC = () => {
   const secondaryHeading = 'Explore Snippets';
   const secondaryFooterHeading = heading;
   const secondaryChildren = <></>;
-  const secondaryFooterSubheading = snippets?.length.toString();
+  const secondaryFooterSubheading = <Copyright />;
   const primary = loading
     ? spinner
     : snippets.map((snippet: Snippet, i: number) => (
