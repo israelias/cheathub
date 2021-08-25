@@ -133,7 +133,7 @@ const SecondaryHeader: React.FC<{
 
 const PrimaryFooter: React.FC<{
   heading?: string;
-  subheading?: string;
+  subheading?: string | React.ReactNode;
 }> = ({ heading, subheading }) => (
   <Box
     display="flex"

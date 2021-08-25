@@ -2,6 +2,8 @@ import React from 'react';
 
 import { Flex, Box, useMediaQuery } from '@chakra-ui/react';
 
+import { Copyright } from '../components/shared/copyright';
+
 import { Secondary } from './secondary.container';
 import { Primary } from './primary.container';
 
@@ -22,7 +24,7 @@ const Page: React.FC<{
   secondaryHeading?: string;
   secondaryChildren?: React.ReactNode;
   secondaryFooterHeading?: string;
-  secondaryFooterSubheading?: string;
+  secondaryFooterSubheading?: string | React.ReactNode;
   modals?: React.ReactNode;
   drawers?: React.ReactNode;
   pagination?: React.ReactNode;
@@ -40,7 +42,7 @@ const Page: React.FC<{
   secondaryHeading,
   secondaryChildren,
   secondaryFooterHeading,
-  secondaryFooterSubheading = 'CH 2021',
+  secondaryFooterSubheading = <Copyright />,
   preSecondaryChildren,
   postSecondaryChildren,
   modals,
