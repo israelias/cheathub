@@ -57,11 +57,11 @@ const CollectionCrud: React.FC<{
 }) => {
   const { snippetsOptions } = useProfileData();
   const color = mode('light', 'dark');
-  React.useEffect(() => {
-    if (snippets.length < 1) {
-      setSnippets([]);
-    }
-  }, [snippets]);
+  // React.useEffect(() => {
+  //   if (snippets.length < 1) {
+  //     setSnippets([]);
+  //   }
+  // }, [snippets]);
 
   return (
     <>

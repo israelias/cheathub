@@ -3,6 +3,7 @@ import { RouteComponentProps } from 'react-router';
 import {
   Box,
   Flex,
+  Text,
   useMediaQuery,
   useColorModeValue as mode,
 } from '@chakra-ui/react';
