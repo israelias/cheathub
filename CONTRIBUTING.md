@@ -12,4 +12,6 @@ For the most part, the frontend directory can be cloned on its own insofar as th
 
 I'll be adding more instructions here soon in case the detail on running locally isn't sufficient.
 
-Feel free to connect in the meantime.
+Feel free to connect in the meantime. 
+
+In case you want to send feedback annonymously, click here! [Anonymous Feedback about Cheathub via Typeform](https://gvklqnr2996.typeform.com/to/xVAAK1V0)
