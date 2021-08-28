@@ -22,6 +22,7 @@ The frontend directory can developed on its own as a standalone React App attach
 - [Axios:](https://github.com/axios/axios) The promise-based HTTP client for the browser and node.js that handles calls to Thesaurus API.
 - [isomorphic-unfetch]()
 - [dayjs]()
+- [react-select 4.3.0]()
 - [classnames:](https://developer.aliyun.com/mirror/npm/package/clsx):Tiny utility for constructing classnames conditionally
 
 
