@@ -1,0 +1,13 @@
+{
+  "name": "@cheathub/backend",
+  "version": "1.0.0",
+  "description": "Flask backend.",
+  "author": "israelias <israelias.js@gmail.com>",
+  "private": true,
+  "scripts": {
+    "virtualenv": "pip install virtualenv && virtualenv venv",
+    "activate": "source venv/bin/activate",
+    "install": "pip install -r requirements.txt",
+    "start": "source venv/bin/activate && python run.py"
+  }
+}
