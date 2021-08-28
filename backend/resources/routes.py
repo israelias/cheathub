@@ -15,6 +15,8 @@ from .status import Status
 
 from .tags import TagsApi
 
+from .reset_password import ForgotPassword, ResetPassword
+
 # ===========================================================================
 # *             Initialize Routes
 # ?  Initializes assignment of defined resource classes to a url.
@@ -81,3 +83,6 @@ def initialize_routes(api):
 
     """Tag list endpoint: List of all current tags returned. """
     api.add_resource(TagsApi, "/api/tags")
+
+    api.add_resource(ForgotPassword, "/api/auth/forgot")
+    api.add_resource(ResetPassword, "/api/auth/reset")
