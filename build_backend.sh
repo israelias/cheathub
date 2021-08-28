@@ -5,14 +5,23 @@ cd backend
 #create new git repository and add everything
 git init
 git add .
+
+# disable gpg signing for the next commit
+git -c commit.gpgsign=false commit
+
 git commit -m "Initialize for Heroku deployment"  
-git remote add heroku git@heroku.com:cheathub-backend.git
+# git remote add heroku git@heroku.com:cheathub-backend.git
+heroku git:remote -a cheathub-backend   
 echo "Added heroku backend remote"
 
 #pull heroku but then checkback out our current local master and mark everything as merged
 git pull heroku master
 git checkout --ours .
 git add -u
+
+# disable gpg signing for the next commit
+git -c commit.gpgsign=false commit
+
 git commit -m "merged"
 echo "Merged with github"
 
