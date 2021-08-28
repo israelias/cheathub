@@ -60,6 +60,10 @@ class BadTokenError(Exception):
     pass
 
 
+class ExpiredTokenError(Exception):
+    pass
+
+
 errors = {
     "InternalServerError": {"message": "Something went wrong.", "status": 500},
     "SchemaValidationError": {
@@ -100,4 +104,5 @@ errors = {
         "status": 400,
     },
     "BadTokenError": {"message": "Invalid token.", "status": 407},
+    "ExpiredTokenError": {"message": "Token is expired.", "status": 410},
 }
