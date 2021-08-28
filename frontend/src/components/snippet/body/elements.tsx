@@ -152,7 +152,13 @@ export const TagMenu: React.FC<{
         >
           All Tags
         </MenuButton>
-        <MenuList minWidth="240px">
+        <MenuList
+          backgroundColor={mode('#f5f2f0', '#252945')}
+          borderWidth="1px"
+          borderColor={mode('#d8d9da', '#7e88c3')}
+          color={mode('#252945', '#fafafa')}
+          minWidth="240px"
+        >
           {tags.map((tag: string) => (
             <MenuItem
               key={tag}
@@ -160,6 +166,10 @@ export const TagMenu: React.FC<{
               fontSize={{ base: 'xs', lg: 'sm' }}
               disabled={editing || collections}
               onClick={() => setTags(tag)}
+              _hover={{
+                backgroundColor: mode('#d8d9da', '#7e88c3'),
+                color: mode('#0c0e16', '#DFE3FA'),
+              }}
             >
               {tag}
             </MenuItem>

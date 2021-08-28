@@ -493,6 +493,8 @@ Please view them [here](https://github.com/israelias/cheathub/tree/master/public
 - [Subdirectory Heroku Deployment](https://stackoverflow.com/questions/7539382/how-can-i-deploy-push-only-a-subdirectory-of-my-git-repo-to-heroku)
 - [Deploying Flask Restful Backend](https://medium.com/analytics-vidhya/flask-restful-api-with-heroku-da1ecf3e04b)
 
+#### Monorepo
+- [Structure a Flask Monorepo](https://warrenwong.org/posts/structure-a-flask-react-monorepo/)
 ### Mentoring
 - Aaron Sinnott
 - Code Institute tutors

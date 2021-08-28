@@ -1,0 +1,22 @@
+{
+  "name": "cheathub",
+  "version": "1.0.0",
+  "description": "An app for code snippets, Flask backend, React-TSX frontend.",
+  "main": "index.js",
+  "repository": "https://github.com/israelias/cheathub.git",
+  "author": "israelias <israelias.js@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "concurrently": "^6.2.1"
+  },
+  "scripts": {
+    "start": "concurrently \"yarn start:frontend\" \"yarn start:backend\"",
+    "start:frontend": "yarn workspace @cheathub/frontend start",
+    "start:backend": "yarn workspace @cheathub/backend start"
+  },
+  "workspaces": [
+    "frontend",
+    "backend"
+  ]
+}
