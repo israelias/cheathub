@@ -10,6 +10,14 @@ Please visit the project at [cheathub.vercel.app](https://cheathub.vercel.app).
 
 Additionally, the restful backend API can be viwed at [cheathub-backend.herokuapp.com](https://cheathub-backend.herokuapp.com/). For a sample response, please visit the [/api/snippets](https://cheathub-backend.herokuapp.com/api/snippets) endpoint.
 
+<br />
+
+> [***Collaborate on this project***](https://github.com/israelias/cheathub/blob/master/CONTRIBUTING.md#)
+
+> [***Send feedback anonymously***](https://gvklqnr2996.typeform.com/to/xVAAK1V0)
+
+<br />
+
 [TOC levels=3]: # "## Contents"
 ## Contents
 - [UX](#ux)
@@ -170,7 +178,7 @@ The project can be understood as a library of user-created <em><b>Albums</b></em
       - User reads description.
     - User continues.
 
-[<div style="text-align:center"><img src="public/gifs/demo_landing.gif" width="500" alt="sign up landing"/></div>](public/gifs/demo_landing.gif)
+[<div style="text-align:center"><img src="https://github.com/israelias/cheathub/blob/master/public/gifs/demo_landing.gif?raw=true" width="500" alt="sign up landing"/></div>](public/gifs/demo_landing.gif)
 
 #### Sign Up
 - As a new visitor, I want to be able to register for an account.
@@ -485,6 +493,8 @@ Please view them [here](https://github.com/israelias/cheathub/tree/master/public
 - [Subdirectory Heroku Deployment](https://stackoverflow.com/questions/7539382/how-can-i-deploy-push-only-a-subdirectory-of-my-git-repo-to-heroku)
 - [Deploying Flask Restful Backend](https://medium.com/analytics-vidhya/flask-restful-api-with-heroku-da1ecf3e04b)
 
+#### Monorepo
+- [Structure a Flask Monorepo](https://warrenwong.org/posts/structure-a-flask-react-monorepo/)
 ### Mentoring
 - Aaron Sinnott
 - Code Institute tutors

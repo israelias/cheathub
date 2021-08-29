@@ -3,11 +3,17 @@
 
 # MS3 Cheat-Hub Frontend
 
+## Running Frontend Locally
+The frontend directory can developed on its own as a standalone React App attached to the live backend API. The ORM spec is defined as types in `globals.d.ts`. All fetch handlers that communicate with the backend are in the `src/services` subdirectory. Please see `src/context` for their implementation in context providers via Hooks and Context API.
+
+> Note: Please `cd` to this directory from root until workspaces is implented. 
+
+- `yarn install`
+- `yarn start`
 ## Frameworks and Libraries
-- [Node.js:](https://nodejs.org/en/) The runtime environment that allows the app to run asynchronous server-side scripts and events.(Bootstrapped with Nextjs)
-- [Webpack:](https://webpack.js.org/) The static module bundler that builds a dependency graph mapping every module the project requires. (Bootstrapped with Nextjs)
-- [Typescript]()
-- [React 17.0:](https://reactjs.org/) JavaScript Library for building user interfaces.
+
+- [Typescript 4.2.3]()
+- [React 17.0.2:](https://reactjs.org/) JavaScript Library for building user interfaces.
 - [React Router]()
 - [Framer Motion]()
 - [React Syntax Highligher]()
@@ -15,8 +21,13 @@
 - [React-Icons:]() 
 - [Axios:](https://github.com/axios/axios) The promise-based HTTP client for the browser and node.js that handles calls to Thesaurus API.
 - [isomorphic-unfetch]()
+- [dayjs]()
 - [classnames:](https://developer.aliyun.com/mirror/npm/package/clsx):Tiny utility for constructing classnames conditionally
+
+
 ## Frontend Deployment
+Production and Development/Preview deployments are on Vercel.
+
 - `commit` and `push` the code from my local IDE to Github via Git and my MacBook Pro's iTerm terminal.
 - Log in to Vercel and click the [New Project](https://vercel.com/new) CTA.
 - Access "Import Git Repository" via the `select` input, located at the top-left of the immediate prompt.
@@ -26,6 +37,7 @@
 - Click "Deploy"
 - Barring errors, await the prompt for:
 > ##### "Your project has been successfully deployed."
+
 ## Available Scripts
 
 In the project directory, you can run:

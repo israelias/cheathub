@@ -1,6 +1,8 @@
 {
-  "name": "frontend",
+  "name": "@cheathub/frontend",
   "version": "0.1.0",
+  "description": "React-TSX frontend.",
+  "author": "israelias <israelias.js@gmail.com>",
   "private": true,
   "dependencies": {
     "@chakra-ui/icons": "^1.0.10",
