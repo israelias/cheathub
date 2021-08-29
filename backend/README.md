@@ -4,6 +4,8 @@
 
 The restful API is deployed at [cheathub-backend.herokuapp.com/](https://cheathub-backend.herokuapp.com/)
 
+> *Note:* Open API spec is forthcoming. Please see `database/models.py` to preview the snippet, collection and user document models.
+
 ## Heroku Deployment
 ```bash
 #create new git repository and add everything
@@ -47,9 +49,9 @@ In this half of the monorepo, you can run:
 
 Serves the Databse backend.\
 Runs the backend app in the development mode.\
-Open [http://localhost:5000/admin](http://localhost:5000/admin) to view the admin panel in the browser.
+Open [http://localhost:5000/admin](http://localhost:5000/admin) to view the admin panel in the browser (ensure `BASIC_AUTH` variables are set).
 
-Open [http://localhost:5000/api/snippets](http://localhost:5000/api/snippets) to view the JSON response format of all public snippets.
+Open [http://localhost:5000/api/snippets](http://localhost:5000/api/snippets) to view the JSON response format of all public snippets -- assuming `snippet` objects have been created. Otherwise, use Postman to create documents locally (API spec is forthcoming!).
 
 The page will reload if you make edits.\
 You will also see any errors in the console.
@@ -103,6 +105,33 @@ Set the variable to this key:
 # env.py
 os.environ.setdefault("JWT_SECRET_KEY", "<your JWT secret key>")
 ```
+### `BASIC_AUTH_USERNAME`
+
+Superuser username to access admin panel at `/admin`
+
+Set the variable to this key:
+```python
+# env.py
+os.environ.setdefault("BASIC_AUTH_USERNAME", "<your superuser username>")
+```
+
+### `BASIC_AUTH_PASSWORD`
+
+Superuser password to access admin panel at `/admin`
+
+Set the variable to this key:
+```python
+# env.py
+os.environ.setdefault("BASIC_AUTH_USERNAME", "<your superuser password>")
+```
+### Flask Mail Option
+> See [Flask Mail](https://pythonhosted.org/Flask-Mail/)
+Similarly, apply the same logic to:
+- `MAIL_SERVER`
+- `MAIL_PORT`
+- `MAIL_USERNAME`
+- `MAIL_PASSWORD`
+- `MAIL_DEFAULT_SENDER`
 
 ## Database Server
 
@@ -139,6 +168,7 @@ You can add documents via Postman or Mongo Compass.
 - [Flask Admin](https://flask-admin.readthedocs.io/en/latest/)
 - [Flask Session](https://flask-session.readthedocs.io/en/latest/)
 - [Flask Restful](https://flask-restful.readthedocs.io/en/latest/)
+- [Flask Mail](https://pythonhosted.org/Flask-Mail/)
 
 ## Resources
 - [Heroku Deployment](https://stackoverflow.com/questions/7539382/how-can-i-deploy-push-only-a-subdirectory-of-my-git-repo-to-heroku)
