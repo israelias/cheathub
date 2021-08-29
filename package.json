@@ -13,7 +13,9 @@
   "scripts": {
     "start": "concurrently \"yarn start:frontend\" \"yarn start:backend\"",
     "start:frontend": "yarn workspace @cheathub/frontend start",
-    "start:backend": "yarn workspace @cheathub/backend start"
+    "start:backend": "yarn workspace @cheathub/backend start",
+    "build:frontend": "yarn workspace @cheathub/frontend build",
+    "test:frontend": "yarn workspace @cheathub/frontend test"
   },
   "workspaces": [
     "frontend",
