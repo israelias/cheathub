@@ -99,7 +99,7 @@ export function CollectionHandlerProvider({
 
   const clearValues = () => {
     setId('');
-    setName('Collection Name');
+    setName('');
     setSnippets([]);
   };
 
