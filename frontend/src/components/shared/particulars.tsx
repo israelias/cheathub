@@ -7,6 +7,8 @@ import {
   Heading,
 } from '@chakra-ui/react';
 
+// TODO Adjust footer horizontals in light-mode to have consistent bg color
+
 const PrimaryHeader: React.FC<{
   heading?: string;
   left?: boolean;
@@ -232,6 +234,10 @@ const SecondaryFooter: React.FC<{
       bottom={0}
       mt="auto"
       pt="auto"
+      // ml="-8px"
+      // mr="-16px"
+      // ml={baseLg ? 0 : '-8px'}
+      // mr={baseLg ? 0 : '-8px'}
       position="sticky"
       zIndex="banner"
     >

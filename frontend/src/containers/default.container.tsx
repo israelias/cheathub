@@ -97,7 +97,7 @@ const Page: React.FC<{
         <Box
           display="flex"
           flexDirection="column"
-          mt="atuo"
+          mt="auto"
           mb="auto"
         >
           {baseLg ? (

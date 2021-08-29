@@ -6,7 +6,7 @@
 ## Running Frontend Locally
 The frontend directory can developed on its own as a standalone React App attached to the live backend API. The ORM spec is defined as types in `globals.d.ts`. All fetch handlers that communicate with the backend are in the `src/services` subdirectory. Please see `src/context` for their implementation in context providers via Hooks and Context API.
 
-> Note: Please `cd` to this directory from root until workspaces is implented. 
+> Note: Please `cd` to this directory from root until workspaces is implemented. 
 
 - `yarn install`
 - `yarn start`

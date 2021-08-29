@@ -12,11 +12,15 @@ Additionally, the restful backend API can be viwed at [cheathub-backend.herokuap
 
 <br />
 
+## In Development 
+
 > [***Collaborate on this project***](https://github.com/israelias/cheathub/blob/master/CONTRIBUTING.md#)
 
 > [***Send feedback anonymously***](https://gvklqnr2996.typeform.com/to/xVAAK1V0)
 
 <br />
+
+> **Note:** Scripts in root `package.json` implement Yarn workspaces only to run development-specific scripts from root assuming all backend/frontend-specific configs have been set up. Running `yarn` from root has not yet been tested. For the meantime, `cd`ing to frontend and installing the React-App is the minimal reliable option to develop the app with a fixed and unchanging backend API. The backend `package.json` is solely for running python scripts from root. Backend API and data layer are superuser-specific given the production deployment, although local env variables are described in case anyone wants to locally serve a Mongo Atlas connection string from scratch. To be updated.
 
 [TOC levels=3]: # "## Contents"
 ## Contents
