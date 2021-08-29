@@ -232,6 +232,10 @@ const SecondaryFooter: React.FC<{
       bottom={0}
       mt="auto"
       pt="auto"
+      // ml="-8px"
+      // mr="-16px"
+      // ml={baseLg ? 0 : '-8px'}
+      // mr={baseLg ? 0 : '-8px'}
       position="sticky"
       zIndex="banner"
     >

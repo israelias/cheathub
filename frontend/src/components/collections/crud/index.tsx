@@ -8,6 +8,7 @@ import {
   Box,
   Input,
   Flex,
+  useMediaQuery,
   useColorModeValue as mode,
 } from '@chakra-ui/react';
 import Select from 'react-select';
@@ -57,6 +58,7 @@ const CollectionCrud: React.FC<{
 }) => {
   const { snippetsOptions } = useProfileData();
   const color = mode('light', 'dark');
+  const [baseLg] = useMediaQuery('(min-width: 62em)');
   // React.useEffect(() => {
   //   if (snippets.length < 1) {
   //     setSnippets([]);
@@ -241,7 +243,16 @@ const CollectionCrud: React.FC<{
         </MotionBar>
         <Box height="100%"> </Box>
       </AnimatePresence>
-      <Box position="sticky" width="100%" mt="auto" bottom={0}>
+      <Box
+        position="sticky"
+        // width="100%"
+        mt="auto"
+        pt="16px"
+        top="80vh"
+        ml={baseLg ? 0 : '-8px'}
+        mr={baseLg ? 0 : '-8px'}
+        bottom={0}
+      >
         <SecondaryFooter>
           {editing && (
             <MotionForm
