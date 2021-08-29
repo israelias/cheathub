@@ -7,6 +7,8 @@ import {
   Heading,
 } from '@chakra-ui/react';
 
+// TODO Adjust footer horizontals in light-mode to have consistent bg color
+
 const PrimaryHeader: React.FC<{
   heading?: string;
   left?: boolean;

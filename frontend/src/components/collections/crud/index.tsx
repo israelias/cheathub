@@ -27,6 +27,7 @@ import { useProfileData } from '../../../context/profiledata.context';
  *
  * A form counterpart of CollectionItem
  * Relies on State and setState props passed by Collection page.
+ * TODO Update default value of MultiSelect
  * @see CollectionItem
  * @file defines Collection form.
  * @date 2021-05-03

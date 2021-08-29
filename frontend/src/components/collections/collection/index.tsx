@@ -25,6 +25,9 @@ import '../styles.css';
  *
  * A card/accordion counterpart of CollectionItem
  * Relies on State and setState props passed by Collection page.
+ *
+ * TODO Adjust text wrapping so title stays in one line
+ * TODO Adjust top margin in Collections primary page to be consistent with Snippets primary page
  * @see CollectionCrud
  * @file defines Collections page route
  * @since 2021-04-08
