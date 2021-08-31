@@ -101,6 +101,7 @@ const Actions = () => {
             </Box>
           </Grid>
         )}
+
         {ACTIONS.map((action) => (
           <Tooltip
             key={action.label}
@@ -111,6 +112,7 @@ const Actions = () => {
           >
             <Grid
               as="span"
+              hidden={!baseLg && !action.primary}
               templateColumns={{
                 base: 'unset',
                 lg: 'minmax(0px, 1fr)',
@@ -125,7 +127,7 @@ const Actions = () => {
                 display="flex"
                 flexDirection="column"
                 alignItems="center"
-                disabled={!loggedIn}
+                disabled={!loggedIn && action.primary}
                 isLoading={
                   action.label === 'Collections' && loadingProfile
                 }

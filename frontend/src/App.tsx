@@ -15,6 +15,7 @@ import Snippet from './pages/snippet';
 import { Home } from './pages/home';
 import Collections from './pages/collections';
 import Collection from './pages/collection';
+import About from './pages/about';
 
 import { PrivateRoute } from './lib/privateRoute';
 
@@ -28,6 +29,7 @@ const App: React.FC = () => (
               <AppContainer>
                 <Switch>
                   <Route path="/" exact component={Home} />
+                  <Route path="/about" exact component={About} />
 
                   <PrivateRoute
                     path="/collections/:id"
