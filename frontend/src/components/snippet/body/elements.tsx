@@ -273,7 +273,6 @@ export const PostFaveData: React.FC<{
 export const SourceButton: React.FC<{ source: string }> = ({
   source,
 }) => {
-  const wtf = 'wtf';
   const [baseXs, baseSm, baseMd, baseLg] = useMediaQuery([
     '(max-width: 28em)',
     '(min-width: 30em)',
