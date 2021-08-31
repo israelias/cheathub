@@ -17,10 +17,16 @@ import {
   GoPlusSmall,
   GoLightBulb,
   GoPerson,
+  GoInfo,
 } from 'react-icons/go';
 import { FaMoon, FaSun } from 'react-icons/fa';
 
 const ICONS = {
+  about: {
+    main: GoInfo,
+    sub: GoInfo,
+    dark: GoInfo,
+  },
   collections: {
     main: GoFileDirectory,
     sub: GoFileSubmodule,
@@ -109,6 +115,11 @@ const ICONS = {
 };
 
 const PATHS = {
+  about: {
+    label: 'About',
+    path: '/about',
+    auth: 'about the app',
+  },
   collections: {
     label: 'Collections',
     path: '/collections',
@@ -189,6 +200,19 @@ const PATHS = {
 
 export const ACTIONS = [
   {
+    primary: false,
+    label: PATHS.about.label,
+    path: PATHS.about.path,
+    auth: PATHS.about.auth,
+    icon: GoInfo,
+    icons: {
+      main: ICONS.about.main,
+      sub: ICONS.about.sub,
+      dark: ICONS.about.dark,
+    },
+  },
+  {
+    primary: true,
     label: PATHS.collections.label,
     path: PATHS.collections.path,
     auth: PATHS.collections.auth,
@@ -200,6 +224,7 @@ export const ACTIONS = [
     },
   },
   {
+    primary: true,
     label: PATHS.explore.label,
     path: PATHS.explore.path,
     auth: PATHS.explore.auth,
@@ -211,6 +236,7 @@ export const ACTIONS = [
     },
   },
   {
+    primary: true,
     label: PATHS.collection.label,
     path: PATHS.collection.path,
     auth: PATHS.collection.auth,
@@ -222,6 +248,7 @@ export const ACTIONS = [
     },
   },
   {
+    primary: true,
     label: PATHS.add.label,
     path: PATHS.add.path,
     auth: PATHS.add.auth,
