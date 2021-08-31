@@ -71,21 +71,28 @@ interface AboutProps extends RouteComponentProps<{ id: string }> {}
  * @return {=>}
  */
 const About: React.FC<AboutProps> = ({ match }) => {
-  const baseLg = useMediaQuery('(min-width: 62em)');
+  const [baseXs, baseSm, baseMd, baseLg] = useMediaQuery([
+    '(max-width: 28em)',
+    '(min-width: 30em)',
+    '(min-width: 58em)',
+    '(min-width: 62em)',
+  ]);
   const primary = <AboutSummary />;
 
   const secondary = (
     <>
-      <Wrap spacing="30px" marginTop="5">
+      <Wrap marginTop="5">
         <WrapItem
-          width={{ base: '100%', sm: '45%', md: '45%', lg: '100%' }}
+          p={['10px']}
+          w="100%"
+          width={{ base: '100%', sm: '100%', md: '45%', lg: '100%' }}
         >
           <ProfileCard />
         </WrapItem>
         <WrapItem
-          width={{ base: '100%', sm: '45%', md: '45%', lg: '100%' }}
+          width={{ base: '100%', sm: '100%', md: '45%', lg: '100%' }}
         >
-          {baseLg && <BlogPost />}
+          {baseSm && <BlogPost />}
         </WrapItem>
       </Wrap>
     </>
