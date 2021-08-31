@@ -331,7 +331,7 @@ export function ProfileCard() {
             icon={() => <GithubIcon />}
           />
           <LinkItem
-            text="Follow me"
+            text="Add me"
             subtext="LinkedIn"
             url="https://www.linkedin.com/in/joem-elias-sanez/"
             icon={() => <LinkedinIcon />}
@@ -345,7 +345,7 @@ export function ProfileCard() {
           <LinkItem
             text="Collaborate on the app"
             subtext="Repo"
-            url="https://github.com/israelias/cheathub"
+            url="https://github.com/israelias/cheathub/blob/master/CONTRIBUTING.md"
             icon={() => <CollaborateIcon />}
           />
           <LinkItem
@@ -515,7 +515,7 @@ export function AboutSummary() {
           >
             It's in early stages, but it's well-documented and has the
             potential to gain a large community. At the very least,
-            it's an fresh shot to contribute to open source.
+            it's a fresh shot to contribute to open source.
           </Text>
           <Flex
             ml="25%"
