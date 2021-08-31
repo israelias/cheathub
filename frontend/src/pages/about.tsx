@@ -165,7 +165,7 @@ const BlogPost: React.FC = () => (
       created is now fixed.
     </Text>
     <BlogAuthor
-      name="John Doe"
+      name="Joem Elias Sanez"
       date={new Date('2021-08-31T19:01:27Z')}
     />
   </Box>
