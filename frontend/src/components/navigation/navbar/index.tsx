@@ -11,7 +11,11 @@ import {
   useColorModeValue as mode,
   Stack,
   useMediaQuery,
+  IconButton,
+  Icon,
 } from '@chakra-ui/react';
+
+import { GoInfo } from 'react-icons/go';
 
 import { Logo } from '../../shared/logo';
 
@@ -69,6 +73,17 @@ const NavBar: React.FC = () => {
             direction="row"
             spacing={6}
           >
+            <IconButton
+              bg={mode('#fafafa', '#252945')}
+              borderColor={mode('#bdbfc4', '#786e89')}
+              color={mode('#252945', '#fafafa')}
+              _hover={{ bg: mode('#f5f2f0', '#373B53') }}
+              size="sm"
+              aria-label="About"
+              fontSize="20px"
+              icon={<GoInfo />}
+              onClick={() => history.push('/about')}
+            />
             {loggedIn ? (
               <>
                 <AccountMenu />
