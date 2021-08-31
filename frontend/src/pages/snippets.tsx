@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router';
-import { useMediaQuery, HStack, Box } from '@chakra-ui/react';
+import { useMediaQuery, HStack, Box, Text } from '@chakra-ui/react';
 
 import Page from '../containers/default.container';
 import SearchBar from '../components/search/search-bar';
@@ -132,6 +132,17 @@ const Snippets: React.FC = () => {
       >
         Previous
       </BrandButton>
+      {data && (
+        <Text>
+          {data.page === 1 ? 1 : data.items_per_page * data.page + 1}{' '}
+          to{' '}
+          {data.page === 1
+            ? data.items_per_page * data.page
+            : data.items_per_page * data.page +
+              data.items_per_page}{' '}
+          of {data.total_items}
+        </Text>
+      )}
       <BrandButton
         disabled={!data?.has_next}
         onClick={() => setPage(page + 1)}

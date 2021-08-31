@@ -18,6 +18,7 @@ import {
   useClipboard,
   useColorModeValue as mode,
   ButtonGroup,
+  useMediaQuery,
 } from '@chakra-ui/react';
 import { CheckIcon, CloseIcon, CopyIcon } from '@chakra-ui/icons';
 import {
@@ -30,6 +31,11 @@ import {
   GoDiffIgnored,
   GoDiffModified,
 } from 'react-icons/go';
+import {
+  AiFillHeart as FavedIcon,
+  AiOutlineHeart as UnfavedIcon,
+} from 'react-icons/ai';
+
 import { TimeAgo } from '../../shared/time';
 import { MotionUl, MotionLi, MotionP } from '../../shared/motion';
 
@@ -230,7 +236,7 @@ export const PostFaveData: React.FC<{
     closeDelay={500}
     size="sm"
     variant="outline"
-    placement="right-end"
+    placement="left-start"
     gutter={20}
     // bg={mode('#f6f6f6', '#f6f6f6')}
     label={
@@ -266,28 +272,38 @@ export const PostFaveData: React.FC<{
  */
 export const SourceButton: React.FC<{ source: string }> = ({
   source,
-}) => (
-  <Button
-    display={{ base: 'none', sm: 'flex' }}
-    // display="flex"
-    // alignItems="center"
-    // variant="link"
-    variant="outline"
-    as={Link}
-    size="xs"
-    // mr="-px"
-    borderColor={mode('#d8d9da', '#7e88c3')}
-    color={mode('#252945', '#fafafa')}
-    fontWeight="light"
-    aria-label="Source"
-    href={source}
-    target="_blank"
-    rel="noreferrer"
-    rightIcon={<Icon fontSize="12px" as={GoLinkExternal} />}
-  >
-    Source
-  </Button>
-);
+}) => {
+  const wtf = 'wtf';
+  const [baseXs, baseSm, baseMd, baseLg] = useMediaQuery([
+    '(max-width: 28em)',
+    '(min-width: 30em)',
+    '(min-width: 58em)',
+    '(min-width: 62em)',
+  ]);
+  return (
+    <Button
+      display={{ base: 'none', sm: 'flex' }}
+      // display="flex"
+      // alignItems="center"
+      // variant="link"
+      variant="outline"
+      as={Link}
+      size="xs"
+      // mr="-px"
+      borderColor={mode('#d8d9da', '#7e88c3')}
+      color={mode('#252945', '#fafafa')}
+      fontWeight="light"
+      aria-label="Source"
+      href={source}
+      target="_blank"
+      rel="noreferrer"
+      pl={!(baseXs || baseLg) ? '.5rem' : '0px'}
+      rightIcon={<Icon fontSize="12px" as={GoLinkExternal} />}
+    >
+      {!(baseXs || baseLg) && 'Source'}
+    </Button>
+  );
+};
 
 /**
  * The button that links to the edit snippet path.
@@ -297,8 +313,14 @@ export const SourceButton: React.FC<{ source: string }> = ({
 export const EditButton: React.FC<{
   snipId: string;
   collections?: boolean;
-}> = ({ snipId, collections }) =>
-  collections ? (
+}> = ({ snipId, collections }) => {
+  const [baseXs, baseSm, baseMd, baseLg] = useMediaQuery([
+    '(max-width: 28em)',
+    '(min-width: 30em)',
+    '(min-width: 58em)',
+    '(min-width: 62em)',
+  ]);
+  return collections ? (
     <Button
       display="flex"
       // alignItems="center"
@@ -330,13 +352,16 @@ export const EditButton: React.FC<{
       size="xs"
       mr="-px"
       ml="8px"
+      // TODO apply chakra design system instead of individual assignment
+      pl={!(baseXs || baseLg) ? '.5rem' : '0px'}
       fontWeight="light"
       to={`/snippets/${snipId}`}
       rightIcon={<Icon fontSize="10px" as={GoPencil} />}
     >
-      Edit
+      {!(baseXs || baseLg) && 'Edit'}
     </Button>
   );
+};
 
 /**
  * The button that toggles what a snippet is faved/unfaved.
@@ -359,8 +384,25 @@ export const FaveButton: React.FC<{
   faving,
   likedBy,
   username,
-}) =>
-  collections ? (
+}) => {
+  const [baseXs, baseSm, baseMd, baseLg] = useMediaQuery([
+    '(max-width: 28em)',
+    '(min-width: 30em)',
+    '(min-width: 58em)',
+    '(min-width: 62em)',
+  ]);
+
+  const [asyncFave, setAsyncFave] = useBoolean();
+
+  React.useEffect(() => {
+    if (likedBy.includes(username)) {
+      setAsyncFave.on();
+    } else {
+      setAsyncFave.off();
+    }
+  }, [likedBy]);
+
+  return collections ? (
     <Button
       type="submit"
       variant="outline"
@@ -375,13 +417,18 @@ export const FaveButton: React.FC<{
         borderRadius: '6px',
       }}
       rightIcon={
-        <Icon fontSize="10px" as={faveSnippet ? GoDash : GoPlus} />
+        <Icon
+          fontSize="10px"
+          color={asyncFave ? '#ff5470' : '#252945'}
+          as={asyncFave ? FavedIcon : UnfavedIcon}
+        />
       }
-      onClick={() => (handleFave ? handleFave(snipId) : {})}
+      onClick={() => {
+        handleFave && handleFave(snipId);
+        handleFave && setAsyncFave.toggle();
+      }}
     >
-      {!faveSnippet && likedBy.includes(username)
-        ? 'Remove from favorites'
-        : 'Add to favorites'}
+      {asyncFave ? 'Remove from favorites' : 'Add to favorites'}
     </Button>
   ) : (
     <Button
@@ -394,9 +441,10 @@ export const FaveButton: React.FC<{
       size="xs"
       p={0}
       mr="-px"
-      pl="6px"
+      // pl="6px"
       pr="6px"
       ml="8px"
+      pl={!(baseXs || baseLg) ? '4px' : '0px'}
       fontWeight="light"
       isLoading={snipId === '' && faving}
       _hover={{
@@ -404,10 +452,18 @@ export const FaveButton: React.FC<{
         bg: mode('#f5f2f0', '#DFE3FA'),
       }}
       rightIcon={
-        <Icon fontSize="10px" as={faveSnippet ? GoDash : GoPlus} />
+        <Icon
+          fontSize="12px"
+          color={asyncFave ? '#ff5470' : '#252945'}
+          as={asyncFave ? FavedIcon : UnfavedIcon}
+        />
       }
-      onClick={() => (handleFave ? handleFave(snipId) : {})}
+      onClick={() => {
+        handleFave && handleFave(snipId);
+        handleFave && setAsyncFave.toggle();
+      }}
     >
-      {!faveSnippet && likedBy.includes(username) ? 'Unfave' : 'Fave'}
+      {!(baseXs || baseLg) && (asyncFave ? 'Unfave' : 'Fave')}
     </Button>
   );
+};

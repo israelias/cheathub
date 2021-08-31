@@ -111,6 +111,7 @@ const Collections: React.FC<CollectionsProps> = ({ match }) => {
             setExpandedSnippet={setExpandedSnippet}
             setHeading={setHeading}
             setId={setId}
+            readonly
           />
         )
       )}
@@ -211,7 +212,7 @@ const Collections: React.FC<CollectionsProps> = ({ match }) => {
       buttonRef={sidePanelRef}
       heading={heading}
     >
-      {primary}
+      {secondary}
     </SidePanel>
   );
   return (

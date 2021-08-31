@@ -87,6 +87,7 @@ const Collection: React.FC<CollectionsProps> = ({ match }) => {
       setEditing(true);
       loadCollection(match.params.id);
       setId(match.params.id);
+      setSnippets([{ label: '', value: '' }]);
     } else {
       setEditing(false);
       clearValues();
@@ -100,7 +101,8 @@ const Collection: React.FC<CollectionsProps> = ({ match }) => {
       setName(collection.name);
       collection.snippets_id && setSnippets(collection.snippets_id);
     } else {
-      setSnippets(snippetsOptions);
+      // setSnippets(snippetsOptions);
+      setSnippets([{ label: '', value: '' }]);
     }
   }, [collection]);
 

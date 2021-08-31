@@ -230,7 +230,7 @@ const SecondaryFooter: React.FC<{
       display="flex"
       flexDirection="column"
       width="100%"
-      bg={mode('#ebeced', '#8a8c8f')}
+      bg={mode('#fafafa', '#8a8c8f')}
       bottom={0}
       mt="auto"
       pt="auto"
@@ -262,7 +262,7 @@ const SecondaryFooter: React.FC<{
         p={1}
         as="span"
         fontSize="xs"
-        bg={mode('#ebeced', '#0b0914')}
+        bg={mode('#fafafa', '#0b0914')}
         borderColor={mode('#d8d9da', '#8a8c8f')}
         textAlign="start"
         fontWeight="bold"

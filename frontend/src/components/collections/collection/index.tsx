@@ -48,6 +48,7 @@ const CollectionItem: React.FC<{
   setHeading: React.Dispatch<React.SetStateAction<string>>;
   setId: React.Dispatch<React.SetStateAction<string>>;
   setExpandedSnippet?: React.Dispatch<React.SetStateAction<number>>;
+  readonly?: boolean;
 }> = ({
   collection,
   id,
@@ -60,6 +61,7 @@ const CollectionItem: React.FC<{
   setSelectedSnippetId,
   setExpandedSnippet,
   setHeading,
+  readonly,
 }) => {
   const isOpen = id === collection._id;
   const className = cn('accordion', {
@@ -89,8 +91,14 @@ const CollectionItem: React.FC<{
             setHeading(collection.name);
           }}
         >
-          <HStack>
-            <Text>{collection.name}</Text>
+          <HStack maxWidth="75%">
+            <Text
+              whiteSpace="nowrap"
+              overflow="hidden"
+              textOverflow="ellipsis"
+            >
+              {collection.name}
+            </Text>
           </HStack>
           <Box>
             <Text
@@ -134,22 +142,23 @@ const CollectionItem: React.FC<{
                 ease: [0.04, 0.62, 0.23, 0.98],
               }}
             >
-              <Flex
-                padding="10px"
-                justifyContent="space-between"
-                cursor="pointer"
-                onClick={() => {
-                  setExpanded(isOpen ? -1 : index - 1);
-                  setTimeout(() => {
-                    history.push(`/collection/${collection._id}`);
-                  }, 750);
-                }}
-              >
-                <Text as="span" color="gray.600" fontSize="sm">
-                  Edit this collection
-                </Text>
-                <MinusIcon />
-              </Flex>
+              {!readonly && (
+                <Flex
+                  padding="10px"
+                  justifyContent="space-between"
+                  cursor="pointer"
+                  onClick={() => {
+                    setTimeout(() => {
+                      history.push(`/collection/${collection._id}`);
+                    }, 750);
+                  }}
+                >
+                  <Text as="span" color="gray.600" fontSize="sm">
+                    Edit this collection
+                  </Text>
+                  <MinusIcon />
+                </Flex>
+              )}
               <List>
                 {collection.snippets &&
                   collection.snippets.map((snippet, idx) => (
