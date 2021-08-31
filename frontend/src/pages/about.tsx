@@ -356,7 +356,7 @@ export function ProfileCard() {
             icon={() => <CollaborateIcon />}
           />
           <LinkItem
-            text="Write an anonymous feedback"
+            text="Send feedback anonymously"
             subtext="Typeform"
             url="https://gvklqnr2996.typeform.com/to/xVAAK1V0"
             icon={() => <FormIcon />}
