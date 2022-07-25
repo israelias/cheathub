@@ -6,7 +6,7 @@
 version: 2
 updates:
   # Maintain dependencies for npm/node frontend
-  - package-ecosystem: "npm" # See documentation for possible values
+  - package-ecosystem: "yarn" # See documentation for possible values
     directory: "/frontend" # Location of package manifests
     schedule:
       interval: "weekly"
