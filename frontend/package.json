@@ -8,7 +8,7 @@
     "@chakra-ui/icons": "^1.0.10",
     "@chakra-ui/react": "^1.4.2",
     "@chakra-ui/system": "^1.6.5",
-    "@chakra-ui/theme": "^1.8.5",
+    "@chakra-ui/theme": "^1.14.1",
     "@chakra-ui/theme-tools": "^1.1.5",
     "@emotion/react": "^11.4.0",
     "@emotion/styled": "^11",
