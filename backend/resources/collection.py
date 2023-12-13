@@ -20,12 +20,14 @@ from resources.errors import (
 import datetime
 from bson import ObjectId
 
-#===========================================================================
+
+# ===========================================================================
 # *                Collection  RESTful Resource
 # ?  Queries Collection objects against the Collection database model.
-# 
+#
 # Responsible for all CRUD operations to a Collection document.
-#===========================================================================
+# ===========================================================================
+
 
 class CollectionsApi(Resource):
     """Requests against the Collection model to `api/collections` (plural)"""

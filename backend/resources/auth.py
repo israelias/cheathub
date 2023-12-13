@@ -21,40 +21,45 @@ from resources.errors import (
     InternalServerError,
 )
 
-#===========================================================================
+
+# ===========================================================================
 # *             User Authentication  RESTful Resource
 # ?  Queries User objects against the User model.
 # All POST methods.
 # Responsible for attaching tokens and hashed passwords to a User doc model,
 # required to perform operations on a Snippet, a Collection and itself.
-#===========================================================================
+# ===========================================================================
+
 
 class SignupApi(Resource):
     """Requests against the Snippet model to `api/auth/signup`"""
 
     def post(self):
-        """Create a new User object following the User model.
-
+        """
+        The post function creates a new User object following the User model.
         Yields:
-            Save a new User with the required username, email, password
-            fields.
+            Save a new User with the required username, email, password fields.
             Hash the password.
             Create three Snippets for the user to have some UI to play with
             upon authentication.
         Flags:
-            Errors and returns status code with error message,
-                200, otherwise.
+            Errors and returns status code with error message, 200 otherwise.
+            Returns: {dict}: JSON Flask Response with an access token and a username sets a refresh cookie in headers.
+
+        Args:
+            self: Reference the class in the method definition
+
         Returns:
-            {dict}: JSON Flask Response
-                with an access token and a username.
-                sets a refresh cookie in headers.
+            A tuple, the first item is a dictionary with an access token and username
+
         Note:
             The computation to update, save, reload a Snippet is required to
-            ensure Objects have fully landed before they are referenced. It is extra 
+            ensure Objects have fully landed before they are referenced. It is extra
             complicated for this endpoint as we are awaiting reloads for three models:
             User, Collection and Snippet, all of which vary in `having to exist` before
             the other.
         """
+
         try:
             body = request.get_json()
             user = User(**body)
@@ -67,9 +72,9 @@ class SignupApi(Resource):
 
             id = user.id
             username = user.username
-            
-            # Required to instantiate a new reference to the very same 
-            # and very new User for the purposes of attaching an owner 
+
+            # Required to instantiate a new reference to the very same
+            # and very new User for the purposes of attaching an owner
             # to the snippets.
             saved_user = User.objects.get(username=username)
 
@@ -155,14 +160,20 @@ class SignupApi(Resource):
 
 
 class LoginApi(Resource):
-    """Requests against the Snippet model to `api/auth/login`"""
+    """This class is a subclass of the Resource class from the Flask-RESTful library. It handles requests against the
+    Snippet model to `api/auth/login`"""
 
+    @staticmethod
     def post(self):
         """Authenticate a User object against the User model.
 
         Yields:
             Check the email.
             Check the password.
+
+        Args:
+            self: Reference the class itself
+
         Flags:
             Errors and returns status code with error message,
                 200, otherwise.
@@ -171,6 +182,7 @@ class LoginApi(Resource):
                 with an access token and a username.
                 sets a refresh-cookie in headers.
         """
+
         try:
             body = request.get_json()
             user = User.objects.get(email=body.get("email"))
@@ -223,7 +235,6 @@ class LogoutApi(Resource):
         Returns:
             {dict}: JSON Flask Response
                 confirmation that the token has been revoked.
-
         """
         revoked_token = get_jwt()
 
