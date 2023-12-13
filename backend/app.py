@@ -47,13 +47,10 @@ bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
 CORS(app, supports_credentials=True)
 
-app.config["MONGODB_HOST"] = os.environ.get("MONGODB_HOST")
-app.config["MONGODB_PORT"] = int(os.environ.get("MONGODB_PORT"))
 app.secret_key = os.environ.get("SECRET_KEY")
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
 app.config["DEBUG_TB_ENABLED"] = True
 app.config["JSON_SORT_KEYS"] = False
-
 
 initialize_db(app)
 initialize_routes(api)

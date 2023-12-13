@@ -1,5 +1,5 @@
 from flask_mongoengine import MongoEngine, MongoEngineSessionInterface
-
+import os
 # ===========================================================================
 # *                       Initialize Database
 # ?  The module that connects to the cloud database  (MongoDB Atlas)
@@ -22,6 +22,13 @@ def initialize_db(app):
     Returns:
         A flask application object
     """
-
+    app.config["MONGODB_SETTINGS"] = [
+        {
+            # "db": "cheathubdb",
+            "host":  os.environ.get("MONGODB_HOST"),
+            "port": int(os.environ.get("MONGODB_PORT")),
+            # "alias": "default",
+        }
+    ]
     db.init_app(app)
     app.session_interface = MongoEngineSessionInterface(db)
