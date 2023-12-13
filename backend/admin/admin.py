@@ -24,4 +24,4 @@ def initialize_admin(app):
 
     """
     admin.init_app(app)
-    app.config["FLASK_ADMIN_SWATCH"] = "cerulean"
+    app.config["FLASK_ADMIN_SWATCH"] = "united"
