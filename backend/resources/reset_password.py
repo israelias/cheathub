@@ -24,7 +24,6 @@ import datetime
 class ForgotPassword(Resource):
     """This class is a subclass of the Resource class, and it's used to handle the forgot password functionality."""
 
-    @staticmethod
     def post(self):
         """
         The post function is used to send an email with a link that will allow the user to reset their password.

@@ -163,7 +163,6 @@ class LoginApi(Resource):
     """This class is a subclass of the Resource class from the Flask-RESTful library. It handles requests against the
     Snippet model to `api/auth/login`"""
 
-    @staticmethod
     def post(self):
         """Authenticate a User object against the User model.
 
