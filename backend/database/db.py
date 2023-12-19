@@ -1,4 +1,13 @@
+import os
 from flask_mongoengine import MongoEngine, MongoEngineSessionInterface
+from flask_mongoengine.json import MongoEngineJSONEncoder
+
+
+if not os.path.exists("env.py"):
+    pass
+else:
+    import env
+
 
 # ===========================================================================
 # *                       Initialize Database
@@ -7,7 +16,6 @@ from flask_mongoengine import MongoEngine, MongoEngineSessionInterface
 # Requires connection string, set in environment vars and Heroku settings.
 # ===========================================================================
 
-# Creating a MongoEngine object.
 db = MongoEngine()
 
 
@@ -22,6 +30,12 @@ def initialize_db(app):
     Returns:
         A flask application object
     """
+    app.config["MONGODB_HOST"] = os.environ.get("MONGODB_HOST")
+    app.config["MONGODB_PORT"] = int(os.environ.get("MONGODB_PORT"))
+    app.config["MONGODB_DB"] = os.environ.get("MONGODB_DB")
+    app.config["MONGODB_USERNAME"] = os.environ.get("MONGODB_USERNAME")
+    app.config["MONGODB_PASSWORD"] = os.environ.get("MONGODB_PASSWORD")
 
-    db.init_app(app)
     app.session_interface = MongoEngineSessionInterface(db)
+    app.json_encoder = MongoEngineJSONEncoder
+    db.init_app(app)
