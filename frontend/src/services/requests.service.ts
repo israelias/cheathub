@@ -16,7 +16,7 @@
 /**
  * Api backend base URL.
  */
-const API = 'https://cheathub-backend.herokuapp.com';
+const API = 'https://cheathub-backend.onrender.com';
 
 /**
  * Describe your function
