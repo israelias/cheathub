@@ -14,7 +14,7 @@ import axios from 'axios';
  * Api backend base URL.
  */
 const axiosConfig = {
-  baseURL: 'https://cheathub-backend.herokuapp.com/api',
+  baseURL: 'https://cheathub-backend.onrender.com/api',
 };
 
 /**

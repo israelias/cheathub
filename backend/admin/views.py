@@ -7,6 +7,13 @@ from database.models import User, Snippet, Collection, TokenBlocklist
 
 
 def initialize_views():
+    """
+    The initialize_views function registers the admin views for the flask-admin extension.
+    It is called in __init__.py, and therefore runs whenever this package is imported.
+
+    Returns:
+        The admin object
+    """
     admin.add_view(MyModelView(User))
     admin.add_view(MyModelView(Snippet))
     admin.add_view(MyModelView(Collection))
