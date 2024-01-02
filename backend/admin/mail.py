@@ -10,6 +10,17 @@ mail = Mail()
 
 
 def initialize_mail(app):
+    """
+    The initialize_mail function initializes the Flask-Mail extension.
+    It sets up the mail server, port, username and password for sending emails.
+    The default sender is also set to be the email address of MAIL_DEFAULT_SENDER.
+
+    Args:
+        app: Access the application instance
+
+    Returns:
+        A configured flask mail object
+    """
     mail.init_app(app)
     app.config["MAIL_SERVER"] = os.environ.get("MAIL_SERVER")
     app.config["MAIL_PORT"] = int(os.environ.get("MAIL_PORT"))
