@@ -21,13 +21,13 @@ def initialize_mail(app):
     Returns:
         A configured flask mail object
     """
-    mail.init_app(app)
     app.config["MAIL_SERVER"] = os.environ.get("MAIL_SERVER")
     app.config["MAIL_PORT"] = int(os.environ.get("MAIL_PORT"))
     app.config["MAIL_USERNAME"] = os.environ.get("MAIL_USERNAME")
     app.config["MAIL_PASSWORD"] = os.environ.get("MAIL_PASSWORD")
     app.config["MAIL_DEFAULT_SENDER"] = os.environ.get("MAIL_DEFAULT_SENDER")
     app.config["MAIL_USE_SSL"] = True
+    mail.init_app(app)
 
     # MAIL_SERVER : default ‘localhost’
     # MAIL_PORT : default 25
