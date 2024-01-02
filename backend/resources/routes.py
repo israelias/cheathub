@@ -17,6 +17,7 @@ from .tags import TagsApi
 
 from .reset_password import ForgotPassword, ResetPassword
 
+
 # ===========================================================================
 # *             Initialize Routes
 # ?  Initializes assignment of defined resource classes to a url.
@@ -26,6 +27,16 @@ from .reset_password import ForgotPassword, ResetPassword
 
 
 def initialize_routes(api):
+    """
+    The initialize_routes function creates the routes for our API.
+    It is called in app.py when you run `flask run`.
+
+    Args:
+        api: Register the resources
+
+    Returns:
+        The status of the api
+    """
     """Backend root shows the status of the Api."""
     api.add_resource(Status, "/")
 
