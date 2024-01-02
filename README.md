@@ -1,18 +1,52 @@
-![](https://github.com/israelias/cheathub/blob/master/public/featurescreanshot.png?raw=true)
-# MS3 Cheat-Hub
-A cheatsheet hub.
+<!-- Anchor for Back To Top -->
+<a name="readme-top"></a>
 
-An app that organizes your code snippets into collections of cheat sheets and allows you to view, like and save others'.
+<!-- PROJECT LOGO -->
+<br />
+<div align="center">
+  <a href="https://github.com/israelias/cheathub">
+    <img src="https://user-images.githubusercontent.com/61286823/215342982-2f6599d3-922d-4787-b74e-2b3c8792f224.png" alt="Logo" width="80" height="80">
+  </a>
 
-The project is developed as part of MS3 Data Centric module at Code Institute. It is written with a Flask/Python restful backend API, and a React/Typescript CRA frontend. 
+<h3 align="center">CheatHub</h3>
+<h4><q>it's a cheet sheet hub, basically</q></h4>
 
-Please visit the project at [cheathub.vercel.app](https://cheathub.vercel.app).
+  <p align="center">
+    A web app that organizes your code snippets into collections of cheatsheets and allows you to view, like and save others'.
+    <br />
+    <strong>Explore the <a href="https://github.com/israelias/cheathub/tree/master/backend">backend</a> or <a href="https://github.com/israelias/cheathub/tree/master/frontend">frontend</a> docs »</strong>
+    <br />
+    <br />
+    <a href="https://cheathub.vercel.app/">View Frontend App</a>
+    ·
+    <a href="https://cheathub-backend.herokuapp.com/">View Backend Api</a>
+    ·
+    <a href="https://israelias.github.io/chub-etl-api/">View Backend DB docs</a>
+    ·
+    <a href="https://github.com/israelias/cheathub/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/israelias/cheathub/pulls">Create a PR</a>
+  </p>
+</div>
 
-Additionally, the restful backend API can be viwed at [cheathub-backend.herokuapp.com](https://cheathub-backend.herokuapp.com/). For a sample response, please visit the [/api/snippets](https://cheathub-backend.herokuapp.com/api/snippets) endpoint.
+
+## About The Project 
+
+The project is a clean monorepo. The backend serves the frontend, frontend calls the backend, backend writes to db, so on. They are standalone apps to the extent that their variables do not depend on each other. (Right now, they do).
+
+It is written with a Flask/Python restful backend API, a database driver to MongoDB Atlas, and a React/Typescript CRA frontend. 
 
 <br />
 
-## In Development 
+
+
+![](https://github.com/israelias/cheathub/blob/master/public/featurescreanshot.png?raw=true)
+
+
+<br />
+
+Scripts in root `package.json` implement Yarn workspaces only to run development-specific scripts from root assuming all backend/frontend-specific configs have been set up.
+
 
 > [***Collaborate on this project***](https://github.com/israelias/cheathub/blob/master/CONTRIBUTING.md#)
 
@@ -20,7 +54,10 @@ Additionally, the restful backend API can be viwed at [cheathub-backend.herokuap
 
 <br />
 
+<details>
+<summary>On the whole monorepo thing </summary>
 > **Note:** Scripts in root `package.json` implement Yarn workspaces only to run development-specific scripts from root assuming all backend/frontend-specific configs have been set up. Running `yarn` from root has not yet been tested. For the meantime, `cd`ing to frontend and installing the React-App is the minimal reliable option to develop the app with a fixed and unchanging backend API. The backend `package.json` is solely for running python scripts from root. Backend API and data layer are superuser-specific given the production deployment, although local env variables are described in case anyone wants to locally serve a Mongo Atlas connection string from scratch. To be updated.
+</details>
 
 [TOC levels=3]: # "## Contents"
 ## Contents
@@ -39,11 +76,11 @@ Additionally, the restful backend API can be viwed at [cheathub-backend.herokuap
   - [User Testing](#user-testing)
   - [Code Testing](#code-testing)
 - [Deployment](#deployment)
-- [Cloning This Repository](#cloning-this-repository)
+- [Cloning This Repository](#cloning-this-repo)
 - [Credits](#credits)
-  - [Code](#code)
   - [Content and Media](#content-and-media)
   - [Acknowledgements](#acknowledgements)
+- [License](#license)
 
 ## UX
 ### User Stories
@@ -113,6 +150,9 @@ The project can be understood as a library of user-created <em><b>Albums</b></em
 
 #### Colors
 - The app features two sets of neutral tones for light mode and dark mode. Tones are applied to backgrounds while borders are rendered to highlight items and convey feedback. Tones are minimally set to three values within `#fafafa` and `#010f08` in order to reserve state-changes to border sizes and scales.
+
+<a name="readme-top"></a>
+
 ## Features
 ### Existing Features
 
@@ -143,6 +183,7 @@ The project can be understood as a library of user-created <em><b>Albums</b></em
   - Ability to copy snippets to the clipboard. *(any User)*
  -  Ability to `fave` or `unfave` snippet results from search. *(Registered User)*
  -  Ability to perform `crud` operations on snippet results from search. *(Registered Owner)*
+ 
 ### Features Left to Implement
 - Add query params to all resources
 - Extend query parser to parse more than one query at a time
@@ -150,6 +191,9 @@ The project can be understood as a library of user-created <em><b>Albums</b></em
 - User profile page
 - Ability to add friends
 - Ability to share snippets
+
+<p align="right"><a href="#readme-top">back to top</a></p>
+
 ## Technologies
 ### Frameworks and Libraries
   - ### [`cd frontend`](https://github.com/israelias/cheathub/tree/master/frontend)
@@ -167,10 +211,14 @@ The project can be understood as a library of user-created <em><b>Albums</b></em
 - [GitHub:](https://github.com/) GitHub is used to store the project's code and directory upon concurrent `push`es via Git.
 - [Adobe InDesign:](https://www.adobe.com/sea/products/xd.html) Adobe InDesign is used to mock wireframes.
 
+<a name="readme-top"></a>
+
 ## Notes
 - Styles are written in-component and merge both Chakra-format and Framer-motion-format to achieve desired UI results. This is done by declaring motion boxes in Typescript to accespt Motion-Framer's HTML style props and Chakra's.
 - Pagination is only for search endpoint.
 - Access Token is stored in memory. Only usernames are stored in local storage, along with storage event listener for key `app-logout` which is triggered on logout and ensures all windows are logged out while the tokens are stored in a `token blocklist` cluster. 
+
+<p align="right"><a href="#readme-top">back to top</a></p>
 
 ## Testing
 ### User Testing
@@ -460,6 +508,8 @@ Please view them [here](https://github.com/israelias/cheathub/tree/master/public
 - Firefox 82
 - Opera 72
 - Safari 14
+<p align="right"><a href="#readme-top">back to top</a></p>
+
 ## Deployment
 
 - The project frontend is written in [Typescript]() developed with [React](https://reactjs.org/), bootstrapped with [Create React App](https://github.com/facebook/create-react-app) and deployed with [Vercel](https://nextjs.org/docs/deployment). The backend is written in [Python](), developed with [Flask]() to serve a restful database via [Mongo DB](). 
@@ -469,7 +519,7 @@ Please view them [here](https://github.com/israelias/cheathub/tree/master/public
   Please visit the [backend](https://github.com/israelias/cheathub/tree/master/backend) root directory for details on deployment steps.
 
 ## Cloning This Repo
-- Clone this repo by running `git clone httpsL//github.com/israelias/cheathub`
+- Clone this repo by running `git clone ssh://git@github.com/israelias/cheathub.git`
 - at the jump, `cd` to the name of this repo:
 `cd cheathub`
   ### [`cd frontend`](https://github.com/israelias/cheathub/tree/master/frontend)
@@ -484,7 +534,7 @@ Please view them [here](https://github.com/israelias/cheathub/tree/master/public
 ### Content and Media
 - Code snippets used to fill the database are public cheat sheets gathered throughout the development of the project include url references in the snippet cards. The `hello world` feature collection is references from [Say `hello world` in 28 different languages](https://excelwithbusiness.com/blog/say-hello-world-in-28-different-programming-languages/)
 
-### Acknowledgments
+### Acknowledgements
 #### ESLint and Typescript Configuration
 - [ESlint Typescript with Prettier](https://dev.to/benweiser/how-to-set-up-eslint-typescript-prettier-with-create-react-app-3675) 
 - [Create-React-App: Typescript, ESLint & Prettier with Airbnb style guides on VSCode](https://medium.com/react-courses/react-create-react-app-v3-4-1-a55f3e7a8d6d)
@@ -503,3 +553,8 @@ Please view them [here](https://github.com/israelias/cheathub/tree/master/public
 - Aaron Sinnott
 - Code Institute tutors
 - Fellow Code Institute students
+
+## License
+[MIT License](/LICENSE) Copyright (c) 2021 Joem Elias Sanez
+
+<p align="right"><a href="#readme-top">back to top</a></p>

@@ -1,15 +1,42 @@
 [Back to root](https://github.com/israelias/cheathub#contents)\
 [Go to backend](https://github.com/israelias/cheathub/tree/master/backend)
 
-# MS3 Cheat-Hub Frontend
+<!-- Anchor for Back To Top -->
+<a name="readme-top"></a>
 
-## Running Frontend Locally
+<div align="center">
+  <a href="https://github.com/israelias/cheathub/tree/master/frontend">
+    <img src="https://raw.githubusercontent.com/israelias/cheathub_mono/dev/images/logo_dash_red.png" alt="Logo" width="80" height="80">
+  </a>
+
+<h3 align="center">CheatHub Frontend</h3>
+
+  <p align="center">
+
+Frontend application for consuming and mutating database resources \
+through type-safe handlers modeled after backend models 
+in [@israelias/cheathub/backend](https://github.com/israelias/cheathub/tree/master/backend)
+<br />
+<a href="https://israelias.github.io/chub-etl-api/"><strong>Explore the DB docs »</strong></a>
+<br />
+<br />
+<a href="https://cheathub.vercel.app/">View App</a>
+·
+<a href="https://github.com/israelias/cheathub/issues">Report Bug</a>
+·
+<a href="https://github.com/israelias/cheathub/pulls">Create a PR</a>
+  </p>
+</div>
+
+## About The Project
+
+This is the frontend of a monorepo. 
+
 The frontend directory can developed on its own as a standalone React App attached to the live backend API. The ORM spec is defined as types in `globals.d.ts`. All fetch handlers that communicate with the backend are in the `src/services` subdirectory. Please see `src/context` for their implementation in context providers via Hooks and Context API.
-
-> Note: Please `cd` to this directory from root until workspaces is implemented. 
 
 - `yarn install`
 - `yarn start`
+
 ## Frameworks and Libraries
 
 - [Typescript 4.2.3]()
@@ -75,6 +102,14 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
+## Resources
+
+<details>
+<summary>boilerplate debris</summary>
+<br>
+
+`CRA circa Mar 30 2021`
+
 ## Learn More
 
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
@@ -104,3 +139,5 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `yarn build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+<details>
