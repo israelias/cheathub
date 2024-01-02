@@ -1721,21 +1721,12 @@
     "@types/tinycolor2" "1.4.2"
     tinycolor2 "1.4.2"
 
-"@chakra-ui/theme-tools@1.1.7":
+"@chakra-ui/theme-tools@1.1.7", "@chakra-ui/theme-tools@^1.1.5":
   version "1.1.7"
   resolved "https://registry.yarnpkg.com/@chakra-ui/theme-tools/-/theme-tools-1.1.7.tgz#ffd3dc2d22a935e1a1df47b155c4cef60ff3f603"
   integrity sha512-i8KpxjgoQPsoWAyHX+4kRMSioN9WVfyky+2sdFDHhEuDNL/iNYfKQMZjt8RR67apK/dSswMqh5UF2lWSM+lQhw==
   dependencies:
     "@chakra-ui/utils" "1.8.0"
-    "@types/tinycolor2" "1.4.2"
-    tinycolor2 "1.4.2"
-
-"@chakra-ui/theme-tools@^1.1.5":
-  version "1.1.5"
-  resolved "https://registry.yarnpkg.com/@chakra-ui/theme-tools/-/theme-tools-1.1.5.tgz#eaeb8c72bc27b818e64ed4641ddff9e1f31dc5f4"
-  integrity sha512-X+fuWvmMmuIV4HPcIJBsLNGzOTWCADfpP0Q6yoym+Jd1824BkWMhEucw3pQ3CjxHmCETOy4qXpyvXaKzK0VP3Q==
-  dependencies:
-    "@chakra-ui/utils" "1.6.0"
     "@types/tinycolor2" "1.4.2"
     tinycolor2 "1.4.2"
 
@@ -1787,7 +1778,7 @@
     "@chakra-ui/hooks" "1.3.0"
     "@chakra-ui/utils" "1.5.0"
 
-"@chakra-ui/utils@1.5.0", "@chakra-ui/utils@^1.5.0":
+"@chakra-ui/utils@1.5.0":
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/@chakra-ui/utils/-/utils-1.5.0.tgz#8ba5ac1353d85c7fbdfa843c8023d9a2b4a2915d"
   integrity sha512-rHLGzAo7cwIF9LkfEFEqtmgZN4/e1kuu5fVO4DrLJHcOA7c+wibrNK8QaplBefpq+b5bnmmznE4YHpXqG8yiCQ==
@@ -1815,7 +1806,7 @@
     framesync "5.3.0"
     lodash.mergewith "4.6.2"
 
-"@chakra-ui/utils@1.8.0", "@chakra-ui/utils@^1.7.0":
+"@chakra-ui/utils@1.8.0", "@chakra-ui/utils@^1.5.0", "@chakra-ui/utils@^1.7.0":
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/@chakra-ui/utils/-/utils-1.8.0.tgz#f7aad8175cc5a26a1d2795dc78691bbc21fd539e"
   integrity sha512-BWIhKcXnLbOIwCTKeNcOStNwk9RyYVA9xRRFPGK6Kp3EhrxP0rDwAbu4D3o3qAc+yhIDhGmPaIj1jRXHB5DTfg==
@@ -5143,7 +5134,7 @@ debug@2.6.9, debug@^2.2.0, debug@^2.3.3, debug@^2.6.0, debug@^2.6.9:
   dependencies:
     ms "2.0.0"
 
-debug@4:
+debug@4, debug@^4.0.1, debug@^4.1.0, debug@^4.1.1:
   version "4.3.4"
   resolved "https://registry.yarnpkg.com/debug/-/debug-4.3.4.tgz#1319f6579357f2338d3337d2cdd4914bb5dcc865"
   integrity sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==
@@ -5156,13 +5147,6 @@ debug@^3.1.0, debug@^3.1.1, debug@^3.2.6:
   integrity sha512-CFjzYYAi4ThfiQvizrFQevTTXHtnCqWfe7x1AhgEscTz6ZbLbfoLRLPugTQyBth6f8ZERVUSyWHFD/7Wu4t1XQ==
   dependencies:
     ms "^2.1.1"
-
-debug@^4.0.1, debug@^4.1.0, debug@^4.1.1:
-  version "4.3.1"
-  resolved "https://registry.yarnpkg.com/debug/-/debug-4.3.1.tgz#f0d229c505e0c6d8c49ac553d1b13dc183f6b2ee"
-  integrity sha512-doEwdvm4PCeK4K3RQN2ZC2BYUBaxwLARCqZmMjtF8a51J2Rb0xpVloFRnCODwqjpwnAoao4pelN8l3RJdv3gRQ==
-  dependencies:
-    ms "2.1.2"
 
 decamelize@^1.2.0:
   version "1.2.0"
@@ -5782,15 +5766,7 @@ eslint-module-utils@^2.6.0:
     debug "^2.6.9"
     pkg-dir "^2.0.0"
 
-eslint-plugin-flowtype@^5.2.0:
-  version "5.2.2"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-flowtype/-/eslint-plugin-flowtype-5.2.2.tgz#c6e5dd2fad4e757a1c63e652da6cff597659554f"
-  integrity sha512-C4PlPYpszr9h1cBfUbTNRI1IdxUCF0qrXAHkXS2+bESp7WUUCnvb3UBBnYlaQLvJYJ2lRz+2SPQQ/WyV7p/Tow==
-  dependencies:
-    lodash "^4.17.15"
-    string-natural-compare "^3.0.1"
-
-eslint-plugin-flowtype@^5.6.0:
+eslint-plugin-flowtype@^5.2.0, eslint-plugin-flowtype@^5.6.0:
   version "5.6.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-flowtype/-/eslint-plugin-flowtype-5.6.0.tgz#9ddba1ce31990c53e144b3a545b7c74b1d164fd9"
   integrity sha512-XbeDejiL+SecDInj9On/9D4EM31kUp6B3uWYsBH6Vsb2CfaFWiUHvosAZx1TafVjp6izLC7D3kpix1DIpDF4Qw==
