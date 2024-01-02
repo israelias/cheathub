@@ -23,12 +23,14 @@ from resources.errors import (
     SnippetNotExistsError,
 )
 
-#===========================================================================
+
+# ===========================================================================
 # *                   User Profile RESTful Resource
 # ?  Queries to a User model's relationship to Snippets and Collections
 # All GET methods.
 # Unique to a User's own saved Snippet and Collection documents
-#===========================================================================
+# ===========================================================================
+
 
 class MySnippetsApi(Resource):
     """Requests against the Snippet model to `api/users/<id>/snippets`"""
@@ -207,7 +209,7 @@ class MyCollectionApi(Resource):
 
         Returns:
             [{dict}]: JSON Flask Response
-            A healthy Collection object with unnested, dereferenced Snippets  
+            A healthy Collection object with unnested, dereferenced Snippets
         Note:
             This endpoint returns a response identical to `api/collections/<id>`;
             the only difference being the `user_id` argument.
@@ -276,7 +278,7 @@ class MyCollectionsOptionsApi(Resource):
 
         Returns:
             [{dict}]: JSON Flask Response
-                array of Collections with `label` and `value` keys for `Select` UI.  
+                array of Collections with `label` and `value` keys for `Select` UI.
         Note:
             This key endpoint is what allows the frontend to quickly present documents
             as creatable and/or multi-select options immediately following updates to
@@ -306,10 +308,10 @@ class MySnippetsOptionsApi(Resource):
 
         Returns:
             [{dict}]: JSON Flask Response
-                array of Snippets with `label` and `value` keys for `Select` UI.  
+                array of Snippets with `label` and `value` keys for `Select` UI.
         Note:
             This key endpoint is what allows the frontend to present documents
-            as creatable and/or multi-select options in an instant following live 
+            as creatable and/or multi-select options in an instant following live
             and/or recurrent updates and additions to a user's saved Snippets.
         """
         user = User.objects.get(username=user_id)
