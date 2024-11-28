@@ -6,7 +6,7 @@ import { SecondaryFooter } from '../../shared/particulars';
 
 interface CollectionFooterProps {
   editing: boolean;
-  deleting: boolean;
+  deleting: boolean | undefined;
   submitting: boolean;
   handleDelete: React.FormEventHandler<HTMLFormElement>;
   handleCancel: React.MouseEventHandler<HTMLButtonElement>;
@@ -66,3 +66,23 @@ const CollectionFooter: React.FC<CollectionFooterProps> = ({
 };
 
 export default CollectionFooter;
+import { useState, useEffect } from 'react';
+
+function useMediaQuery(query: string): [boolean] {
+    const [matches, setMatches] = useState(false);
+
+    useEffect(() => {
+        const mediaQueryList = window.matchMedia(query);
+        const documentChangeHandler = () => setMatches(mediaQueryList.matches);
+
+        mediaQueryList.addEventListener('change', documentChangeHandler);
+        documentChangeHandler(); // Set the initial state
+
+        return () => {
+            mediaQueryList.removeEventListener('change', documentChangeHandler);
+        };
+    }, [query]);
+
+    return [matches];
+}
+

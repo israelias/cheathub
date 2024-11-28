@@ -23,6 +23,17 @@
           name="Xml"/>
       </watched>
       <dir
+        name="node_modules">
+        <dir
+          name="@types">
+          <dir
+            name="react">
+            <dir
+              name="ts5.0"/>
+          </dir>
+        </dir>
+      </dir>
+      <dir
         name="public"/>
       <dir
         name="src">

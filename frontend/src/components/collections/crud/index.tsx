@@ -10,8 +10,8 @@ const CollectionCrud: React.FC<{
   setName: React.Dispatch<React.SetStateAction<string>>;
   snippets: Options[];
   setSnippets: (snippetz: Options[]) => void;
-  handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
-  handleDelete: (event: React.FormEvent<HTMLFormElement>) => void;
+  handleSubmit: React.FormEventHandler<HTMLFormElement>;
+  handleDelete: React.FormEventHandler<HTMLFormElement>;
   handleCancel: React.MouseEventHandler<HTMLButtonElement>;
   setAlert: React.Dispatch<React.SetStateAction<boolean>>;
   editing: boolean;

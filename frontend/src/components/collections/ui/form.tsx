@@ -27,6 +27,10 @@ const CollectionForm: React.FC<CollectionFormProps> = ({
   const { snippetsOptions } = useProfileData();
   const color = mode('light', 'dark');
 
+    const mode = (light: string, dark: string) => {
+        return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? dark : light;
+    };
+
   return (
     <MotionForm
       id="collection"
