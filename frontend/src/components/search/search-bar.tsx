@@ -18,38 +18,23 @@ import { LANGUAGES } from '../../constants/languages.constants';
 import { BrandButton } from '../shared/brand-button';
 
 const SearchBar: React.FC<{
-  searchText: string;
-  onSearchTextChange: (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => void;
-  language: string;
-  onLanguageChange: (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => void;
-  tags: string;
-  onTagsChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
-  allTags: Options[];
+  search: { text: string; onChange: (event: React.ChangeEvent<HTMLInputElement>) => void };
+  languageSettings: { value: string; onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void };
+  tagSettings: { tags: string; onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void; allTags: Options[] };
   resetAll: () => void;
   heading?: string;
   children?: React.ReactNode;
 }> = ({
-  searchText,
-  onSearchTextChange,
-  language,
-  onLanguageChange,
-  tags,
-  onTagsChange,
-  allTags,
+  search,
+  languageSettings,
+  tagSettings,
   resetAll,
   heading,
   children,
 }) => {
   const languages = [{ value: '', label: 'All' }, ...LANGUAGES];
   const [open, setOpen] = React.useState(0);
-  const [baseSm, baseMd] = useMediaQuery([
-    '(min-width: 30em)',
-    '(max-width: 58em)',
-  ]);
+  const [baseSm, baseMd] = useMediaQuery(['(min-width: 30em)', '(max-width: 58em)']);
   const location = useLocation();
   const touring = location.pathname === '/registration';
 
@@ -67,8 +52,8 @@ const SearchBar: React.FC<{
       bg={mode('#fff', '#0b0914')}
       transition={['all 0.2s ease-in-out 0s']}
       placeholder="Search"
-      value={searchText}
-      onChange={onSearchTextChange}
+      value={search.text}
+      onChange={search.onChange}
     />,
     <SelectInput
       key="langInput"
@@ -85,8 +70,8 @@ const SearchBar: React.FC<{
       placeholder="Language"
       icon={<MdArrowDropDown />}
       options={languages}
-      value={language}
-      onChange={onLanguageChange}
+      value={languageSettings.value}
+      onChange={languageSettings.onChange}
     />,
     <SelectInput
       key="tagInput"
@@ -102,71 +87,53 @@ const SearchBar: React.FC<{
       name="tag"
       placeholder="Tag"
       icon={<MdArrowDropDown />}
-      options={allTags}
-      value={tags}
-      onChange={onTagsChange}
+      options={tagSettings.allTags}
+      value={tagSettings.tags}
+      onChange={tagSettings.onChange}
     />,
   ];
-  return (
-    <>
-      <Flex
-        id="terciary-header-right"
-        height="62px"
-        top={{ base: '39px', lg: 0 }}
-        zIndex={10}
-        position="sticky"
-        borderBottom={['1px solid']}
-        borderColor={mode('#d8d9da', '#252945')}
-        bg={mode('#fff', '#141625')}
-        maxWidth={{ base: '100vw' }}
-      >
-        <Flex
-          alignItems="center"
-          justifyContent="space-between"
-          width="100%"
-          pl="10px"
-          pr="10px"
-        >
-          <>
-            {baseSm && baseMd && (
-              <Heading
-                padding={['8px 16px']}
-                fontSize={{ base: 'sm', lg: 'lg' }}
-              >
-                {heading}
-              </Heading>
-            )}
-            <>
-              {InputArray.map((input, i) => (
-                <MotionBox
-                  key={i}
-                  initial="collapsed"
-                  animate={open === i ? 'open' : 'collapsed'}
-                  variants={{
-                    open: { width: 'auto' },
-                    collapsed: { width: '100px' },
-                  }}
-                  transition={{
-                    duration: 0.5,
-                    ease: [0.04, 0.62, 0.23, 0.98],
-                  }}
-                >
-                  {!baseSm && input.key === 'searchInput'
-                    ? input
-                    : baseSm && input}
-                </MotionBox>
-              ))}
-            </>
-          </>
-          {children}
 
-          <BrandButton hidden={touring} onClick={() => resetAll()}>
-            {' '}
-            Clear
-          </BrandButton>
-        </Flex>
+  return (
+    <Flex
+      id="terciary-header-right"
+      height="62px"
+      top={{ base: '39px', lg: 0 }}
+      zIndex={10}
+      position="sticky"
+      borderBottom={['1px solid']}
+      borderColor={mode('#d8d9da', '#252945')}
+      bg={mode('#fff', '#141625')}
+      maxWidth={{ base: '100vw' }}
+    >
+      <Flex alignItems="center" justifyContent="space-between" width="100%" pl="10px" pr="10px">
+        {baseSm && baseMd && (
+          <Heading padding={['8px 16px']} fontSize={{ base: 'sm', lg: 'lg' }}>
+            {heading}
+          </Heading>
+        )}
+        {InputArray.map((input, i) => (
+          <MotionBox
+            key={i}
+            initial="collapsed"
+            animate={open === i ? 'open' : 'collapsed'}
+            variants={{
+              open: { width: 'auto' },
+              collapsed: { width: '100px' },
+            }}
+            transition={{
+              duration: 0.5,
+              ease: [0.04, 0.62, 0.23, 0.98],
+            }}
+          >
+            {!baseSm && input.key === 'searchInput' ? input : baseSm && input}
+          </MotionBox>
+        ))}
+        {children}
+        <BrandButton hidden={touring} onClick={() => resetAll()}>
+          Clear
+        </BrandButton>
       </Flex>
-    </>
+    </Flex>
   );
 };
 
