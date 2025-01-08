@@ -1,6 +1,11 @@
 import os
 from flask_basicauth import BasicAuth
 
+if not os.path.exists("env.py"):
+    pass
+else:
+    import env
+
 basic_auth = BasicAuth()
 
 
@@ -15,6 +20,7 @@ def initialize_basicauth(app):
     Returns:
         The app and the user name and password
     """
-    basic_auth.init_app(app)
     app.config["BASIC_AUTH_USERNAME"] = os.environ.get("BASIC_AUTH_USERNAME")
     app.config["BASIC_AUTH_PASSWORD"] = os.environ.get("BASIC_AUTH_PASSWORD")
+    app.config["BASIC_AUTH_REALM"] = os.environ.get("BASIC_AUTH_REALM")
+    basic_auth.init_app(app)

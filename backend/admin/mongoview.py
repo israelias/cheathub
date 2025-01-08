@@ -1,7 +1,8 @@
-from flask import Response, redirect
+from flask import redirect, Response
 from flask_admin import AdminIndexView, expose
 from flask_admin.contrib.mongoengine.view import ModelView
 from werkzeug.exceptions import HTTPException
+
 from .basicauth import basic_auth
 
 """
