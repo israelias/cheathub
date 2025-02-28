@@ -1,0 +1,13 @@
+id,Large File,File URL,LOC,N_Components,N_Functions,N_Imports,"Em uma escala de 1 a 5, como você avalia a relevância desse smell?
+1 = smell não é importante e, provavelmente, não será refatorado
+5 = smell é muito importante e, provavelmente, será refatorado em breve.",Observação
+1,C:\Program Files\projects\cheathub\frontend\src\components\collections\crud\index.tsx,C:\Program Files\projects\cheathub\frontend\src\components\collections\crud\index.tsx,294,1,0,15,,
+2,C:\Program Files\projects\cheathub\frontend\src\components\collections\snippets\index.tsx,C:\Program Files\projects\cheathub\frontend\src\components\collections\snippets\index.tsx,214,1,0,22,,
+3,C:\Program Files\projects\cheathub\frontend\src\components\modals\auth-prompt.tsx,C:\Program Files\projects\cheathub\frontend\src\components\modals\auth-prompt.tsx,104,1,0,21,,
+4,C:\Program Files\projects\cheathub\frontend\src\components\navigation\account\index.tsx,C:\Program Files\projects\cheathub\frontend\src\components\navigation\account\index.tsx,117,1,0,21,,
+5,C:\Program Files\projects\cheathub\frontend\src\components\navigation\actions\index.tsx,C:\Program Files\projects\cheathub\frontend\src\components\navigation\actions\index.tsx,248,1,0,23,,
+6,C:\Program Files\projects\cheathub\frontend\src\components\shared\brand-button.tsx,C:\Program Files\projects\cheathub\frontend\src\components\shared\brand-button.tsx,80,4,0,5,,
+7,C:\Program Files\projects\cheathub\frontend\src\components\snippet\body\elements.tsx,C:\Program Files\projects\cheathub\frontend\src\components\snippet\body\elements.tsx,469,8,0,37,,
+8,C:\Program Files\projects\cheathub\frontend\src\context\collectionhandler.tsx,C:\Program Files\projects\cheathub\frontend\src\context\collectionhandler.tsx,306,1,1,10,,
+9,C:\Program Files\projects\cheathub\frontend\src\context\datahandler.context.tsx,C:\Program Files\projects\cheathub\frontend\src\context\datahandler.context.tsx,388,1,1,11,,
+10,C:\Program Files\projects\cheathub\frontend\src\pages\about.tsx,C:\Program Files\projects\cheathub\frontend\src\pages\about.tsx,542,7,0,35,,
